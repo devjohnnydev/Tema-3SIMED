@@ -30,9 +30,14 @@ ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*').split(',')
 CSRF_TRUSTED_ORIGINS = [
     'https://*.replit.dev',
     'https://*.repl.co',
+    'https://*.kirk.replit.dev',
     'https://*.railway.app',
     'https://*.up.railway.app',
 ]
+
+# Add Replit dev domain from environment if available
+if os.environ.get('REPLIT_DEV_DOMAIN'):
+    CSRF_TRUSTED_ORIGINS.append(f"https://{os.environ.get('REPLIT_DEV_DOMAIN')}")
 
 # Add custom domain from environment if available
 if os.environ.get('RAILWAY_PUBLIC_DOMAIN'):
@@ -190,10 +195,14 @@ SOCIALACCOUNT_PROVIDERS = {
 
 # Security settings
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-X_FRAME_OPTIONS = 'SAMEORIGIN'  # Allow iframes from same origin (for Replit preview)
+X_FRAME_OPTIONS = 'ALLOWALL'  # Allow iframes for Replit preview
+
+# Cookie settings for Replit iframe compatibility
+SESSION_COOKIE_SAMESITE = 'None'
+CSRF_COOKIE_SAMESITE = 'None'
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 
 # Production security settings (only enabled when DEBUG=False)
 if not DEBUG:
-    CSRF_COOKIE_SECURE = True
-    SESSION_COOKIE_SECURE = True
     SECURE_SSL_REDIRECT = False  # Replit handles SSL at the proxy level
