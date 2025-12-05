@@ -1,0 +1,258 @@
+You reached the start of the range
+Dec 5, 2025, 11:38 AM
+scheduling build on Metal builder "builder-zoruvv"
+[snapshot] received sha256:bed5981bc5aebb0352ae19c5cee64b2116c285e1ccd776d8ae45579c6668bd51 md5:084584fca360b0dc645afcee0a560c13
+receiving snapshot
+5.2 MB
+1.9s
+found 'railway.json' at 'railway.json'
+analyzing snapshot
+5.2 MB
+37ms
+uploading snapshot
+5.2 MB
+207ms
+scheduling build on Metal builder "builder-zoruvv"
+fetched snapshot sha256:bed5981bc5aebb0352ae19c5cee64b2116c285e1ccd776d8ae45579c6668bd51 (5.5 MB bytes)
+fetching snapshot
+5.2 MB
+305ms
+unpacking archive
+5.9 MB
+71ms
+using build driver nixpacks-v1.41.0
+ 
+╔══════════════════════════════ Nixpacks v1.41.0 ══════════════════════════════╗
+║ setup      │ python311, postgresql_16.dev, gcc                               ║
+║──────────────────────────────────────────────────────────────────────────────║
+║ install    │ python -m venv --copies /opt/venv && . /opt/venv/bin/activate   ║
+║            │ && pip install -r requirements.txt                              ║
+║──────────────────────────────────────────────────────────────────────────────║
+║ build      │ pip install -r requirements.txt && python manage.py             ║
+║            │ collectstatic --noinput                                         ║
+║──────────────────────────────────────────────────────────────────────────────║
+║ release    │ python manage.py migrate --noinput && python manage.py          ║
+║            │ collectstatic --noinput                                         ║
+║──────────────────────────────────────────────────────────────────────────────║
+║ start      │ python manage.py migrate --noinput && gunicorn                  ║
+║            │ cadastro_pessoas.wsgi:application --bind 0.0.0.0:$PORT          ║
+║            │ --workers 2 --threads 4                                         ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+ 
+ 
+Saved output to:
+  snapshot-target-unpack
+
+internal
+load build definition from Dockerfile
+0ms
+
+internal
+load metadata for ghcr.io/railwayapp/nixpacks:ubuntu-1745885067
+167ms
+
+internal
+load .dockerignore
+0ms
+UndefinedVar: Usage of undefined variable '$NIXPACKS_PATH' (line 18)(https://docs.docker.com/go/dockerfile/rule/undefined-var/)
+ details: Variables should be defined before their use
+
+internal
+load build context
+0ms
+
+stage-0
+FROM ghcr.io/railwayapp/nixpacks:ubuntu-1745885067@sha256:d45c89d80e13d7ad0fd555b5130f22a866d9dd10e861f589932303ef2314c7de
+13ms
+
+stage-0
+RUN nix-env -if .nixpacks/nixpkgs-bc8f8d1be58e8c8383e683a06e1e1e57893fff87.nix && nix-collect-garbage -d cached
+0ms
+
+stage-0
+COPY .nixpacks/nixpkgs-bc8f8d1be58e8c8383e683a06e1e1e57893fff87.nix .nixpacks/nixpkgs-bc8f8d1be58e8c8383e683a06e1e1e57893fff87.nix cached
+0ms
+
+stage-0
+WORKDIR /app/ cached
+0ms
+
+stage-0
+COPY . /app/.
+1s
+
+stage-0
+RUN python -m venv --copies /opt/venv && . /opt/venv/bin/activate && pip install -r requirements.txt
+24s
+Successfully installed Django-5.2.6 Pillow-11.0.0 PyJWT-2.10.1 Pyphen-0.17.2 asgiref-3.11.0 brotli-1.2.0 certifi-2025.11.12 cffi-2.0.0 charset-normalizer-3.4.4 cryptography-44.0.0 cssselect2-0.8.0 django-allauth-65.3.0 fonttools-4.61.0 gunicorn-23.0.0 idna-3.11 packaging-25.0 psycopg2-binary-2.9.10 pycparser-2.23 pydyf-0.12.1 requests-2.32.3 sqlparse-0.5.4 tinycss2-1.5.1 tinyhtml5-2.0.0 urllib3-2.5.0 weasyprint-67.0 webencodings-0.5.1 whitenoise-6.8.2 zopfli-0.4.0
+
+stage-0
+COPY . /app/.
+793ms
+
+stage-0
+RUN  pip install -r requirements.txt && python manage.py collectstatic --noinput
+1s
+153 static files copied to '/app/staticfiles'.
+
+stage-0
+COPY . /app/.
+1s
+
+stage-0
+RUN  python manage.py migrate --noinput && python manage.py collectstatic --noinput
+7s
+-----
+WeasyPrint could not import some external libraries. Please carefully follow the installation steps before reporting an issue:
+https://doc.courtbouillon.org/weasyprint/stable/first_steps.html#installation
+https://doc.courtbouillon.org/weasyprint/stable/first_steps.html#troubleshooting 
+-----
+Traceback (most recent call last):
+  File "/app/manage.py", line 22, in <module>
+    main()
+  File "/app/manage.py", line 18, in main
+    execute_from_command_line(sys.argv)
+  File "/opt/venv/lib/python3.11/site-packages/django/core/management/__init__.py", line 442, in execute_from_command_line
+    utility.execute()
+  File "/opt/venv/lib/python3.11/site-packages/django/core/management/__init__.py", line 436, in execute
+    self.fetch_command(subcommand).run_from_argv(self.argv)
+  File "/opt/venv/lib/python3.11/site-packages/django/core/management/base.py", line 416, in run_from_argv
+    self.execute(*args, **cmd_options)
+  File "/opt/venv/lib/python3.11/site-packages/django/core/management/base.py", line 457, in execute
+    self.check(**check_kwargs)
+  File "/opt/venv/lib/python3.11/site-packages/django/core/management/base.py", line 492, in check
+    all_issues = checks.run_checks(
+                 ^^^^^^^^^^^^^
+^^^^
+^
+  File "/opt/venv/lib/python3.11/site-packages/django/core/checks/registry.py", line 89, in run_checks
+    new_errors = check(app_configs=app_configs, databases=databases)
+                 ^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^
+^^^^
+^^
+^^
+^^^
+^
+  File "/opt/venv/lib/python3.11/site-packages/django/core/checks/urls.py", line 44, in check_url_namespaces_unique
+    all_namespaces = _load_all_namespaces(resolver)
+                  
+   ^^^^^^^^^
+^^^^^
+^^^^
+^^^^^^^
+^^^^
+^
+  File "/opt/venv/lib/python3.11/site-packages/django/core/checks/urls.py", line 63, in _load_all_namespaces
+    url_patterns = getattr(resolver, "url_patterns", [])
+                   ^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/django/utils/functional.py", line 47, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+       
+    
+  
+  
+  
+  
+  
+     
+  
+      
+     
+  
+^^
+^^
+^^
+^^^^
+^^
+^^
+^^
+^^^
+  File "/opt/venv/lib/python3.11/site-packages/django/urls/resolvers.py", line 718, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+       
+  
+              ^^
+^^^^
+^^
+^^^
+^^
+^^^
+^^^
+  File "/opt/venv/lib/python3.11/site-packages/django/utils/functional.py", line 47, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+                          
+              
+ ^^^
+^^^^^^
+^^^^
+^^
+^^^^
+  File "/opt/venv/lib/python3.11/site-packages/django/urls/resolvers.py", line 711, in urlconf_module
+    return import_module(self.urlconf_name)
+       
+    ^^^^^^^^^^
+^^
+^^
+^^^
+^^
+^^
+^^
+^^
+^^^^^^
+^
+  File "/root/.nix-profile/lib/python3.11/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^
+^^
+^^
+^
+^
+^
+^
+^
+^^^^
+^
+^
+  File "<frozen importlib._bootstrap>", line 1204, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1176, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1147, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 690, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 940, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/app/cadastro_pessoas/urls.py", line 11, in <module>
+    
+path('', include('pessoas.urls')),  # URLs do app pessoas
+             ^^^^^^^^^^^
+^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/django/urls/conf.py", line 39, in include
+    urlconf_module = import_module(urlconf_module)
+           
+          ^^^^^^^^^^^^
+^^^^^^
+^^^^^^
+^^^^^
+  File "/root/.nix-profile/lib/python3.11/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+ 
+          ^^^
+^^^^
+^^^^
+^^^^
+^^^
+^^^
+^^^^
+^^^
+^^^
+^^^^^
+^^^
+^^^^^
+^^^
+^^^
+^^
+  File "<frozen importlib._bootstrap>", line 1204, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1176, in _find_and_load
+  File "<frozen impor
