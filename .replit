@@ -4,7 +4,7 @@ expertMode = true
 
 [nix]
 channel = "stable-25_05"
-packages = ["cairo", "cargo", "fontconfig", "freetype", "gdk-pixbuf", "ghostscript", "glib", "harfbuzz", "lcms2", "libiconv", "libimagequant", "libjpeg", "libtiff", "libwebp", "libxcrypt", "openjpeg", "openssl", "pango", "pkg-config", "rustc", "tcl", "tk", "zlib"]
+packages = ["cairo", "cargo", "fontconfig", "freetype", "gdk-pixbuf", "ghostscript", "glib", "glibcLocales", "harfbuzz", "lcms2", "libiconv", "libimagequant", "libjpeg", "libtiff", "libwebp", "libxcrypt", "openjpeg", "openssl", "pango", "pkg-config", "rustc", "tcl", "tk", "zlib"]
 
 [workflows]
 runButton = "Project"

@@ -19,7 +19,12 @@ from django.db.models import Q
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.http import require_GET, require_POST
 from django.template.loader import render_to_string
-from xhtml2pdf import pisa
+from reportlab.lib.pagesizes import A4
+from reportlab.lib.units import cm
+from reportlab.lib.colors import HexColor
+from reportlab.pdfgen import canvas
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.platypus import Paragraph
 import io
 
 def gerar_horarios_disponiveis(medico_id, data_selecionada=None):
@@ -504,17 +509,83 @@ def download_consulta_pdf(request, consulta_id):
             messages.error(request, 'Você não tem permissão para baixar este documento.')
             return redirect('painel_paciente')
     
-    html_string = render_to_string('pessoas/consulta_pdf.html', {
-        'consulta': consulta,
-        'now': timezone.now(),
-    })
-    
     pdf_buffer = io.BytesIO()
-    pisa_status = pisa.CreatePDF(html_string, dest=pdf_buffer)
+    p = canvas.Canvas(pdf_buffer, pagesize=A4)
+    width, height = A4
     
-    if pisa_status.err:
-        messages.error(request, 'Erro ao gerar PDF.')
-        return redirect('painel_paciente')
+    primary_color = HexColor('#1B325F')
+    accent_color = HexColor('#4C98D0')
+    
+    p.setFillColor(primary_color)
+    p.rect(0, height - 3*cm, width, 3*cm, fill=True, stroke=False)
+    
+    p.setFillColor(HexColor('#FFFFFF'))
+    p.setFont("Helvetica-Bold", 24)
+    p.drawString(2*cm, height - 2*cm, "SIMED")
+    p.setFont("Helvetica", 12)
+    p.drawString(2*cm, height - 2.6*cm, "Servico Integrado de Medicina")
+    
+    p.setFillColor(primary_color)
+    p.setFont("Helvetica-Bold", 18)
+    p.drawString(2*cm, height - 5*cm, "Comprovante de Consulta")
+    
+    p.setFillColor(accent_color)
+    p.rect(2*cm, height - 5.3*cm, 6*cm, 0.1*cm, fill=True, stroke=False)
+    
+    y_pos = height - 7*cm
+    p.setFillColor(HexColor('#333333'))
+    p.setFont("Helvetica-Bold", 12)
+    p.drawString(2*cm, y_pos, "Dados do Paciente")
+    y_pos -= 0.7*cm
+    
+    p.setFont("Helvetica", 11)
+    p.drawString(2*cm, y_pos, f"Nome: {consulta.paciente.first_name} {consulta.paciente.last_name}")
+    y_pos -= 0.5*cm
+    p.drawString(2*cm, y_pos, f"Email: {consulta.paciente.email}")
+    y_pos -= 1*cm
+    
+    p.setFont("Helvetica-Bold", 12)
+    p.drawString(2*cm, y_pos, "Dados da Consulta")
+    y_pos -= 0.7*cm
+    
+    p.setFont("Helvetica", 11)
+    medico_nome = f"{consulta.medico.first_name} {consulta.medico.last_name}"
+    if consulta.profissional:
+        medico_nome = consulta.profissional.nome
+        if consulta.profissional.especialidade:
+            medico_nome += f" - {consulta.profissional.especialidade.nome}"
+    
+    p.drawString(2*cm, y_pos, f"Medico(a): Dr(a). {medico_nome}")
+    y_pos -= 0.5*cm
+    p.drawString(2*cm, y_pos, f"Data: {consulta.data_hora.strftime('%d/%m/%Y')}")
+    y_pos -= 0.5*cm
+    p.drawString(2*cm, y_pos, f"Horario: {consulta.data_hora.strftime('%H:%M')}")
+    y_pos -= 0.5*cm
+    p.drawString(2*cm, y_pos, f"Status: {consulta.get_status_display()}")
+    y_pos -= 0.5*cm
+    p.drawString(2*cm, y_pos, f"Codigo: #{consulta.id:05d}")
+    y_pos -= 1.5*cm
+    
+    p.setFillColor(accent_color)
+    p.rect(2*cm, y_pos, width - 4*cm, 0.05*cm, fill=True, stroke=False)
+    y_pos -= 1*cm
+    
+    p.setFillColor(HexColor('#666666'))
+    p.setFont("Helvetica", 9)
+    p.drawString(2*cm, y_pos, "Este documento e um comprovante de agendamento.")
+    y_pos -= 0.4*cm
+    p.drawString(2*cm, y_pos, "Apresente-o no dia da consulta.")
+    y_pos -= 0.8*cm
+    p.drawString(2*cm, y_pos, f"Documento gerado em: {timezone.now().strftime('%d/%m/%Y as %H:%M')}")
+    
+    p.setFillColor(primary_color)
+    p.rect(0, 0, width, 1.5*cm, fill=True, stroke=False)
+    p.setFillColor(HexColor('#FFFFFF'))
+    p.setFont("Helvetica", 8)
+    p.drawCentredString(width/2, 0.6*cm, "SIMED - Servico Integrado de Medicina | www.simed.com.br")
+    
+    p.showPage()
+    p.save()
     
     pdf_buffer.seek(0)
     
