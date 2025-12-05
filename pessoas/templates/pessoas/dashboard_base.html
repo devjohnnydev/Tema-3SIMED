@@ -591,10 +591,16 @@
                 </a>
                 <a href="{% url 'dashboard_horarios' %}" class="sidebar-btn {% if request.resolver_match.url_name == 'dashboard_horarios' %}active{% endif %}">
                     <i class="bi bi-clock-history"></i>
-                    <span>Horários</span>
+                    <span>Horarios</span>
                 </a>
 
-                <div class="menu-section-title">Configurações</div>
+                <div class="menu-section-title">Conteudo</div>
+                <a href="{% url 'dashboard_comentarios' %}" class="sidebar-btn {% if request.resolver_match.url_name == 'dashboard_comentarios' %}active{% endif %}">
+                    <i class="bi bi-chat-heart"></i>
+                    <span>Comentarios</span>
+                </a>
+
+                <div class="menu-section-title">Configuracoes</div>
                 <a href="{% url 'home' %}" class="sidebar-btn">
                     <i class="bi bi-house"></i>
                     <span>Voltar ao Site</span>

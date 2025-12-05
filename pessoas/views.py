@@ -8,7 +8,7 @@ from .forms import (
     RelatorioConsultaForm, AgendarConsultaAtendenteForm, 
     MedicamentoForm, LoginUsuarioForm
 )
-from .models import User, Perfil, Consulta, Medicamento, Profissional, Especialidade, HorarioTrabalho
+from .models import User, Perfil, Consulta, Medicamento, Profissional, Especialidade, HorarioTrabalho, ComentarioPaciente
 from .decorators import (
     admin_required, medico_required, atendente_required, paciente_required,
     role_required, min_role_required, get_user_role
@@ -88,9 +88,6 @@ def get_horarios_disponiveis_ajax(request):
     return JsonResponse({'horarios': horarios_json})
 
 # --- VIEWS DE PÁGINA ---
-
-def home(request):
-    return render(request, 'pessoas/home.html')
 
 def sobre(request):
     profissionais = Profissional.objects.filter(ativo=True, destaque=True).select_related('especialidade')[:6]
@@ -854,3 +851,77 @@ END:VCALENDAR"""
     response['Content-Disposition'] = f'attachment; filename="consulta_simed_{consulta.id}.ics"'
     
     return response
+
+
+# --- GERENCIAMENTO DE COMENTARIOS ---
+
+def home(request):
+    comentarios_aprovados = ComentarioPaciente.objects.filter(status='aprovado').order_by('-data_aprovacao')[:10]
+    return render(request, 'pessoas/home.html', {'comentarios': comentarios_aprovados})
+
+@login_required
+def enviar_comentario(request):
+    if request.method == 'POST':
+        texto = request.POST.get('texto', '').strip()
+        avaliacao = request.POST.get('avaliacao', 5)
+        
+        if texto:
+            try:
+                avaliacao = int(avaliacao)
+                if avaliacao < 1 or avaliacao > 5:
+                    avaliacao = 5
+            except ValueError:
+                avaliacao = 5
+                
+            ComentarioPaciente.objects.create(
+                paciente=request.user,
+                texto=texto,
+                avaliacao=avaliacao,
+                status='pendente'
+            )
+            messages.success(request, 'Seu comentario foi enviado e sera exibido apos aprovacao.')
+        else:
+            messages.error(request, 'Por favor, escreva um comentario.')
+    
+    return redirect('home')
+
+@admin_required
+def dashboard_comentarios(request):
+    comentarios_pendentes = ComentarioPaciente.objects.filter(status='pendente').order_by('-criado_em')
+    comentarios_aprovados = ComentarioPaciente.objects.filter(status='aprovado').order_by('-data_aprovacao')
+    comentarios_reprovados = ComentarioPaciente.objects.filter(status='reprovado').order_by('-atualizado_em')
+    
+    return render(request, 'pessoas/dashboard_comentarios.html', {
+        'comentarios_pendentes': comentarios_pendentes,
+        'comentarios_aprovados': comentarios_aprovados,
+        'comentarios_reprovados': comentarios_reprovados,
+        'total_pendentes': comentarios_pendentes.count(),
+        'total_aprovados': comentarios_aprovados.count(),
+        'total_reprovados': comentarios_reprovados.count(),
+    })
+
+@admin_required
+def aprovar_comentario(request, comentario_id):
+    comentario = get_object_or_404(ComentarioPaciente, pk=comentario_id)
+    comentario.status = 'aprovado'
+    comentario.aprovado_por = request.user
+    comentario.data_aprovacao = timezone.now()
+    comentario.save()
+    messages.success(request, f'Comentario de {comentario.nome_paciente} aprovado com sucesso!')
+    return redirect('dashboard_comentarios')
+
+@admin_required
+def reprovar_comentario(request, comentario_id):
+    comentario = get_object_or_404(ComentarioPaciente, pk=comentario_id)
+    comentario.status = 'reprovado'
+    comentario.save()
+    messages.success(request, f'Comentario de {comentario.nome_paciente} reprovado.')
+    return redirect('dashboard_comentarios')
+
+@admin_required
+def excluir_comentario(request, comentario_id):
+    comentario = get_object_or_404(ComentarioPaciente, pk=comentario_id)
+    nome = comentario.nome_paciente
+    comentario.delete()
+    messages.success(request, f'Comentario de {nome} excluido com sucesso.')
+    return redirect('dashboard_comentarios')

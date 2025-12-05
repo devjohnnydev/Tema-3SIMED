@@ -88,4 +88,11 @@ urlpatterns = [
     
     # Download de arquivo ICS para calendário
     path('consulta/<int:consulta_id>/ics/', views.download_consulta_ics, name='download_consulta_ics'),
+    
+    # URLs para Comentarios de Pacientes
+    path('comentario/enviar/', views.enviar_comentario, name='enviar_comentario'),
+    path('dashboard/comentarios/', views.dashboard_comentarios, name='dashboard_comentarios'),
+    path('dashboard/comentario/<int:comentario_id>/aprovar/', views.aprovar_comentario, name='aprovar_comentario'),
+    path('dashboard/comentario/<int:comentario_id>/reprovar/', views.reprovar_comentario, name='reprovar_comentario'),
+    path('dashboard/comentario/<int:comentario_id>/excluir/', views.excluir_comentario, name='excluir_comentario'),
 ]

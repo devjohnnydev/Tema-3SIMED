@@ -235,3 +235,49 @@ class Medicamento(models.Model):
         ordering = ['nome']
         verbose_name = 'Medicamento'
         verbose_name_plural = 'Medicamentos'
+
+
+class ComentarioPaciente(models.Model):
+    """
+    Modelo para comentarios/depoimentos de pacientes
+    que aparecerao na HOME apos aprovacao do admin
+    """
+    STATUS_CHOICES = (
+        ('pendente', 'Pendente'),
+        ('aprovado', 'Aprovado'),
+        ('reprovado', 'Reprovado'),
+    )
+    
+    paciente = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comentarios')
+    texto = models.TextField(help_text='Escreva seu depoimento sobre a experiencia na SIMED')
+    avaliacao = models.PositiveIntegerField(
+        default=5,
+        validators=[MinValueValidator(1)],
+        help_text='Avaliacao de 1 a 5 estrelas'
+    )
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pendente')
+    criado_em = models.DateTimeField(auto_now_add=True)
+    atualizado_em = models.DateTimeField(auto_now=True)
+    aprovado_por = models.ForeignKey(
+        User, 
+        on_delete=models.SET_NULL, 
+        null=True, 
+        blank=True, 
+        related_name='comentarios_aprovados'
+    )
+    data_aprovacao = models.DateTimeField(null=True, blank=True)
+    
+    def __str__(self):
+        nome = self.paciente.first_name or self.paciente.username
+        return f'Comentario de {nome} - {self.get_status_display()}'
+    
+    @property
+    def nome_paciente(self):
+        if self.paciente.first_name:
+            return f"{self.paciente.first_name} {self.paciente.last_name or ''}".strip()
+        return self.paciente.username
+    
+    class Meta:
+        ordering = ['-criado_em']
+        verbose_name = 'Comentario de Paciente'
+        verbose_name_plural = 'Comentarios de Pacientes'

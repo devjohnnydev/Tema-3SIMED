@@ -203,6 +203,35 @@ $(document).ready(function(){
     prevArrow: '<button type="button" class="slick-prev"><i class="bi bi-chevron-left"></i></button>',
     nextArrow: '<button type="button" class="slick-next"><i class="bi bi-chevron-right"></i></button>'
   });
+
+  $('.comentarios-slider').slick({
+    dots: true,
+    infinite: true,
+    arrows: true,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 5000,
+    pauseOnHover: true,
+    prevArrow: '<button type="button" class="slick-prev comentario-prev"><i class="bi bi-chevron-left"></i></button>',
+    nextArrow: '<button type="button" class="slick-next comentario-next"><i class="bi bi-chevron-right"></i></button>',
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1
+        }
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1
+        }
+      }
+    ]
+  });
 });
 </script>
 
@@ -220,38 +249,105 @@ $(document).ready(function(){
 
 <section class="experiencia" id="experiencia">
   <div class="container">
-    <h2 class="titulo-secao">A experiência dos clientes com Simed</h2>
+    <h2 class="titulo-secao">A experiencia dos clientes com SIMED</h2>
+    <p class="subtitulo-secao">Veja o que nossos pacientes estao dizendo sobre nossos servicos</p>
 
-    <div class="avaliacao">
-      <div class="avaliacao-item">
-        <h6>Roberto</h6>
-        <span>01/01/2026</span>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut a posuere sapien. Vestibulum dictum nunc nunc,
-          vitae aliquet ante suscipit et. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae.
-        </p>
+    {% if comentarios %}
+    <div class="comentarios-slider">
+      {% for comentario in comentarios %}
+      <div class="comentario-slide">
+        <div class="comentario-card">
+          <div class="comentario-header">
+            <div class="comentario-avatar">
+              {{ comentario.nome_paciente|slice:":1"|upper }}
+            </div>
+            <div class="comentario-info">
+              <h6>{{ comentario.nome_paciente }}</h6>
+              <span class="comentario-data">{{ comentario.criado_em|date:"d/m/Y" }}</span>
+            </div>
+            <div class="comentario-estrelas">
+              {% for i in "12345" %}
+                {% if forloop.counter <= comentario.avaliacao %}
+                <i class="bi bi-star-fill"></i>
+                {% else %}
+                <i class="bi bi-star"></i>
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+          <div class="comentario-texto">
+            <i class="bi bi-quote comentario-quote"></i>
+            <p>{{ comentario.texto }}</p>
+          </div>
+        </div>
       </div>
-
-      <div class="avaliacao-item">
-        <h6>Nicole</h6>
-        <span>01/01/2026</span>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut a posuere sapien. Vestibulum dictum nunc nunc,
-          vitae aliquet ante suscipit et.
-        </p>
-      </div>
-
-      <div class="avaliacao-item">
-        <h6>Alex</h6>
-        <span>01/01/2026</span>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut a posuere sapien. Vestibulum dictum nunc nunc,
-          vitae aliquet ante suscipit et.
-        </p>
-      </div>
+      {% endfor %}
     </div>
+    {% else %}
+    <div class="sem-comentarios">
+      <i class="bi bi-chat-heart"></i>
+      <p>Em breve, depoimentos de nossos pacientes estarao disponiveis aqui.</p>
+    </div>
+    {% endif %}
+
+    {% if user.is_authenticated %}
+    <div class="enviar-comentario-container">
+      <button class="btn-enviar-comentario" data-bs-toggle="modal" data-bs-target="#modalComentario">
+        <i class="bi bi-pencil-square"></i> Deixe seu Depoimento
+      </button>
+    </div>
+    {% endif %}
   </div>
 </section>
+
+{% if user.is_authenticated %}
+<div class="modal fade" id="modalComentario" tabindex="-1" aria-labelledby="modalComentarioLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content modal-comentario">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalComentarioLabel">
+          <i class="bi bi-chat-heart"></i> Deixe seu Depoimento
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+      </div>
+      <form method="POST" action="{% url 'enviar_comentario' %}">
+        {% csrf_token %}
+        <div class="modal-body">
+          <div class="form-group mb-3">
+            <label for="avaliacao" class="form-label">Sua Avaliacao</label>
+            <div class="rating-input">
+              <input type="radio" name="avaliacao" value="5" id="star5" checked>
+              <label for="star5"><i class="bi bi-star-fill"></i></label>
+              <input type="radio" name="avaliacao" value="4" id="star4">
+              <label for="star4"><i class="bi bi-star-fill"></i></label>
+              <input type="radio" name="avaliacao" value="3" id="star3">
+              <label for="star3"><i class="bi bi-star-fill"></i></label>
+              <input type="radio" name="avaliacao" value="2" id="star2">
+              <label for="star2"><i class="bi bi-star-fill"></i></label>
+              <input type="radio" name="avaliacao" value="1" id="star1">
+              <label for="star1"><i class="bi bi-star-fill"></i></label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="texto" class="form-label">Seu Depoimento</label>
+            <textarea name="texto" id="texto" class="form-control" rows="4" 
+                      placeholder="Conte sua experiencia com a SIMED..." required></textarea>
+          </div>
+          <p class="texto-info mt-2">
+            <i class="bi bi-info-circle"></i> Seu depoimento sera exibido apos aprovacao.
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary">
+            <i class="bi bi-send"></i> Enviar Depoimento
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endif %}
 
 <!-- Bootstrap JS Bundle -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

@@ -2858,3 +2858,311 @@ a {
     right: 10%;
 }
  /* Fim lista meds */
+/* ============================================
+   SECAO DE COMENTARIOS/DEPOIMENTOS NA HOME
+   ============================================ */
+
+.experiencia {
+    padding: 80px 5%;
+    background: linear-gradient(135deg, #f8fafc 0%, #E9F2F9 100%);
+}
+
+.experiencia .container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.subtitulo-secao {
+    text-align: center;
+    color: #5a6c7d;
+    font-size: 1.1rem;
+    margin-bottom: 40px;
+}
+
+.comentarios-slider {
+    padding: 20px 40px;
+}
+
+.comentario-slide {
+    padding: 10px;
+}
+
+.comentario-card {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+    height: 100%;
+    min-height: 280px;
+}
+
+.comentario-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.12);
+}
+
+.comentario-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.comentario-avatar {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #1B325F 0%, #4C98D0 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 700;
+    font-size: 1.3rem;
+}
+
+.comentario-info {
+    flex: 1;
+}
+
+.comentario-info h6 {
+    margin: 0;
+    color: #1B325F;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.comentario-data {
+    color: #8c9ba8;
+    font-size: 0.85rem;
+}
+
+.comentario-estrelas {
+    color: #F26C4F;
+    font-size: 1rem;
+}
+
+.comentario-estrelas i {
+    margin: 0 1px;
+}
+
+.comentario-texto {
+    position: relative;
+    padding-left: 30px;
+}
+
+.comentario-quote {
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: #4C98D0;
+    font-size: 1.5rem;
+    opacity: 0.5;
+}
+
+.comentario-texto p {
+    color: #5a6c7d;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    margin: 0;
+}
+
+.sem-comentarios {
+    text-align: center;
+    padding: 60px 20px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.06);
+}
+
+.sem-comentarios i {
+    font-size: 3rem;
+    color: #4C98D0;
+    margin-bottom: 20px;
+    display: block;
+}
+
+.sem-comentarios p {
+    color: #5a6c7d;
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+.enviar-comentario-container {
+    text-align: center;
+    margin-top: 40px;
+}
+
+.btn-enviar-comentario {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 30px;
+    background: linear-gradient(135deg, #1B325F 0%, #2c4a7a 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-enviar-comentario:hover {
+    background: linear-gradient(135deg, #F26C4F 0%, #e85a3d 100%);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(242, 108, 79, 0.3);
+}
+
+/* Modal de comentario */
+.modal-comentario {
+    border-radius: 20px;
+    border: none;
+}
+
+.modal-comentario .modal-header {
+    background: linear-gradient(135deg, #1B325F 0%, #2c4a7a 100%);
+    color: white;
+    border-radius: 20px 20px 0 0;
+    border: none;
+}
+
+.modal-comentario .modal-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.modal-comentario .btn-close {
+    filter: brightness(0) invert(1);
+}
+
+.modal-comentario .modal-body {
+    padding: 30px;
+}
+
+.modal-comentario .form-label {
+    color: #1B325F;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.modal-comentario .form-control {
+    border: 2px solid #E9F2F9;
+    border-radius: 10px;
+    padding: 12px 15px;
+    transition: all 0.3s ease;
+}
+
+.modal-comentario .form-control:focus {
+    border-color: #4C98D0;
+    box-shadow: 0 0 0 3px rgba(76, 152, 208, 0.1);
+}
+
+.rating-input {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    gap: 5px;
+}
+
+.rating-input input {
+    display: none;
+}
+
+.rating-input label {
+    cursor: pointer;
+    font-size: 1.8rem;
+    color: #ddd;
+    transition: color 0.2s ease;
+}
+
+.rating-input label:hover,
+.rating-input label:hover ~ label,
+.rating-input input:checked ~ label {
+    color: #F26C4F;
+}
+
+.texto-info {
+    color: #8c9ba8;
+    font-size: 0.85rem;
+}
+
+.modal-comentario .modal-footer {
+    border: none;
+    padding: 20px 30px;
+}
+
+.modal-comentario .btn-primary {
+    background: linear-gradient(135deg, #1B325F 0%, #2c4a7a 100%);
+    border: none;
+    padding: 10px 25px;
+    border-radius: 8px;
+}
+
+.modal-comentario .btn-primary:hover {
+    background: linear-gradient(135deg, #F26C4F 0%, #e85a3d 100%);
+}
+
+/* Setas do carrossel de comentarios */
+.comentario-prev, .comentario-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 45px;
+    height: 45px;
+    background: white;
+    border: 2px solid #E9F2F9;
+    border-radius: 50%;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.comentario-prev:hover, .comentario-next:hover {
+    background: #1B325F;
+    border-color: #1B325F;
+    color: white;
+}
+
+.comentario-prev {
+    left: -10px;
+}
+
+.comentario-next {
+    right: -10px;
+}
+
+@media (max-width: 768px) {
+    .experiencia {
+        padding: 60px 4%;
+    }
+    
+    .comentarios-slider {
+        padding: 10px 20px;
+    }
+    
+    .comentario-card {
+        padding: 20px;
+        min-height: auto;
+    }
+    
+    .comentario-header {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .comentario-texto {
+        padding-left: 0;
+        text-align: center;
+    }
+    
+    .comentario-quote {
+        display: none;
+    }
+}
