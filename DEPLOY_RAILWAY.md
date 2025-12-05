@@ -127,17 +127,22 @@ O Railway detectara automaticamente:
    - `PGPASSWORD`
    - `PGPORT`
 
-### 3.3 Executar Script SQL (Opcional)
+### 3.3 Sobre o Script SQL (Referencia)
 
-Se precisar executar o schema manualmente:
+O arquivo `scripts/database_schema_railway.sql` contem o schema completo do banco de dados exportado diretamente do PostgreSQL.
 
-1. Clique no PostgreSQL
-2. Va em **"Data"**
-3. Clique em **"Query"**
-4. Cole o conteudo do arquivo `scripts/database_schema_railway.sql`
-5. Execute o script
+**IMPORTANTE:** Este script e apenas para REFERENCIA. O metodo correto para criar as tabelas e atraves das migracoes do Django:
 
-**Nota:** O Django executara as migracoes automaticamente, entao este passo e opcional.
+```bash
+railway run python manage.py migrate
+```
+
+As migracoes do Django sao a fonte de verdade (source of truth) para o schema do banco de dados. O script SQL pode ficar desatualizado se novas migracoes forem adicionadas.
+
+**Quando usar o script SQL:**
+- Para documentacao e auditoria
+- Para criar um banco manualmente sem Django
+- Para referencia de estrutura de dados
 
 ---
 
