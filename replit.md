@@ -12,6 +12,21 @@ This is a Django-based medical consultation system that allows patients to sched
 
 ## Recent Changes
 
+### December 5, 2025 - UI Modernization
+- ✅ Modernized patient panel (painel_paciente.html) with gradient headers and card layouts
+- ✅ Added PDF download functionality for appointment confirmations using WeasyPrint
+- ✅ Created professional PDF template (consulta_pdf.html) with clinic branding
+- ✅ Redesigned admin dashboard with modern sidebar navigation
+- ✅ Updated all 5 admin dashboard pages with consistent styling:
+  - Consultas (appointment management)
+  - Produtos/Medicamentos (medication inventory)
+  - Ocupação (clinic schedule occupancy)
+  - Pacientes (patient management)
+  - Médicos (doctor management)
+- ✅ Implemented site color scheme (#1B325F dark blue, #4C98D0 light blue, #F26C4F orange accent)
+- ✅ Added gradient stat cards and modern data tables to dashboard
+- ✅ Installed WeasyPrint for server-side PDF generation
+
 ### December 5, 2025 - GitHub Import to Replit
 - ✅ Imported project from GitHub repository
 - ✅ Installed Python 3.11 and all dependencies from requirements.txt
@@ -79,12 +94,14 @@ This is a Django-based medical consultation system that allows patients to sched
 - User authentication (traditional + Google OAuth)
 - Role-based access control (doctors, patients, attendants)
 - Appointment scheduling with 15-minute time slots (8 AM - 6 PM)
+- PDF download for appointment confirmation cards
 - Medical report writing
 - Medication management with stock control
 - Multiple specialized services (surgery, exams, dentistry, ophthalmology, tomography)
 - Individual professional pages organized by specialty
 - Smooth login/registration transitions with CSS animations
 - Success messages for user feedback
+- Modern admin dashboard with sidebar navigation
 
 ## Database Configuration
 
@@ -182,6 +199,7 @@ See `requirements.txt` for full list. Main dependencies:
 - requests 2.32.3 (HTTP library)
 - gunicorn 23.0.0 (Production WSGI server)
 - whitenoise 6.8.2 (Static file serving)
+- weasyprint (PDF generation)
 
 ## Notes
 - The application is configured to work with Replit's proxy/iframe setup
