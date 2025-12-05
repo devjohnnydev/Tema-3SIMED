@@ -66,4 +66,23 @@ urlpatterns = [
 
     # URL para Gerenciamento de Cargos
     path('dashboard/usuario/<int:user_id>/cargos/', views.gerenciar_cargos, name='gerenciar_cargos'),
+    
+    # URLs para Gerenciamento de Profissionais
+    path('dashboard/profissionais/', views.dashboard_profissionais, name='dashboard_profissionais'),
+    path('dashboard/profissionais/adicionar/', views.adicionar_profissional, name='adicionar_profissional'),
+    path('dashboard/profissionais/<int:profissional_id>/editar/', views.editar_profissional, name='editar_profissional'),
+    path('dashboard/profissionais/<int:profissional_id>/remover/', views.remover_profissional, name='remover_profissional'),
+    
+    # URLs para Gerenciamento de Especialidades
+    path('dashboard/especialidades/', views.dashboard_especialidades, name='dashboard_especialidades'),
+    path('dashboard/especialidades/adicionar/', views.adicionar_especialidade, name='adicionar_especialidade'),
+    path('dashboard/especialidades/<int:especialidade_id>/remover/', views.remover_especialidade, name='remover_especialidade'),
+    
+    # URLs para Gerenciamento de Horários
+    path('dashboard/horarios/', views.dashboard_horarios, name='dashboard_horarios'),
+    path('dashboard/profissional/<int:profissional_id>/horarios/', views.configurar_horarios, name='configurar_horarios'),
+    path('admin/horario/<int:horario_id>/remover/', views.remover_horario, name='remover_horario'),
+    
+    # API para horários disponíveis por profissional
+    path('api/profissional/<int:profissional_id>/horarios/', views.get_horarios_profissional_ajax, name='horarios_profissional_ajax'),
 ]

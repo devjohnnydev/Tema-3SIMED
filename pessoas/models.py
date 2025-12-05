@@ -137,6 +137,37 @@ class Consulta(models.Model):
         verbose_name_plural = 'Consultas'
 
 
+class HorarioTrabalho(models.Model):
+    """
+    Modelo para armazenar os horários de trabalho dos profissionais
+    """
+    DIAS_SEMANA = (
+        (0, 'Segunda-feira'),
+        (1, 'Terça-feira'),
+        (2, 'Quarta-feira'),
+        (3, 'Quinta-feira'),
+        (4, 'Sexta-feira'),
+        (5, 'Sábado'),
+        (6, 'Domingo'),
+    )
+    
+    profissional = models.ForeignKey(Profissional, on_delete=models.CASCADE, related_name='horarios')
+    dia_semana = models.IntegerField(choices=DIAS_SEMANA)
+    hora_inicio = models.TimeField()
+    hora_fim = models.TimeField()
+    intervalo_minutos = models.PositiveIntegerField(default=30, help_text='Duração de cada consulta em minutos')
+    ativo = models.BooleanField(default=True)
+    
+    def __str__(self):
+        return f'{self.profissional.nome} - {self.get_dia_semana_display()} ({self.hora_inicio} às {self.hora_fim})'
+    
+    class Meta:
+        verbose_name = 'Horário de Trabalho'
+        verbose_name_plural = 'Horários de Trabalho'
+        ordering = ['profissional', 'dia_semana', 'hora_inicio']
+        unique_together = ['profissional', 'dia_semana', 'hora_inicio']
+
+
 class Medicamento(models.Model):
     """
     Este modelo armazena o cadastro de medicamentos da clínica.

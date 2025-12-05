@@ -8,7 +8,7 @@ from .forms import (
     RelatorioConsultaForm, AgendarConsultaAtendenteForm, 
     MedicamentoForm, LoginUsuarioForm
 )
-from .models import User, Perfil, Consulta, Medicamento, Profissional, Especialidade
+from .models import User, Perfil, Consulta, Medicamento, Profissional, Especialidade, HorarioTrabalho
 from .decorators import (
     admin_required, medico_required, atendente_required, paciente_required,
     role_required, min_role_required, get_user_role
@@ -498,3 +498,283 @@ def download_consulta_pdf(request, consulta_id):
     response['Content-Disposition'] = f'attachment; filename="{filename}"'
     
     return response
+
+
+# --- GERENCIAMENTO DE PROFISSIONAIS ---
+
+@admin_required
+def dashboard_profissionais(request):
+    profissionais = Profissional.objects.all().select_related('especialidade').prefetch_related('horarios')
+    especialidades = Especialidade.objects.all()
+    return render(request, 'pessoas/dashboard_profissionais.html', {
+        'profissionais': profissionais,
+        'especialidades': especialidades
+    })
+
+@admin_required
+def adicionar_profissional(request):
+    especialidades = Especialidade.objects.all()
+    usuarios_disponiveis = User.objects.filter(
+        perfil__tipo_usuario__in=['medico', 'atendente']
+    ).exclude(profissional__isnull=False)
+    
+    if request.method == 'POST':
+        nome = request.POST.get('nome')
+        especialidade_id = request.POST.get('especialidade')
+        crm = request.POST.get('crm')
+        email = request.POST.get('email')
+        telefone = request.POST.get('telefone')
+        biografia = request.POST.get('biografia')
+        formacao = request.POST.get('formacao')
+        certificacoes = request.POST.get('certificacoes')
+        usuario_id = request.POST.get('usuario')
+        ativo = 'ativo' in request.POST
+        destaque = 'destaque' in request.POST
+        foto = request.FILES.get('foto')
+        
+        profissional = Profissional(
+            nome=nome,
+            crm=crm,
+            email=email,
+            telefone=telefone,
+            biografia=biografia,
+            formacao=formacao,
+            certificacoes=certificacoes,
+            ativo=ativo,
+            destaque=destaque
+        )
+        
+        if especialidade_id:
+            profissional.especialidade = Especialidade.objects.get(pk=especialidade_id)
+        if usuario_id:
+            profissional.usuario = User.objects.get(pk=usuario_id)
+        if foto:
+            profissional.foto = foto
+            
+        profissional.save()
+        messages.success(request, f'Profissional {nome} cadastrado com sucesso!')
+        return redirect('dashboard_profissionais')
+    
+    return render(request, 'pessoas/adicionar_profissional.html', {
+        'especialidades': especialidades,
+        'usuarios_disponiveis': usuarios_disponiveis
+    })
+
+@admin_required
+def editar_profissional(request, profissional_id):
+    profissional = get_object_or_404(Profissional, pk=profissional_id)
+    especialidades = Especialidade.objects.all()
+    usuarios_disponiveis = User.objects.filter(
+        perfil__tipo_usuario__in=['medico', 'atendente']
+    ).exclude(profissional__isnull=False) | User.objects.filter(pk=profissional.usuario_id if profissional.usuario else 0)
+    
+    if request.method == 'POST':
+        profissional.nome = request.POST.get('nome')
+        profissional.crm = request.POST.get('crm')
+        profissional.email = request.POST.get('email')
+        profissional.telefone = request.POST.get('telefone')
+        profissional.biografia = request.POST.get('biografia')
+        profissional.formacao = request.POST.get('formacao')
+        profissional.certificacoes = request.POST.get('certificacoes')
+        profissional.ativo = 'ativo' in request.POST
+        profissional.destaque = 'destaque' in request.POST
+        
+        especialidade_id = request.POST.get('especialidade')
+        if especialidade_id:
+            profissional.especialidade = Especialidade.objects.get(pk=especialidade_id)
+        else:
+            profissional.especialidade = None
+            
+        usuario_id = request.POST.get('usuario')
+        if usuario_id:
+            profissional.usuario = User.objects.get(pk=usuario_id)
+        else:
+            profissional.usuario = None
+            
+        if request.FILES.get('foto'):
+            profissional.foto = request.FILES.get('foto')
+            
+        profissional.save()
+        messages.success(request, f'Profissional {profissional.nome} atualizado com sucesso!')
+        return redirect('dashboard_profissionais')
+    
+    return render(request, 'pessoas/adicionar_profissional.html', {
+        'profissional': profissional,
+        'especialidades': especialidades,
+        'usuarios_disponiveis': usuarios_disponiveis
+    })
+
+@admin_required
+def remover_profissional(request, profissional_id):
+    profissional = get_object_or_404(Profissional, pk=profissional_id)
+    nome = profissional.nome
+    profissional.delete()
+    messages.success(request, f'Profissional {nome} removido com sucesso.')
+    return redirect('dashboard_profissionais')
+
+
+# --- GERENCIAMENTO DE ESPECIALIDADES ---
+
+@admin_required
+def dashboard_especialidades(request):
+    especialidades = Especialidade.objects.all().prefetch_related('profissional_set')
+    return render(request, 'pessoas/dashboard_especialidades.html', {
+        'especialidades': especialidades
+    })
+
+@admin_required
+def adicionar_especialidade(request):
+    if request.method == 'POST':
+        nome = request.POST.get('nome')
+        descricao = request.POST.get('descricao')
+        icone = request.POST.get('icone', 'fa-stethoscope')
+        
+        if nome:
+            Especialidade.objects.create(nome=nome, descricao=descricao, icone=icone)
+            messages.success(request, f'Especialidade {nome} criada com sucesso!')
+    
+    return redirect('dashboard_especialidades')
+
+@admin_required
+def remover_especialidade(request, especialidade_id):
+    especialidade = get_object_or_404(Especialidade, pk=especialidade_id)
+    nome = especialidade.nome
+    especialidade.delete()
+    messages.success(request, f'Especialidade {nome} removida com sucesso.')
+    return redirect('dashboard_especialidades')
+
+
+# --- GERENCIAMENTO DE HORÁRIOS ---
+
+@admin_required
+def dashboard_horarios(request):
+    profissionais = Profissional.objects.filter(ativo=True).select_related('especialidade').prefetch_related('horarios')
+    
+    for prof in profissionais:
+        horarios_por_dia = {}
+        for h in prof.horarios.filter(ativo=True):
+            if h.dia_semana not in horarios_por_dia:
+                horarios_por_dia[h.dia_semana] = []
+            horarios_por_dia[h.dia_semana].append(h)
+        prof.horarios_por_dia = horarios_por_dia
+    
+    return render(request, 'pessoas/dashboard_horarios.html', {
+        'profissionais': profissionais
+    })
+
+@admin_required
+def configurar_horarios(request, profissional_id):
+    profissional = get_object_or_404(Profissional, pk=profissional_id)
+    
+    dias_semana = [
+        (0, 'Segunda-feira'),
+        (1, 'Terça-feira'),
+        (2, 'Quarta-feira'),
+        (3, 'Quinta-feira'),
+        (4, 'Sexta-feira'),
+        (5, 'Sábado'),
+        (6, 'Domingo'),
+    ]
+    
+    horarios_existentes = profissional.horarios.filter(ativo=True)
+    horarios_ativos = list(horarios_existentes.values_list('dia_semana', flat=True))
+    horarios_dict = {h.dia_semana: h for h in horarios_existentes}
+    
+    if request.method == 'POST':
+        HorarioTrabalho.objects.filter(profissional=profissional).delete()
+        
+        for dia_num, dia_nome in dias_semana:
+            ativo = f'dia_{dia_num}_ativo' in request.POST
+            if ativo:
+                hora_inicio = request.POST.get(f'dia_{dia_num}_inicio', '08:00')
+                hora_fim = request.POST.get(f'dia_{dia_num}_fim', '18:00')
+                intervalo = int(request.POST.get(f'dia_{dia_num}_intervalo', 30))
+                
+                HorarioTrabalho.objects.create(
+                    profissional=profissional,
+                    dia_semana=dia_num,
+                    hora_inicio=hora_inicio,
+                    hora_fim=hora_fim,
+                    intervalo_minutos=intervalo,
+                    ativo=True
+                )
+        
+        messages.success(request, f'Horários de {profissional.nome} atualizados com sucesso!')
+        return redirect('dashboard_horarios')
+    
+    return render(request, 'pessoas/configurar_horarios.html', {
+        'profissional': profissional,
+        'dias_semana': dias_semana,
+        'horarios_ativos': horarios_ativos,
+        'horarios_dict': horarios_dict
+    })
+
+@admin_required
+def remover_horario(request, horario_id):
+    horario = get_object_or_404(HorarioTrabalho, pk=horario_id)
+    horario.delete()
+    return JsonResponse({'success': True})
+
+
+# --- API PARA HORÁRIOS DISPONÍVEIS ---
+
+@require_GET
+def get_horarios_profissional_ajax(request, profissional_id):
+    """
+    Retorna os horários disponíveis de um profissional para uma data específica.
+    """
+    data_str = request.GET.get('data')
+    
+    if not data_str:
+        return JsonResponse({'error': 'Data é obrigatória.'}, status=400)
+    
+    try:
+        profissional = Profissional.objects.get(pk=profissional_id, ativo=True)
+        data_selecionada = datetime.strptime(data_str, '%Y-%m-%d').date()
+    except (Profissional.DoesNotExist, ValueError):
+        return JsonResponse({'error': 'Profissional ou data inválidos.'}, status=400)
+    
+    dia_semana = data_selecionada.weekday()
+    
+    horario_trabalho = profissional.horarios.filter(dia_semana=dia_semana, ativo=True).first()
+    
+    if not horario_trabalho:
+        return JsonResponse({
+            'disponivel': False,
+            'mensagem': 'Profissional não atende neste dia.',
+            'horarios': []
+        })
+    
+    horarios_disponiveis = []
+    hora_atual = datetime.combine(data_selecionada, horario_trabalho.hora_inicio)
+    hora_fim = datetime.combine(data_selecionada, horario_trabalho.hora_fim)
+    intervalo = timedelta(minutes=horario_trabalho.intervalo_minutos)
+    
+    consultas_ocupadas = set()
+    if profissional.usuario:
+        consultas = Consulta.objects.filter(
+            medico=profissional.usuario,
+            data_hora__date=data_selecionada,
+            status__in=['agendada', 'confirmada']
+        ).values_list('data_hora', flat=True)
+        consultas_ocupadas = {timezone.localtime(dt).time() for dt in consultas}
+    
+    while hora_atual < hora_fim:
+        horario_time = hora_atual.time()
+        if horario_time not in consultas_ocupadas:
+            horarios_disponiveis.append({
+                'value': horario_time.strftime('%H:%M'),
+                'display': horario_time.strftime('%H:%M')
+            })
+        hora_atual += intervalo
+    
+    return JsonResponse({
+        'disponivel': True,
+        'profissional': {
+            'id': profissional.id,
+            'nome': profissional.nome,
+            'foto': profissional.foto.url if profissional.foto else None,
+            'especialidade': profissional.especialidade.nome if profissional.especialidade else None
+        },
+        'horarios': horarios_disponiveis
+    })

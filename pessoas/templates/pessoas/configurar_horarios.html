@@ -1,0 +1,405 @@
+{% extends 'pessoas/dashboard_base.html' %}
+{% load static %}
+
+{% block title %}Configurar Horários - {{ profissional.nome }}{% endblock %}
+
+{% block page_icon %}<i class="bi bi-calendar-week"></i>{% endblock %}
+{% block page_title %}Configurar Horários{% endblock %}
+
+{% block extra_css %}
+<style>
+    .config-container {
+        max-width: 1000px;
+    }
+    
+    .profissional-info-card {
+        background: white;
+        border-radius: 16px;
+        padding: 25px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        margin-bottom: 25px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+    
+    .prof-avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid #E9F2F9;
+    }
+    
+    .prof-avatar-placeholder {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #4C98D0 0%, #3a8bc9 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 2rem;
+        font-weight: 600;
+    }
+    
+    .prof-details h2 {
+        color: #1B325F;
+        margin: 0 0 5px 0;
+        font-size: 1.3rem;
+    }
+    
+    .prof-details span {
+        color: #5a6c7d;
+        font-size: 0.95rem;
+    }
+    
+    .horarios-form-card {
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        overflow: hidden;
+    }
+    
+    .form-header {
+        padding: 20px 25px;
+        background: linear-gradient(135deg, #1B325F 0%, #2c4a7a 100%);
+        color: white;
+    }
+    
+    .form-header h3 {
+        margin: 0;
+        font-size: 1.1rem;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .dias-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 15px;
+        padding: 25px;
+    }
+    
+    .dia-config {
+        background: #f8fafc;
+        border-radius: 12px;
+        padding: 20px;
+        border: 2px solid #E9F2F9;
+        transition: all 0.3s;
+    }
+    
+    .dia-config.ativo {
+        border-color: #4C98D0;
+        background: #E9F2F9;
+    }
+    
+    .dia-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 15px;
+    }
+    
+    .dia-nome {
+        font-weight: 600;
+        color: #1B325F;
+        font-size: 1rem;
+    }
+    
+    .dia-toggle {
+        position: relative;
+        width: 50px;
+        height: 26px;
+    }
+    
+    .dia-toggle input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+    
+    .dia-toggle .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #d0dae4;
+        transition: 0.3s;
+        border-radius: 26px;
+    }
+    
+    .dia-toggle .slider:before {
+        position: absolute;
+        content: "";
+        height: 20px;
+        width: 20px;
+        left: 3px;
+        bottom: 3px;
+        background-color: white;
+        transition: 0.3s;
+        border-radius: 50%;
+    }
+    
+    .dia-toggle input:checked + .slider {
+        background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
+    }
+    
+    .dia-toggle input:checked + .slider:before {
+        transform: translateX(24px);
+    }
+    
+    .horario-inputs {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+    
+    .horario-inputs input[type="time"] {
+        padding: 10px 12px;
+        border: 2px solid #E9F2F9;
+        border-radius: 8px;
+        font-size: 0.95rem;
+        flex: 1;
+    }
+    
+    .horario-inputs input[type="time"]:focus {
+        outline: none;
+        border-color: #4C98D0;
+    }
+    
+    .horario-inputs span {
+        color: #8c9ba8;
+        font-size: 0.9rem;
+    }
+    
+    .intervalo-config {
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid #E9F2F9;
+    }
+    
+    .intervalo-config label {
+        display: block;
+        font-size: 0.85rem;
+        color: #5a6c7d;
+        margin-bottom: 8px;
+    }
+    
+    .intervalo-config select {
+        width: 100%;
+        padding: 10px 12px;
+        border: 2px solid #E9F2F9;
+        border-radius: 8px;
+        font-size: 0.95rem;
+    }
+    
+    .horarios-existentes {
+        margin-top: 15px;
+    }
+    
+    .horario-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: linear-gradient(135deg, #4C98D0 0%, #3a8bc9 100%);
+        color: white;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        margin: 3px;
+    }
+    
+    .horario-tag button {
+        background: rgba(255,255,255,0.3);
+        border: none;
+        color: white;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.7rem;
+    }
+    
+    .horario-tag button:hover {
+        background: rgba(255,255,255,0.5);
+    }
+    
+    .form-actions {
+        display: flex;
+        gap: 15px;
+        justify-content: flex-end;
+        padding: 20px 25px;
+        border-top: 2px solid #E9F2F9;
+        background: #f8fafc;
+    }
+    
+    .btn-cancel {
+        padding: 12px 30px;
+        background: #e0e7ef;
+        color: #5a6c7d;
+        border: none;
+        border-radius: 10px;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+    }
+    
+    .btn-save {
+        padding: 12px 30px;
+        background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .btn-save:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba(40, 167, 69, 0.4);
+    }
+    
+    .alert {
+        padding: 15px 20px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .alert-success {
+        background: rgba(40, 167, 69, 0.1);
+        color: #28a745;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="config-container">
+    {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            <i class="bi bi-check-circle"></i>
+            {{ message }}
+        </div>
+        {% endfor %}
+    {% endif %}
+    
+    <div class="profissional-info-card">
+        {% if profissional.foto %}
+            <img src="{{ profissional.foto.url }}" alt="{{ profissional.nome }}" class="prof-avatar">
+        {% else %}
+            <div class="prof-avatar-placeholder">
+                {{ profissional.nome|slice:":1"|upper }}
+            </div>
+        {% endif %}
+        <div class="prof-details">
+            <h2>{{ profissional.nome }}</h2>
+            <span>{{ profissional.especialidade.nome|default:"Sem especialidade" }} {% if profissional.crm %}- {{ profissional.crm }}{% endif %}</span>
+        </div>
+    </div>
+    
+    <div class="horarios-form-card">
+        <div class="form-header">
+            <h3>
+                <i class="bi bi-clock"></i>
+                Definir Horários de Atendimento
+            </h3>
+        </div>
+        
+        <form method="post">
+            {% csrf_token %}
+            <div class="dias-grid">
+                {% for dia_num, dia_nome in dias_semana %}
+                <div class="dia-config {% if dia_num in horarios_ativos %}ativo{% endif %}" id="dia-{{ dia_num }}">
+                    <div class="dia-header">
+                        <span class="dia-nome">{{ dia_nome }}</span>
+                        <label class="dia-toggle">
+                            <input type="checkbox" name="dia_{{ dia_num }}_ativo" {% if dia_num in horarios_ativos %}checked{% endif %} onchange="toggleDia({{ dia_num }})">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="horario-inputs">
+                        <input type="time" name="dia_{{ dia_num }}_inicio" value="{{ horarios_dict|default_if_none:'' }}" 
+                               {% if dia_num in horarios_dict %}value="{{ horarios_dict|get_item:dia_num }}.hora_inicio|time:'H:i'"{% else %}value="08:00"{% endif %}>
+                        <span>às</span>
+                        <input type="time" name="dia_{{ dia_num }}_fim" 
+                               {% if dia_num in horarios_dict %}value="{{ horarios_dict|get_item:dia_num }}.hora_fim|time:'H:i'"{% else %}value="18:00"{% endif %}>
+                    </div>
+                    
+                    <div class="intervalo-config">
+                        <label>Duração da consulta</label>
+                        <select name="dia_{{ dia_num }}_intervalo">
+                            <option value="15">15 minutos</option>
+                            <option value="30" selected>30 minutos</option>
+                            <option value="45">45 minutos</option>
+                            <option value="60">1 hora</option>
+                        </select>
+                    </div>
+                    
+                    {% if dia_num in horarios_ativos %}
+                    <div class="horarios-existentes">
+                        {% for h in profissional.horarios.all %}
+                            {% if h.dia_semana == dia_num %}
+                            <span class="horario-tag">
+                                {{ h.hora_inicio|time:"H:i" }} - {{ h.hora_fim|time:"H:i" }}
+                                <button type="button" onclick="removerHorario({{ h.id }})">
+                                    <i class="bi bi-x"></i>
+                                </button>
+                            </span>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+            
+            <div class="form-actions">
+                <a href="{% url 'dashboard_horarios' %}" class="btn-cancel">Voltar</a>
+                <button type="submit" class="btn-save">
+                    <i class="bi bi-check-lg"></i>
+                    Salvar Horários
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+function toggleDia(diaNum) {
+    const diaEl = document.getElementById('dia-' + diaNum);
+    const checkbox = diaEl.querySelector('input[type="checkbox"]');
+    
+    if (checkbox.checked) {
+        diaEl.classList.add('ativo');
+    } else {
+        diaEl.classList.remove('ativo');
+    }
+}
+
+function removerHorario(horarioId) {
+    if (confirm('Deseja remover este horário?')) {
+        fetch('/admin/horario/' + horarioId + '/remover/', {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        }).then(() => location.reload());
+    }
+}
+</script>
+{% endblock %}

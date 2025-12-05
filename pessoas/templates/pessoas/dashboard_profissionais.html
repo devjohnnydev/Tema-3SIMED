@@ -1,0 +1,325 @@
+{% extends 'pessoas/dashboard_base.html' %}
+{% load static %}
+
+{% block title %}Dashboard - Profissionais{% endblock %}
+
+{% block page_icon %}<i class="bi bi-person-vcard"></i>{% endblock %}
+{% block page_title %}Gerenciar Profissionais{% endblock %}
+
+{% block extra_css %}
+<style>
+    .profissionais-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 25px;
+        margin-top: 25px;
+    }
+    
+    .profissional-card {
+        background: white;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        transition: all 0.3s ease;
+        position: relative;
+    }
+    
+    .profissional-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+    }
+    
+    .profissional-card-header {
+        position: relative;
+        height: 200px;
+        background: linear-gradient(135deg, #1B325F 0%, #2c4a7a 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .profissional-foto {
+        width: 140px;
+        height: 140px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid white;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+    
+    .profissional-foto-placeholder {
+        width: 140px;
+        height: 140px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #4C98D0 0%, #3a8bc9 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 3.5rem;
+        font-weight: 600;
+        border: 4px solid white;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+    
+    .profissional-status {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+    
+    .status-ativo {
+        background: rgba(40, 167, 69, 0.9);
+        color: white;
+    }
+    
+    .status-inativo {
+        background: rgba(220, 53, 69, 0.9);
+        color: white;
+    }
+    
+    .profissional-card-body {
+        padding: 25px;
+        text-align: center;
+    }
+    
+    .profissional-nome {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: #1B325F;
+        margin: 0 0 5px 0;
+    }
+    
+    .profissional-especialidade {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: #E9F2F9;
+        padding: 6px 14px;
+        border-radius: 20px;
+        color: #4C98D0;
+        font-size: 0.85rem;
+        font-weight: 500;
+        margin: 10px 0;
+    }
+    
+    .profissional-info {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin: 15px 0;
+        padding: 15px;
+        background: #f8fafc;
+        border-radius: 10px;
+    }
+    
+    .profissional-info-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 0.9rem;
+        color: #5a6c7d;
+    }
+    
+    .profissional-info-item i {
+        color: #4C98D0;
+        width: 18px;
+    }
+    
+    .profissional-actions {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin-top: 15px;
+    }
+    
+    .btn-add-profissional {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 24px;
+        background: linear-gradient(135deg, #4C98D0 0%, #3a8bc9 100%);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-add-profissional:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba(76, 152, 208, 0.4);
+        color: white;
+    }
+    
+    .header-actions {
+        display: flex;
+        gap: 15px;
+        align-items: center;
+    }
+    
+    .filter-select {
+        padding: 10px 15px;
+        border: 2px solid #E9F2F9;
+        border-radius: 10px;
+        background: white;
+        color: #1B325F;
+        font-size: 0.9rem;
+        cursor: pointer;
+    }
+    
+    .filter-select:focus {
+        outline: none;
+        border-color: #4C98D0;
+    }
+    
+    .empty-profissionais {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 60px;
+        background: white;
+        border-radius: 16px;
+    }
+    
+    .empty-profissionais i {
+        font-size: 4rem;
+        color: #d0dae4;
+        margin-bottom: 20px;
+    }
+    
+    .empty-profissionais h4 {
+        color: #5a6c7d;
+        margin-bottom: 10px;
+    }
+    
+    .empty-profissionais p {
+        color: #8c9ba8;
+        margin-bottom: 20px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="data-table-container">
+    <div class="table-header-bar">
+        <div class="table-title">
+            <i class="bi bi-people-fill"></i>
+            Equipe de Profissionais ({{ profissionais.count }})
+        </div>
+        <div class="header-actions">
+            <select class="filter-select" id="filterEspecialidade" onchange="filterProfissionais()">
+                <option value="">Todas Especialidades</option>
+                {% for esp in especialidades %}
+                <option value="{{ esp.id }}">{{ esp.nome }}</option>
+                {% endfor %}
+            </select>
+            <a href="{% url 'adicionar_profissional' %}" class="btn-add-profissional">
+                <i class="bi bi-plus-circle"></i>
+                Adicionar Profissional
+            </a>
+        </div>
+    </div>
+    
+    <div class="card-content">
+        <div class="profissionais-grid" id="profissionaisGrid">
+            {% if profissionais %}
+                {% for prof in profissionais %}
+                <div class="profissional-card" data-especialidade="{{ prof.especialidade.id|default:'' }}">
+                    <div class="profissional-card-header">
+                        {% if prof.foto %}
+                            <img src="{{ prof.foto.url }}" alt="{{ prof.nome }}" class="profissional-foto">
+                        {% else %}
+                            <div class="profissional-foto-placeholder">
+                                {{ prof.nome|slice:":1"|upper }}
+                            </div>
+                        {% endif %}
+                        <span class="profissional-status {% if prof.ativo %}status-ativo{% else %}status-inativo{% endif %}">
+                            {% if prof.ativo %}Ativo{% else %}Inativo{% endif %}
+                        </span>
+                    </div>
+                    <div class="profissional-card-body">
+                        <h3 class="profissional-nome">{{ prof.nome }}</h3>
+                        {% if prof.especialidade %}
+                        <div class="profissional-especialidade">
+                            <i class="bi bi-{{ prof.especialidade.icone|default:'stethoscope' }}"></i>
+                            {{ prof.especialidade.nome }}
+                        </div>
+                        {% endif %}
+                        
+                        <div class="profissional-info">
+                            {% if prof.crm %}
+                            <div class="profissional-info-item">
+                                <i class="bi bi-card-text"></i>
+                                <span>{{ prof.crm }}</span>
+                            </div>
+                            {% endif %}
+                            {% if prof.email %}
+                            <div class="profissional-info-item">
+                                <i class="bi bi-envelope"></i>
+                                <span>{{ prof.email }}</span>
+                            </div>
+                            {% endif %}
+                            {% if prof.telefone %}
+                            <div class="profissional-info-item">
+                                <i class="bi bi-telephone"></i>
+                                <span>{{ prof.telefone }}</span>
+                            </div>
+                            {% endif %}
+                            <div class="profissional-info-item">
+                                <i class="bi bi-clock"></i>
+                                <span>{{ prof.horarios.count }} horário(s) configurado(s)</span>
+                            </div>
+                        </div>
+                        
+                        <div class="profissional-actions">
+                            <a href="{% url 'editar_profissional' prof.id %}" class="btn-action btn-editar">
+                                <i class="bi bi-pencil"></i> Editar
+                            </a>
+                            <a href="{% url 'configurar_horarios' prof.id %}" class="btn-action btn-success">
+                                <i class="bi bi-calendar-week"></i> Horários
+                            </a>
+                            <form method="post" action="{% url 'remover_profissional' prof.id %}" style="display:inline;" onsubmit="return confirm('Tem certeza que deseja remover este profissional?');">
+                                {% csrf_token %}
+                                <button type="submit" class="btn-action btn-remover">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+            <div class="empty-profissionais">
+                <i class="bi bi-person-plus"></i>
+                <h4>Nenhum profissional cadastrado</h4>
+                <p>Adicione profissionais para começar a gerenciar sua equipe</p>
+                <a href="{% url 'adicionar_profissional' %}" class="btn-add-profissional">
+                    <i class="bi bi-plus-circle"></i>
+                    Adicionar Primeiro Profissional
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+function filterProfissionais() {
+    const filter = document.getElementById('filterEspecialidade').value;
+    const cards = document.querySelectorAll('.profissional-card');
+    
+    cards.forEach(card => {
+        if (!filter || card.dataset.especialidade === filter) {
+            card.style.display = 'block';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+}
+</script>
+{% endblock %}
