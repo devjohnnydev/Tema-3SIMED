@@ -2,6 +2,12 @@
 """
 Script para criar usuarios padrao do SIMED
 Execute com: python scripts/setup_users.py
+
+Para Railway:
+  railway run python scripts/setup_users.py
+
+Ou via Django shell no Railway:
+  railway run python manage.py shell < scripts/setup_users.py
 """
 
 import os
@@ -65,6 +71,11 @@ def setup_users():
     print('\n' + '='*60)
     print('CONFIGURANDO USUARIOS DO SIMED')
     print('='*60 + '\n')
+    
+    print('Aplicando migracoes pendentes...')
+    from django.core.management import call_command
+    call_command('migrate', verbosity=0)
+    print('Migracoes aplicadas!\n')
     
     admin_user = create_or_update_user(
         username='admin',
