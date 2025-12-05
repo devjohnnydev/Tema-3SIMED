@@ -78,12 +78,18 @@
                     <p>{{ comentario.texto }}</p>
                 </div>
                 <div class="comentario-acoes">
-                    <a href="{% url 'aprovar_comentario' comentario.id %}" class="btn btn-success btn-sm">
-                        <i class="bi bi-check-lg"></i> Aprovar
-                    </a>
-                    <a href="{% url 'reprovar_comentario' comentario.id %}" class="btn btn-danger btn-sm">
-                        <i class="bi bi-x-lg"></i> Reprovar
-                    </a>
+                    <form action="{% url 'aprovar_comentario' comentario.id %}" method="post" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-success btn-sm">
+                            <i class="bi bi-check-lg"></i> Aprovar
+                        </button>
+                    </form>
+                    <form action="{% url 'reprovar_comentario' comentario.id %}" method="post" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger btn-sm">
+                            <i class="bi bi-x-lg"></i> Reprovar
+                        </button>
+                    </form>
                 </div>
             </div>
             {% endfor %}
@@ -121,13 +127,19 @@
                     <p>{{ comentario.texto }}</p>
                 </div>
                 <div class="comentario-acoes">
-                    <a href="{% url 'reprovar_comentario' comentario.id %}" class="btn btn-outline-warning btn-sm">
-                        <i class="bi bi-arrow-counterclockwise"></i> Revogar
-                    </a>
-                    <a href="{% url 'excluir_comentario' comentario.id %}" class="btn btn-outline-danger btn-sm" 
-                       onclick="return confirm('Tem certeza que deseja excluir este comentario?')">
-                        <i class="bi bi-trash"></i> Excluir
-                    </a>
+                    <form action="{% url 'reprovar_comentario' comentario.id %}" method="post" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-warning btn-sm">
+                            <i class="bi bi-arrow-counterclockwise"></i> Revogar
+                        </button>
+                    </form>
+                    <form action="{% url 'excluir_comentario' comentario.id %}" method="post" style="display: inline;" 
+                          onsubmit="return confirm('Tem certeza que deseja excluir este comentario?')">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-danger btn-sm">
+                            <i class="bi bi-trash"></i> Excluir
+                        </button>
+                    </form>
                 </div>
             </div>
             {% endfor %}
@@ -165,13 +177,19 @@
                     <p>{{ comentario.texto }}</p>
                 </div>
                 <div class="comentario-acoes">
-                    <a href="{% url 'aprovar_comentario' comentario.id %}" class="btn btn-outline-success btn-sm">
-                        <i class="bi bi-check-lg"></i> Aprovar
-                    </a>
-                    <a href="{% url 'excluir_comentario' comentario.id %}" class="btn btn-outline-danger btn-sm"
-                       onclick="return confirm('Tem certeza que deseja excluir este comentario?')">
-                        <i class="bi bi-trash"></i> Excluir
-                    </a>
+                    <form action="{% url 'aprovar_comentario' comentario.id %}" method="post" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-success btn-sm">
+                            <i class="bi bi-check-lg"></i> Aprovar
+                        </button>
+                    </form>
+                    <form action="{% url 'excluir_comentario' comentario.id %}" method="post" style="display: inline;"
+                          onsubmit="return confirm('Tem certeza que deseja excluir este comentario?')">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-danger btn-sm">
+                            <i class="bi bi-trash"></i> Excluir
+                        </button>
+                    </form>
                 </div>
             </div>
             {% endfor %}

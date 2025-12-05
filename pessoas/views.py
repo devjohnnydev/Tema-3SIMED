@@ -17,7 +17,7 @@ from django.utils import timezone
 from datetime import timedelta, time, datetime
 from django.db.models import Q
 from django.http import JsonResponse, HttpResponse
-from django.views.decorators.http import require_GET
+from django.views.decorators.http import require_GET, require_POST
 from django.template.loader import render_to_string
 from weasyprint import HTML
 import io
@@ -901,6 +901,7 @@ def dashboard_comentarios(request):
     })
 
 @admin_required
+@require_POST
 def aprovar_comentario(request, comentario_id):
     comentario = get_object_or_404(ComentarioPaciente, pk=comentario_id)
     comentario.status = 'aprovado'
@@ -911,6 +912,7 @@ def aprovar_comentario(request, comentario_id):
     return redirect('dashboard_comentarios')
 
 @admin_required
+@require_POST
 def reprovar_comentario(request, comentario_id):
     comentario = get_object_or_404(ComentarioPaciente, pk=comentario_id)
     comentario.status = 'reprovado'
@@ -919,6 +921,7 @@ def reprovar_comentario(request, comentario_id):
     return redirect('dashboard_comentarios')
 
 @admin_required
+@require_POST
 def excluir_comentario(request, comentario_id):
     comentario = get_object_or_404(ComentarioPaciente, pk=comentario_id)
     nome = comentario.nome_paciente
