@@ -25,3 +25,12 @@ psycopg2-binary==2.9.10
 PyJWT==2.10.1
 requests==2.32.3
 whitenoise==6.8.2
+cryptography==44.0.0
+Django==5.2.6
+django-allauth==65.3.0
+gunicorn==23.0.0
+Pillow==11.0.0
+psycopg2-binary==2.9.10
+PyJWT==2.10.1
+requests==2.32.3
+whitenoise==6.8.2
