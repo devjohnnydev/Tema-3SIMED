@@ -38,6 +38,10 @@ externalPort = 80
 localPort = 39509
 externalPort = 3000
 
+[[ports]]
+localPort = 45013
+externalPort = 3001
+
 [deployment]
 deploymentTarget = "autoscale"
 run = ["gunicorn", "cadastro_pessoas.wsgi:application", "--bind", "0.0.0.0:5000"]
