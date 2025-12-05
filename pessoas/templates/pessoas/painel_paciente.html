@@ -320,6 +320,195 @@
         font-size: 0.95rem;
     }
 
+    .medico-info-panel {
+        display: none;
+        background: linear-gradient(135deg, #E9F2F9 0%, #d4e6f5 100%);
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 20px;
+        animation: fadeIn 0.3s ease;
+    }
+
+    .medico-info-panel.show {
+        display: block;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .medico-preview {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .medico-preview-foto {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid white;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .medico-preview-placeholder {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #1B325F 0%, #2c4a7a 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.8rem;
+        font-weight: 600;
+        border: 3px solid white;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .medico-preview-info h4 {
+        color: #1B325F;
+        font-size: 1rem;
+        margin: 0 0 5px 0;
+    }
+
+    .medico-preview-info .especialidade-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        background: linear-gradient(135deg, #4C98D0 0%, #3a8bc9 100%);
+        color: white;
+        padding: 4px 12px;
+        border-radius: 15px;
+        font-size: 0.8rem;
+        font-weight: 500;
+    }
+
+    .consulta-card-header {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 15px;
+    }
+
+    .consulta-medico-foto {
+        width: 55px;
+        height: 55px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid #E9F2F9;
+    }
+
+    .consulta-medico-placeholder {
+        width: 55px;
+        height: 55px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #1B325F 0%, #2c4a7a 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.3rem;
+        font-weight: 600;
+        flex-shrink: 0;
+    }
+
+    .consulta-medico-info {
+        flex: 1;
+    }
+
+    .consulta-medico-info h4 {
+        color: #1B325F;
+        font-size: 1rem;
+        font-weight: 600;
+        margin: 0 0 4px 0;
+    }
+
+    .consulta-medico-info .especialidade-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        background: #E9F2F9;
+        color: #4C98D0;
+        padding: 3px 10px;
+        border-radius: 12px;
+        font-size: 0.75rem;
+        font-weight: 500;
+    }
+
+    .consulta-actions-row {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-top: 12px;
+    }
+
+    .btn-calendar {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 14px;
+        background: linear-gradient(135deg, #28a745 0%, #218838 100%);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        cursor: pointer;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .btn-calendar:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(40, 167, 69, 0.4);
+        color: white;
+    }
+
+    .calendar-dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .calendar-options {
+        display: none;
+        position: absolute;
+        bottom: 100%;
+        left: 0;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        min-width: 200px;
+        z-index: 100;
+        padding: 10px 0;
+        margin-bottom: 5px;
+    }
+
+    .calendar-options.show {
+        display: block;
+    }
+
+    .calendar-options a {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 15px;
+        color: #1B325F;
+        text-decoration: none;
+        transition: background 0.2s;
+    }
+
+    .calendar-options a:hover {
+        background: #E9F2F9;
+    }
+
+    .calendar-options a i {
+        width: 20px;
+        text-align: center;
+    }
+
     .success-card {
         background: linear-gradient(135deg, #28a745 0%, #218838 100%);
         color: white;
@@ -575,6 +764,22 @@
                             {{ form.medico }}
                         </div>
                         
+                        <div class="medico-info-panel" id="medicoInfoPanel">
+                            <div class="medico-preview">
+                                <div class="medico-preview-placeholder" id="medicoFotoPlaceholder">
+                                    <span id="medicoInitial">?</span>
+                                </div>
+                                <img src="" alt="" class="medico-preview-foto" id="medicoFoto" style="display: none;">
+                                <div class="medico-preview-info">
+                                    <h4 id="medicoNome">-</h4>
+                                    <span class="especialidade-tag" id="medicoEspecialidade">
+                                        <i class="bi bi-heart-pulse"></i>
+                                        <span>Especialidade</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        
                         <div class="form-group-modern">
                             <label for="id_data"><i class="bi bi-calendar3"></i> Data</label>
                             {{ form.data }}
@@ -615,35 +820,70 @@
 
                     {% for consulta in consultas %}
                         <div class="consulta-card status-{{ consulta.status }}" id="consulta-{{ consulta.id }}">
-                            <div class="consulta-info">
-                                <div class="consulta-details">
-                                    <h4>
-                                        <i class="bi bi-person-badge-fill"></i>
-                                        Dr(a). {{ consulta.medico.first_name }} {{ consulta.medico.last_name }}
-                                    </h4>
-                                    <div class="consulta-date">
-                                        <i class="bi bi-calendar-event"></i>
-                                        {{ consulta.data_hora|date:"d/m/Y" }} às {{ consulta.data_hora|time:"H:i" }}
+                            <div class="consulta-card-header">
+                                {% if consulta.medico_profissional and consulta.medico_profissional.foto %}
+                                    <img src="{{ consulta.medico_profissional.foto.url }}" alt="{{ consulta.medico.first_name }}" class="consulta-medico-foto">
+                                {% else %}
+                                    <div class="consulta-medico-placeholder">
+                                        {{ consulta.medico.first_name|slice:":1"|upper }}
+                                    </div>
+                                {% endif %}
+                                <div class="consulta-medico-info">
+                                    <h4>Dr(a). {{ consulta.medico.first_name }} {{ consulta.medico.last_name }}</h4>
+                                    {% if consulta.medico_profissional and consulta.medico_profissional.especialidade %}
+                                    <span class="especialidade-badge">
+                                        <i class="bi bi-heart-pulse"></i>
+                                        {{ consulta.medico_profissional.especialidade.nome }}
+                                    </span>
+                                    {% endif %}
+                                </div>
+                                <span class="status-badge {{ consulta.status }}">
+                                    {% if consulta.status == 'agendada' %}
+                                        <i class="bi bi-clock-history"></i>
+                                    {% elif consulta.status == 'confirmada' %}
+                                        <i class="bi bi-check-circle"></i>
+                                    {% elif consulta.status == 'concluida' %}
+                                        <i class="bi bi-check-all"></i>
+                                    {% elif consulta.status == 'cancelada' %}
+                                        <i class="bi bi-x-circle"></i>
+                                    {% endif %}
+                                    {{ consulta.get_status_display }}
+                                </span>
+                            </div>
+                            
+                            <div class="consulta-date">
+                                <i class="bi bi-calendar-event"></i>
+                                {{ consulta.data_hora|date:"d/m/Y" }} às {{ consulta.data_hora|time:"H:i" }}
+                            </div>
+                            
+                            <div class="consulta-actions-row">
+                                <a href="{% url 'download_consulta_pdf' consulta.id %}" class="btn-download-pdf">
+                                    <i class="bi bi-file-pdf"></i>
+                                    PDF
+                                </a>
+                                
+                                {% if consulta.status == 'agendada' or consulta.status == 'confirmada' %}
+                                <div class="calendar-dropdown">
+                                    <button type="button" class="btn-calendar" onclick="toggleCalendarOptions({{ consulta.id }})">
+                                        <i class="bi bi-calendar-plus"></i>
+                                        Calendário
+                                    </button>
+                                    <div class="calendar-options" id="calendarOptions{{ consulta.id }}">
+                                        <a href="{{ consulta.google_calendar_url }}" target="_blank" rel="noopener">
+                                            <i class="bi bi-google" style="color: #4285f4;"></i>
+                                            Google Calendar
+                                        </a>
+                                        <a href="{{ consulta.outlook_calendar_url }}" target="_blank" rel="noopener">
+                                            <i class="bi bi-microsoft" style="color: #0078d4;"></i>
+                                            Outlook
+                                        </a>
+                                        <a href="{% url 'download_consulta_ics' consulta.id %}">
+                                            <i class="bi bi-calendar-week" style="color: #5856d6;"></i>
+                                            Apple Calendar (.ics)
+                                        </a>
                                     </div>
                                 </div>
-                                <div class="consulta-status">
-                                    <span class="status-badge {{ consulta.status }}">
-                                        {% if consulta.status == 'agendada' %}
-                                            <i class="bi bi-clock-history"></i>
-                                        {% elif consulta.status == 'confirmada' %}
-                                            <i class="bi bi-check-circle"></i>
-                                        {% elif consulta.status == 'concluida' %}
-                                            <i class="bi bi-check-all"></i>
-                                        {% elif consulta.status == 'cancelada' %}
-                                            <i class="bi bi-x-circle"></i>
-                                        {% endif %}
-                                        {{ consulta.get_status_display }}
-                                    </span>
-                                    <a href="{% url 'download_consulta_pdf' consulta.id %}" class="btn-download-pdf">
-                                        <i class="bi bi-download"></i>
-                                        Baixar PDF
-                                    </a>
-                                </div>
+                                {% endif %}
                             </div>
                         </div>
                     {% empty %}
@@ -726,11 +966,50 @@
 
 {% block extra_js %}
 <script>
+    const medicosData = {
+        {% for medico in medicos_info %}
+        {{ medico.id }}: {
+            nome: "{{ medico.nome|escapejs }}",
+            foto: "{{ medico.foto|escapejs }}",
+            especialidade: "{{ medico.especialidade|escapejs }}",
+            inicial: "{{ medico.inicial|escapejs }}"
+        },
+        {% endfor %}
+    };
+
     document.addEventListener('DOMContentLoaded', function() {
         const medicoSelect = document.getElementById('id_medico');
         const dataInput = document.getElementById('id_data');
         const horaSelect = document.getElementById('id_hora');
         const horaContainer = document.getElementById('hora-field-container');
+        const medicoInfoPanel = document.getElementById('medicoInfoPanel');
+
+        function atualizarMedicoInfo() {
+            const medicoId = medicoSelect.value;
+            
+            if (medicoId && medicosData[medicoId]) {
+                const medico = medicosData[medicoId];
+                const fotoImg = document.getElementById('medicoFoto');
+                const fotoPlaceholder = document.getElementById('medicoFotoPlaceholder');
+                
+                document.getElementById('medicoNome').textContent = medico.nome;
+                document.getElementById('medicoEspecialidade').querySelector('span').textContent = medico.especialidade || 'Clínica Geral';
+                document.getElementById('medicoInitial').textContent = medico.inicial;
+                
+                if (medico.foto) {
+                    fotoImg.src = medico.foto;
+                    fotoImg.style.display = 'block';
+                    fotoPlaceholder.style.display = 'none';
+                } else {
+                    fotoImg.style.display = 'none';
+                    fotoPlaceholder.style.display = 'flex';
+                }
+                
+                medicoInfoPanel.classList.add('show');
+            } else {
+                medicoInfoPanel.classList.remove('show');
+            }
+        }
 
         function atualizarHorarios() {
             const medicoId = medicoSelect.value;
@@ -756,7 +1035,7 @@
                     } else {
                         const option = document.createElement('option');
                         option.value = '';
-                        option.textContent = 'Nenhum horário disponível';
+                        option.textContent = data.mensagem || 'Nenhum horário disponível';
                         horaSelect.appendChild(option);
                     }
                 })
@@ -766,11 +1045,39 @@
                 });
         }
 
-        if (medicoSelect) medicoSelect.addEventListener('change', atualizarHorarios);
+        if (medicoSelect) {
+            medicoSelect.addEventListener('change', function() {
+                atualizarMedicoInfo();
+                atualizarHorarios();
+            });
+        }
         if (dataInput) dataInput.addEventListener('change', atualizarHorarios);
         
-        if (medicoSelect && dataInput && medicoSelect.value && dataInput.value) {
-            atualizarHorarios();
+        if (medicoSelect && medicoSelect.value) {
+            atualizarMedicoInfo();
+            if (dataInput && dataInput.value) {
+                atualizarHorarios();
+            }
+        }
+    });
+
+    function toggleCalendarOptions(consultaId) {
+        const dropdown = document.getElementById('calendarOptions' + consultaId);
+        
+        document.querySelectorAll('.calendar-options').forEach(d => {
+            if (d.id !== 'calendarOptions' + consultaId) {
+                d.classList.remove('show');
+            }
+        });
+        
+        dropdown.classList.toggle('show');
+    }
+
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.calendar-dropdown')) {
+            document.querySelectorAll('.calendar-options').forEach(d => {
+                d.classList.remove('show');
+            });
         }
     });
 

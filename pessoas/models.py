@@ -131,6 +131,37 @@ class Consulta(models.Model):
     def __str__(self):
         return f'Consulta de {self.paciente.username} com Dr(a). {self.medico.last_name} em {self.data_hora.strftime("%d/%m/%Y %H:%M")}'
 
+    @property
+    def medico_profissional(self):
+        if self.profissional:
+            return self.profissional
+        try:
+            return Profissional.objects.get(usuario=self.medico)
+        except Profissional.DoesNotExist:
+            return None
+
+    @property
+    def google_calendar_url(self):
+        from urllib.parse import quote
+        start = self.data_hora.strftime('%Y%m%dT%H%M%S')
+        end_time = self.data_hora + timedelta(minutes=30)
+        end = end_time.strftime('%Y%m%dT%H%M%S')
+        title = quote(f'Consulta SIMED - Dr(a). {self.medico.first_name} {self.medico.last_name}')
+        details = quote(f'Consulta médica na SIMED - Serviço Integrado de Medicina')
+        location = quote('SIMED - Clínica Médica')
+        return f'https://calendar.google.com/calendar/render?action=TEMPLATE&text={title}&dates={start}/{end}&details={details}&location={location}'
+
+    @property
+    def outlook_calendar_url(self):
+        from urllib.parse import quote
+        start = self.data_hora.strftime('%Y-%m-%dT%H:%M:%S')
+        end_time = self.data_hora + timedelta(minutes=30)
+        end = end_time.strftime('%Y-%m-%dT%H:%M:%S')
+        subject = quote(f'Consulta SIMED - Dr(a). {self.medico.first_name} {self.medico.last_name}')
+        body = quote(f'Consulta médica na SIMED - Serviço Integrado de Medicina')
+        location = quote('SIMED - Clínica Médica')
+        return f'https://outlook.live.com/calendar/0/deeplink/compose?subject={subject}&body={body}&startdt={start}&enddt={end}&location={location}'
+
     class Meta:
         ordering = ['-data_hora']
         verbose_name = 'Consulta'
