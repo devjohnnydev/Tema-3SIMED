@@ -12,6 +12,17 @@ This is a Django-based medical consultation system that allows patients to sched
 
 ## Recent Changes
 
+### December 5, 2025 - Patient Comments System & Security
+- ✅ Created `ComentarioPaciente` model for patient testimonials with approval workflow
+- ✅ Implemented Slick carousel on homepage displaying approved patient comments
+- ✅ Added comment submission modal for authenticated users
+- ✅ Built admin dashboard for comment moderation (approve/reject/delete)
+- ✅ Fixed CSRF security vulnerability in comment moderation views:
+  - Added `@require_POST` decorator to moderation actions
+  - Updated template to use forms with POST method and CSRF tokens
+- ✅ Improved Sobre page layout and responsiveness
+- ✅ Updated Certificados section with brand identity styling
+
 ### December 5, 2025 - UI Modernization
 - ✅ Modernized patient panel (painel_paciente.html) with gradient headers and card layouts
 - ✅ Added PDF download functionality for appointment confirmations using WeasyPrint
