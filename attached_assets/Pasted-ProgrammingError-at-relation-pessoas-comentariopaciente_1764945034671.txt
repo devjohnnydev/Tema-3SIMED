@@ -1,0 +1,53 @@
+ProgrammingError at /
+relation "pessoas_comentariopaciente" does not exist
+LINE 1: ...pessoas_comentariopaciente"."data_aprovacao" FROM "pessoas_c...
+                                                             ^
+Request Method:	GET
+Request URL:	https://7f9ea162-54b2-4f99-8762-d61f3959bfcd-00-19ds8hqvaeg0a.picard.replit.dev/
+Django Version:	5.2.6
+Exception Type:	ProgrammingError
+Exception Value:	
+relation "pessoas_comentariopaciente" does not exist
+LINE 1: ...pessoas_comentariopaciente"."data_aprovacao" FROM "pessoas_c...
+                                                             ^
+Exception Location:	/home/runner/workspace/.pythonlibs/lib/python3.12/site-packages/django/db/backends/utils.py, line 105, in _execute
+Raised during:	pessoas.views.home
+Python Executable:	/home/runner/workspace/.pythonlibs/bin/python
+Python Version:	3.12.11
+Python Path:	
+['/home/runner/workspace',
+ '/nix/store/zz7i75jb78idaz0rb1y1i4rzdyxq28vf-sitecustomize/lib/python/site-packages',
+ '/nix/store/dlz9jb8127sn1mj7986p9s8r3nxjlcl7-python3.12-pip-25.0.1/lib/python3.12/site-packages',
+ '/nix/store/vnvdzw4182wb2ifzi0cczhv80yfnpx1q-python3-3.12.11/lib/python312.zip',
+ '/nix/store/vnvdzw4182wb2ifzi0cczhv80yfnpx1q-python3-3.12.11/lib/python3.12',
+ '/nix/store/vnvdzw4182wb2ifzi0cczhv80yfnpx1q-python3-3.12.11/lib/python3.12/lib-dynload',
+ '/home/runner/workspace/.pythonlibs/lib/python3.12/site-packages',
+ '/nix/store/vnvdzw4182wb2ifzi0cczhv80yfnpx1q-python3-3.12.11/lib/python3.12/site-packages',
+ '/home/runner/workspace/.pythonlibs/lib/python3.12/site-packages',
+ '/nix/store/x1zyfp26gnxkbbspkwhh3f9n13r3z18p-python3.12-setuptools-80.7.1/lib/python3.12/site-packages']
+Server time:	Fri, 05 Dec 2025 11:25:55 -0300
+Error during template rendering
+In template /home/runner/workspace/pessoas/templates/pessoas/home.html, error at line 255
+
+relation "pessoas_comentariopaciente" does not exist LINE 1: ...pessoas_comentariopaciente"."data_aprovacao" FROM "pessoas_c... ^
+245	      <a href="{% if user.is_authenticated %}{% url 'painel_paciente' %}{% else %}{% url 'login' %}{% endif %}" class="btn-agendar">Marque agora sua agenda</a>
+246	    </div>
+247	  </div>
+248	</section>
+249	
+250	<section class="experiencia" id="experiencia">
+251	  <div class="container">
+252	    <h2 class="titulo-secao">A experiencia dos clientes com SIMED</h2>
+253	    <p class="subtitulo-secao">Veja o que nossos pacientes estao dizendo sobre nossos servicos</p>
+254	
+255	    {% if comentarios %}
+256	    <div class="comentarios-slider">
+257	      {% for comentario in comentarios %}
+258	      <div class="comentario-slide">
+259	        <div class="comentario-card">
+260	          <div class="comentario-header">
+261	            <div class="comentario-avatar">
+262	              {{ comentario.nome_paciente|slice:":1"|upper }}
+263	            </div>
+264	            <div class="comentario-info">
+265	              <h6>{{ comentario.nome_paciente }}</h6>
