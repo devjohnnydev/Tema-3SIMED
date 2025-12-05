@@ -93,7 +93,10 @@ def home(request):
     return render(request, 'pessoas/home.html')
 
 def sobre(request):
-    return render(request, 'pessoas/sobre.html')
+    profissionais = Profissional.objects.filter(ativo=True, destaque=True).select_related('especialidade')[:6]
+    if not profissionais.exists():
+        profissionais = Profissional.objects.filter(ativo=True).select_related('especialidade')[:6]
+    return render(request, 'pessoas/sobre.html', {'profissionais': profissionais})
 
 def produtos(request):
     return render(request, 'pessoas/lista_medicamentos.html')
@@ -284,9 +287,31 @@ def painel_paciente(request):
     else:
         form = AgendarConsultaForm()
 
+    medicos = User.objects.filter(perfil__tipo_usuario='medico')
+    medicos_info = []
+    for medico in medicos:
+        try:
+            prof = Profissional.objects.get(usuario=medico)
+            medicos_info.append({
+                'id': medico.id,
+                'nome': f"Dr(a). {medico.first_name} {medico.last_name}",
+                'foto': prof.foto.url if prof.foto else '',
+                'especialidade': prof.especialidade.nome if prof.especialidade else 'Clínica Geral',
+                'inicial': medico.first_name[:1].upper() if medico.first_name else 'M'
+            })
+        except Profissional.DoesNotExist:
+            medicos_info.append({
+                'id': medico.id,
+                'nome': f"Dr(a). {medico.first_name} {medico.last_name}",
+                'foto': '',
+                'especialidade': 'Clínica Geral',
+                'inicial': medico.first_name[:1].upper() if medico.first_name else 'M'
+            })
+
     return render(request, 'pessoas/painel_paciente.html', {
         'consultas': consultas,
-        'form': form
+        'form': form,
+        'medicos_info': medicos_info
     })
 
 @login_required
@@ -778,3 +803,54 @@ def get_horarios_profissional_ajax(request, profissional_id):
         },
         'horarios': horarios_disponiveis
     })
+
+
+@login_required
+def download_consulta_ics(request, consulta_id):
+    """
+    Gera e baixa um arquivo ICS (iCalendar) para adicionar a consulta ao calendário.
+    """
+    consulta = get_object_or_404(Consulta, pk=consulta_id)
+    
+    if request.user != consulta.paciente and not request.user.is_staff:
+        try:
+            perfil = request.user.perfil
+            if perfil.tipo_usuario not in ['admin', 'medico', 'atendente']:
+                messages.error(request, 'Você não tem permissão para baixar este arquivo.')
+                return redirect('painel_paciente')
+        except Perfil.DoesNotExist:
+            messages.error(request, 'Você não tem permissão para baixar este arquivo.')
+            return redirect('painel_paciente')
+    
+    start_dt = consulta.data_hora
+    end_dt = start_dt + timedelta(minutes=30)
+    
+    ics_content = f"""BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//SIMED//Consulta Médica//PT
+BEGIN:VEVENT
+UID:consulta-{consulta.id}@simed.com.br
+DTSTAMP:{timezone.now().strftime('%Y%m%dT%H%M%SZ')}
+DTSTART:{start_dt.strftime('%Y%m%dT%H%M%S')}
+DTEND:{end_dt.strftime('%Y%m%dT%H%M%S')}
+SUMMARY:Consulta SIMED - Dr(a). {consulta.medico.first_name} {consulta.medico.last_name}
+DESCRIPTION:Consulta médica na SIMED - Serviço Integrado de Medicina
+LOCATION:SIMED - Clínica Médica
+STATUS:CONFIRMED
+BEGIN:VALARM
+TRIGGER:-PT1H
+ACTION:DISPLAY
+DESCRIPTION:Lembrete: Consulta em 1 hora
+END:VALARM
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Lembrete: Consulta amanhã
+END:VALARM
+END:VEVENT
+END:VCALENDAR"""
+    
+    response = HttpResponse(ics_content, content_type='text/calendar')
+    response['Content-Disposition'] = f'attachment; filename="consulta_simed_{consulta.id}.ics"'
+    
+    return response

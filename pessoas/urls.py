@@ -85,4 +85,7 @@ urlpatterns = [
     
     # API para horários disponíveis por profissional
     path('api/profissional/<int:profissional_id>/horarios/', views.get_horarios_profissional_ajax, name='horarios_profissional_ajax'),
+    
+    # Download de arquivo ICS para calendário
+    path('consulta/<int:consulta_id>/ics/', views.download_consulta_ics, name='download_consulta_ics'),
 ]

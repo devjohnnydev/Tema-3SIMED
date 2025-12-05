@@ -2,17 +2,30 @@
 
 {% load static %}
 
-{% block title %}Sobre{% endblock %}
+{% block title %}Sobre - SIMED{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
 <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 <style>
-.hero-section {
+.hero-sobre {
     background: linear-gradient(135deg, #1B325F 0%, #2c4875 100%);
-    padding: 80px 5% 60px;
+    padding: 100px 5% 80px;
     color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-sobre::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 80%;
+    height: 200%;
+    background: radial-gradient(ellipse, rgba(76, 152, 208, 0.15) 0%, transparent 70%);
+    pointer-events: none;
 }
 
 .hero-container {
@@ -22,47 +35,429 @@
     align-items: center;
     gap: 60px;
     flex-wrap: wrap;
+    position: relative;
+    z-index: 2;
 }
 
 .hero-content {
     flex: 1;
-    min-width: 300px;
+    min-width: 320px;
+}
+
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(242, 108, 79, 0.2);
+    color: #F26C4F;
+    padding: 8px 16px;
+    border-radius: 30px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 20px;
 }
 
 .hero-content h1 {
-    font-size: 3rem;
-    font-weight: 700;
+    font-size: 3.2rem;
+    font-weight: 800;
     margin-bottom: 20px;
-    line-height: 1.2;
+    line-height: 1.1;
 }
 
 .hero-content h1 .highlight {
-    color: #F26C4F;
+    background: linear-gradient(135deg, #F26C4F, #4C98D0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .hero-content p {
-    font-size: 1.1rem;
+    font-size: 1.15rem;
     line-height: 1.8;
     opacity: 0.9;
+    margin-bottom: 30px;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.btn-hero {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 28px;
+    border-radius: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.btn-hero.primary {
+    background: linear-gradient(135deg, #F26C4F 0%, #e85a3d 100%);
+    color: white;
+}
+
+.btn-hero.primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(242, 108, 79, 0.4);
+}
+
+.btn-hero.secondary {
+    background: rgba(255,255,255,0.1);
+    color: white;
+    border: 2px solid rgba(255,255,255,0.3);
+}
+
+.btn-hero.secondary:hover {
+    background: rgba(255,255,255,0.2);
 }
 
 .hero-image {
     flex: 1;
-    min-width: 300px;
+    min-width: 320px;
     display: flex;
     justify-content: center;
+    position: relative;
 }
 
 .hero-image img {
     max-width: 100%;
     height: auto;
+    border-radius: 24px;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
+}
+
+.hero-floating-card {
+    position: absolute;
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 15px 50px rgba(0,0,0,0.2);
+    animation: floatCard 3s ease-in-out infinite;
+}
+
+.hero-floating-card.card-1 {
+    bottom: 20px;
+    left: -40px;
+}
+
+.hero-floating-card.card-2 {
+    top: 20px;
+    right: -30px;
+    animation-delay: 1.5s;
+}
+
+@keyframes floatCard {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.floating-stat {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.floating-stat-icon {
+    width: 45px;
+    height: 45px;
+    background: linear-gradient(135deg, #4C98D0 0%, #3a8bc9 100%);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.2rem;
+}
+
+.floating-stat-text span {
+    display: block;
+    font-size: 0.8rem;
+    color: #8c9ba8;
+}
+
+.floating-stat-text strong {
+    color: #1B325F;
+    font-size: 1.1rem;
+}
+
+.stats-section {
+    padding: 0;
+    margin-top: -60px;
+    position: relative;
+    z-index: 10;
+}
+
+.stats-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    background: white;
     border-radius: 20px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+.stat-item {
+    padding: 40px 30px;
+    text-align: center;
+    border-right: 1px solid #f0f4f8;
+    transition: all 0.3s ease;
+}
+
+.stat-item:last-child {
+    border-right: none;
+}
+
+.stat-item:hover {
+    background: linear-gradient(135deg, #E9F2F9 0%, #f8fafc 100%);
+}
+
+.stat-icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #1B325F 0%, #2c4a7a 100%);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 15px;
+    color: white;
+    font-size: 1.5rem;
+}
+
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #F26C4F, #1B325F);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 5px;
+}
+
+.stat-label {
+    font-size: 0.95rem;
+    color: #5a6c7d;
+    font-weight: 500;
+}
+
+.mission-section {
+    padding: 100px 5%;
+    background: #f8fafc;
+}
+
+.mission-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.section-header h2 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #1B325F;
+    margin-bottom: 15px;
+}
+
+.section-header h2 .highlight {
+    background: linear-gradient(135deg, #F26C4F, #4C98D0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.section-header p {
+    font-size: 1.1rem;
+    color: #5a6c7d;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.values-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+.value-card {
+    background: white;
+    border-radius: 20px;
+    padding: 40px 30px;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.06);
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.value-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #1B325F, #F26C4F);
+    transform: scaleX(0);
+    transition: transform 0.4s ease;
+}
+
+.value-card:hover::before {
+    transform: scaleX(1);
+}
+
+.value-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+}
+
+.value-icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #E9F2F9 0%, #d4e6f5 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 25px;
+    transition: all 0.4s ease;
+}
+
+.value-icon i {
+    font-size: 2rem;
+    color: #1B325F;
+    transition: all 0.4s ease;
+}
+
+.value-card:hover .value-icon {
+    background: linear-gradient(135deg, #1B325F 0%, #2c4a7a 100%);
+}
+
+.value-card:hover .value-icon i {
+    color: white;
+}
+
+.value-card h3 {
+    color: #1B325F;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.value-card p {
+    color: #5a6c7d;
+    font-size: 0.95rem;
+    line-height: 1.7;
+}
+
+.team-section {
+    padding: 100px 5%;
+    background: linear-gradient(135deg, #1B325F 0%, #2c4875 100%);
+    color: white;
+}
+
+.team-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.team-header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.team-header h2 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 15px;
+}
+
+.team-header p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+}
+
+.team-card {
+    background: rgba(255,255,255,0.1);
+    border-radius: 20px;
+    padding: 30px;
+    text-align: center;
+    backdrop-filter: blur(10px);
+    transition: all 0.4s ease;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.team-card:hover {
+    background: rgba(255,255,255,0.15);
+    transform: translateY(-10px);
+}
+
+.team-photo {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid rgba(255,255,255,0.3);
+    margin-bottom: 20px;
+}
+
+.team-photo-placeholder {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #4C98D0 0%, #3a8bc9 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 2.5rem;
+    font-weight: 700;
+    border: 4px solid rgba(255,255,255,0.3);
+}
+
+.team-card h4 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.team-specialty {
+    display: inline-block;
+    background: rgba(242, 108, 79, 0.3);
+    color: #F26C4F;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-bottom: 15px;
+}
+
+.team-card p {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    line-height: 1.6;
 }
 
 .info-section {
-    padding: 80px 5%;
-    background-color: #f8fafc;
+    padding: 100px 5%;
+    background: #ffffff;
 }
 
 .info-wrapper {
@@ -71,127 +466,105 @@
 }
 
 .info-container {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 60px;
-    align-items: flex-start;
-    flex-wrap: wrap;
+    align-items: center;
 }
 
 .info-left {
-    flex: 1;
-    min-width: 300px;
     display: grid;
     gap: 20px;
 }
 
 .info-box {
-    background: white;
+    background: #f8fafc;
     padding: 25px;
     border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border-left: 4px solid #1B325F;
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
 }
 
 .info-box:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    border-color: #4C98D0;
+    background: white;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.info-icon {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #1B325F 0%, #2c4a7a 100%);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.3rem;
+    flex-shrink: 0;
 }
 
 .info-box h3 {
     color: #1B325F;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: 600;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
 }
 
 .info-box p {
-    color: #555;
+    color: #5a6c7d;
     font-size: 0.95rem;
     line-height: 1.6;
     margin: 0;
 }
 
 .info-right {
-    flex: 1;
-    min-width: 300px;
     position: relative;
-}
-
-.hospital-image {
-    position: relative;
-    z-index: 2;
 }
 
 .hospital-image img {
     width: 100%;
     height: auto;
-    border-radius: 20px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-    object-fit: cover;
+    border-radius: 24px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.15);
 }
 
-.shadow-box {
+.image-decoration {
     position: absolute;
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, #1B325F 0%, #2c4875 100%);
-    border-radius: 20px;
-    top: 20px;
-    left: 20px;
-    z-index: 1;
+    background: linear-gradient(135deg, #1B325F 0%, #4C98D0 100%);
+    border-radius: 24px;
+    top: 30px;
+    left: 30px;
+    z-index: -1;
 }
 
 .certificados-section {
     padding: 100px 5%;
-    background: linear-gradient(180deg, #ffffff 0%, #f0f4f8 100%);
+    background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
 }
 
 .certificados-wrapper {
-    max-width: 1400px;
+    max-width: 1200px;
     margin: 0 auto;
-}
-
-.certificados-header {
-    text-align: center;
-    margin-bottom: 60px;
-}
-
-.certificados-header h2 {
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: #1B325F;
-    margin-bottom: 20px;
-}
-
-.certificados-header h2 .highlight {
-    background: linear-gradient(135deg, #F26C4F, #1B325F);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-.certificados-header p {
-    font-size: 1.1rem;
-    color: #666;
-    max-width: 700px;
-    margin: 0 auto;
-    line-height: 1.7;
 }
 
 .certificados-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 30px;
-    margin-bottom: 40px;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 25px;
 }
 
 .certificado-card {
     background: white;
     border-radius: 20px;
-    padding: 40px 30px;
+    padding: 35px 25px;
     text-align: center;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.06);
     transition: all 0.4s ease;
     position: relative;
     overflow: hidden;
@@ -204,7 +577,7 @@
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(90deg, #1B325F, #F26C4F);
+    background: linear-gradient(90deg, #1B325F, #4C98D0, #F26C4F);
     transform: scaleX(0);
     transition: transform 0.4s ease;
 }
@@ -215,14 +588,14 @@
 
 .certificado-card:hover {
     transform: translateY(-10px);
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.12);
 }
 
 .certificado-icon {
-    width: 100px;
-    height: 100px;
-    margin: 0 auto 25px;
-    background: linear-gradient(135deg, #e8f4fc 0%, #d4e8f5 100%);
+    width: 90px;
+    height: 90px;
+    margin: 0 auto 20px;
+    background: linear-gradient(135deg, #E9F2F9 0%, #d4e6f5 100%);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -231,12 +604,12 @@
 }
 
 .certificado-card:hover .certificado-icon {
-    background: linear-gradient(135deg, #1B325F 0%, #2c4875 100%);
+    background: linear-gradient(135deg, #1B325F 0%, #2c4a7a 100%);
 }
 
 .certificado-icon img {
-    width: 60px;
-    height: 60px;
+    width: 55px;
+    height: 55px;
     object-fit: contain;
     transition: filter 0.4s ease;
 }
@@ -247,73 +620,118 @@
 
 .certificado-card h4 {
     color: #1B325F;
-    font-size: 1.2rem;
-    font-weight: 600;
-    margin-bottom: 15px;
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 12px;
 }
 
 .certificado-card p {
-    color: #666;
-    font-size: 0.95rem;
+    color: #5a6c7d;
+    font-size: 0.9rem;
     line-height: 1.6;
-    margin: 0;
+    margin-bottom: 15px;
 }
 
 .certificado-badge {
     display: inline-block;
     padding: 6px 16px;
-    background: linear-gradient(135deg, #1B325F 0%, #2c4875 100%);
+    background: linear-gradient(135deg, #1B325F 0%, #2c4a7a 100%);
     color: white;
     border-radius: 20px;
     font-size: 0.8rem;
     font-weight: 500;
-    margin-top: 15px;
 }
 
-.stats-section {
-    padding: 60px 5%;
-    background: linear-gradient(135deg, #1B325F 0%, #2c4875 100%);
-}
-
-.stats-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 40px;
+.cta-section {
+    padding: 80px 5%;
+    background: linear-gradient(135deg, #F26C4F 0%, #e85a3d 100%);
     text-align: center;
-}
-
-.stat-item {
     color: white;
 }
 
-.stat-number {
-    font-size: 3rem;
-    font-weight: 700;
-    margin-bottom: 10px;
-    color: #F26C4F;
+.cta-content {
+    max-width: 700px;
+    margin: 0 auto;
 }
 
-.stat-label {
-    font-size: 1rem;
-    opacity: 0.9;
+.cta-content h2 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin-bottom: 15px;
+}
+
+.cta-content p {
+    font-size: 1.1rem;
+    opacity: 0.95;
+    margin-bottom: 30px;
+}
+
+.btn-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 35px;
+    background: white;
+    color: #F26C4F;
+    border-radius: 12px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.btn-cta:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+}
+
+@media (max-width: 1024px) {
+    .stats-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .stat-item {
+        border-bottom: 1px solid #f0f4f8;
+    }
+    
+    .stat-item:nth-child(2) {
+        border-right: none;
+    }
+    
+    .values-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .info-container {
+        grid-template-columns: 1fr;
+    }
 }
 
 @media (max-width: 768px) {
     .hero-content h1 {
-        font-size: 2rem;
+        font-size: 2.2rem;
     }
     
-    .certificados-header h2 {
+    .stats-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .stat-item {
+        border-right: none;
+    }
+    
+    .values-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .section-header h2, .team-header h2 {
         font-size: 1.8rem;
     }
     
-    .info-container {
-        flex-direction: column;
+    .hero-floating-card {
+        display: none;
     }
     
-    .shadow-box {
+    .image-decoration {
         display: none;
     }
 }
@@ -322,71 +740,240 @@
 
 {% block content %}
 
-<section class="hero-section">
+<section class="hero-sobre">
     <div class="hero-container">
         <div class="hero-content" data-aos="fade-right">
-            <h1>Sobre a<br><span class="highlight">SIMED</span></h1>
-            <p>A Clínica Geral Simed é um centro de saúde completo e moderno, dedicado a oferecer atendimento de alta qualidade para cuidar da saúde e bem-estar dos seus pacientes. Contamos com uma equipe de profissionais experientes e comprometidos, que atendem com atenção e respeito, proporcionando um ambiente acolhedor e humanizado.</p>
+            <div class="hero-badge">
+                <i class="bi bi-heart-pulse"></i>
+                Cuidando de você desde 2009
+            </div>
+            <h1>Conheça a<br><span class="highlight">SIMED</span></h1>
+            <p>A Clínica Geral SIMED é um centro de saúde completo e moderno, dedicado a oferecer atendimento de alta qualidade para cuidar da saúde e bem-estar dos nossos pacientes. Contamos com uma equipe de profissionais experientes e comprometidos.</p>
+            <div class="hero-buttons">
+                <a href="{% url 'consulta_rapida' %}" class="btn-hero primary">
+                    <i class="bi bi-calendar-plus"></i>
+                    Agendar Consulta
+                </a>
+                <a href="#equipe" class="btn-hero secondary">
+                    <i class="bi bi-people"></i>
+                    Nossa Equipe
+                </a>
+            </div>
         </div>
         <div class="hero-image" data-aos="fade-left">
             <img src="{% static 'images/medicos.png' %}" alt="Equipe médica SIMED">
+            <div class="hero-floating-card card-1">
+                <div class="floating-stat">
+                    <div class="floating-stat-icon">
+                        <i class="bi bi-award"></i>
+                    </div>
+                    <div class="floating-stat-text">
+                        <span>Acreditação</span>
+                        <strong>ONA Nível 3</strong>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-floating-card card-2">
+                <div class="floating-stat">
+                    <div class="floating-stat-icon">
+                        <i class="bi bi-star-fill"></i>
+                    </div>
+                    <div class="floating-stat-text">
+                        <span>Avaliação</span>
+                        <strong>4.9/5 Estrelas</strong>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </section>
 
 <section class="stats-section">
-    <div class="stats-container">
-        <div class="stat-item" data-aos="fade-up" data-aos-delay="0">
+    <div class="stats-container" data-aos="fade-up">
+        <div class="stat-item">
+            <div class="stat-icon">
+                <i class="bi bi-calendar-check"></i>
+            </div>
             <div class="stat-number">15+</div>
             <div class="stat-label">Anos de Experiência</div>
         </div>
-        <div class="stat-item" data-aos="fade-up" data-aos-delay="100">
+        <div class="stat-item">
+            <div class="stat-icon">
+                <i class="bi bi-people-fill"></i>
+            </div>
             <div class="stat-number">50k+</div>
             <div class="stat-label">Pacientes Atendidos</div>
         </div>
-        <div class="stat-item" data-aos="fade-up" data-aos-delay="200">
+        <div class="stat-item">
+            <div class="stat-icon">
+                <i class="bi bi-person-badge"></i>
+            </div>
             <div class="stat-number">30+</div>
             <div class="stat-label">Especialistas</div>
         </div>
-        <div class="stat-item" data-aos="fade-up" data-aos-delay="300">
+        <div class="stat-item">
+            <div class="stat-icon">
+                <i class="bi bi-emoji-smile"></i>
+            </div>
             <div class="stat-number">98%</div>
             <div class="stat-label">Satisfação</div>
         </div>
     </div>
 </section>
 
+<section class="mission-section">
+    <div class="mission-wrapper">
+        <div class="section-header" data-aos="fade-up">
+            <h2>Nossos <span class="highlight">Valores</span></h2>
+            <p>Princípios que guiam cada atendimento e decisão na SIMED</p>
+        </div>
+
+        <div class="values-grid">
+            <div class="value-card" data-aos="fade-up" data-aos-delay="0">
+                <div class="value-icon">
+                    <i class="bi bi-heart-pulse"></i>
+                </div>
+                <h3>Excelência Médica</h3>
+                <p>Buscamos constantemente a excelência em todos os nossos serviços, investindo em tecnologia e capacitação profissional.</p>
+            </div>
+            <div class="value-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="value-icon">
+                    <i class="bi bi-person-heart"></i>
+                </div>
+                <h3>Atendimento Humanizado</h3>
+                <p>Cada paciente é único. Oferecemos um atendimento acolhedor, respeitoso e personalizado às suas necessidades.</p>
+            </div>
+            <div class="value-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="value-icon">
+                    <i class="bi bi-shield-check"></i>
+                </div>
+                <h3>Segurança e Ética</h3>
+                <p>Seguimos rigorosos protocolos de segurança e mantemos os mais altos padrões éticos em nossa prática.</p>
+            </div>
+            <div class="value-card" data-aos="fade-up" data-aos-delay="300">
+                <div class="value-icon">
+                    <i class="bi bi-lightbulb"></i>
+                </div>
+                <h3>Inovação Constante</h3>
+                <p>Investimos em tecnologias modernas e métodos inovadores para diagnósticos e tratamentos mais eficazes.</p>
+            </div>
+            <div class="value-card" data-aos="fade-up" data-aos-delay="400">
+                <div class="value-icon">
+                    <i class="bi bi-hand-thumbs-up"></i>
+                </div>
+                <h3>Compromisso Social</h3>
+                <p>Contribuímos ativamente para a saúde da comunidade através de programas de prevenção e educação.</p>
+            </div>
+            <div class="value-card" data-aos="fade-up" data-aos-delay="500">
+                <div class="value-icon">
+                    <i class="bi bi-globe"></i>
+                </div>
+                <h3>Sustentabilidade</h3>
+                <p>Adotamos práticas sustentáveis em nossas operações, cuidando do meio ambiente enquanto cuidamos de você.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="team-section" id="equipe">
+    <div class="team-wrapper">
+        <div class="team-header" data-aos="fade-up">
+            <h2>Nossa Equipe Médica</h2>
+            <p>Profissionais altamente qualificados e dedicados ao seu bem-estar</p>
+        </div>
+
+        <div class="team-grid">
+            {% for profissional in profissionais %}
+            <div class="team-card" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:100 }}">
+                {% if profissional.foto %}
+                    <img src="{{ profissional.foto.url }}" alt="{{ profissional.nome }}" class="team-photo">
+                {% else %}
+                    <div class="team-photo-placeholder">
+                        {{ profissional.nome|slice:":1"|upper }}
+                    </div>
+                {% endif %}
+                <h4>{{ profissional.nome }}</h4>
+                <span class="team-specialty">{{ profissional.especialidade.nome|default:"Clínica Geral" }}</span>
+                {% if profissional.biografia %}
+                <p>{{ profissional.biografia|truncatewords:20 }}</p>
+                {% endif %}
+            </div>
+            {% empty %}
+            <div class="team-card" data-aos="fade-up">
+                <div class="team-photo-placeholder">D</div>
+                <h4>Dr. Carlos Silva</h4>
+                <span class="team-specialty">Cardiologia</span>
+                <p>Especialista com mais de 15 anos de experiência em cardiologia clínica.</p>
+            </div>
+            <div class="team-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="team-photo-placeholder">M</div>
+                <h4>Dra. Maria Santos</h4>
+                <span class="team-specialty">Pediatria</span>
+                <p>Dedicada ao cuidado infantil com abordagem gentil e acolhedora.</p>
+            </div>
+            <div class="team-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="team-photo-placeholder">R</div>
+                <h4>Dr. Roberto Lima</h4>
+                <span class="team-specialty">Ortopedia</span>
+                <p>Especialista em tratamento de lesões esportivas e reabilitação.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
 <section class="info-section">
     <div class="info-wrapper">
+        <div class="section-header" data-aos="fade-up">
+            <h2>Informações <span class="highlight">Importantes</span></h2>
+            <p>Tudo que você precisa saber para nos visitar</p>
+        </div>
+        
         <div class="info-container">
             <div class="info-left" data-aos="fade-right">
                 <div class="info-box">
-                    <h3><i class="bi bi-telephone-fill"></i> Contato</h3>
-                    <p>Telefone: (11) 3456-7890<br>E-mail: clinica@simed.com</p>
+                    <div class="info-icon">
+                        <i class="bi bi-telephone-fill"></i>
+                    </div>
+                    <div>
+                        <h3>Contato</h3>
+                        <p>Telefone: (11) 3456-7890<br>WhatsApp: (11) 99999-9999<br>E-mail: contato@simed.com.br</p>
+                    </div>
                 </div>
 
                 <div class="info-box">
-                    <h3><i class="bi bi-clock-fill"></i> Funcionamento</h3>
-                    <p>Pronto-Socorro: 24h, todos os dias<br>Ambulatório: Seg a Sex, 7h às 19h</p>
+                    <div class="info-icon">
+                        <i class="bi bi-clock-fill"></i>
+                    </div>
+                    <div>
+                        <h3>Horário de Funcionamento</h3>
+                        <p>Pronto-Socorro: 24h, todos os dias<br>Ambulatório: Seg a Sex, 7h às 19h<br>Sábado: 8h às 14h</p>
+                    </div>
                 </div>
 
                 <div class="info-box">
-                    <h3><i class="bi bi-people-fill"></i> Visitas</h3>
-                    <p>Visitas a pacientes internados: todos os dias, das 14h às 17h.</p>
+                    <div class="info-icon">
+                        <i class="bi bi-geo-alt-fill"></i>
+                    </div>
+                    <div>
+                        <h3>Localização</h3>
+                        <p>Av. das Palmeiras, 1520 – Centro<br>Monte Verde – SP, CEP: 08120-000<br>Próximo ao Parque Central</p>
+                    </div>
                 </div>
 
                 <div class="info-box">
-                    <h3><i class="bi bi-building"></i> Endereço</h3>
-                    <p>Av. das Palmeiras, 1520 – Centro, Monte Verde – SP<br>CEP: 08120-000</p>
-                </div>
-
-                <div class="info-box">
-                    <h3><i class="bi bi-geo-alt-fill"></i> Localização</h3>
-                    <p>Situado no centro de Monte Verde, próximo ao Parque Central e a 10 min da estação de metrô Aurora.</p>
+                    <div class="info-icon">
+                        <i class="bi bi-people-fill"></i>
+                    </div>
+                    <div>
+                        <h3>Visitas a Internados</h3>
+                        <p>Todos os dias, das 14h às 17h<br>Máximo de 2 visitantes por paciente</p>
+                    </div>
                 </div>
             </div>
 
             <div class="info-right" data-aos="fade-left">
-                <div class="shadow-box"></div>
+                <div class="image-decoration"></div>
                 <div class="hospital-image">
                     <img src="{% static 'images/PredioClinica.png' %}" alt="Fachada da Clínica SIMED">
                 </div>
@@ -397,9 +984,9 @@
 
 <section class="certificados-section" id="certificados">
     <div class="certificados-wrapper">
-        <div class="certificados-header" data-aos="fade-up">
-            <h2>Nossos <span class="highlight">Certificados & Reconhecimentos</span></h2>
-            <p>Garantimos qualidade, segurança e excelência em todos os nossos atendimentos. Conheça alguns dos selos que comprovam o compromisso da SIMED com a saúde e o bem-estar.</p>
+        <div class="section-header" data-aos="fade-up">
+            <h2>Certificados & <span class="highlight">Reconhecimentos</span></h2>
+            <p>Qualidade, segurança e excelência comprovadas</p>
         </div>
 
         <div class="certificados-grid">
@@ -408,7 +995,7 @@
                     <img src="{% static 'images/iso9001.png' %}" alt="ISO 9001">
                 </div>
                 <h4>ISO 9001</h4>
-                <p>Certificação internacional que garante a padronização e excelência dos nossos processos de gestão da qualidade.</p>
+                <p>Certificação internacional de gestão da qualidade em todos os processos.</p>
                 <span class="certificado-badge">Gestão da Qualidade</span>
             </div>
 
@@ -417,7 +1004,7 @@
                     <img src="{% static 'images/ona3.png' %}" alt="ONA Nível 3">
                 </div>
                 <h4>Acreditação ONA Nível 3</h4>
-                <p>Maior nível de acreditação hospitalar do Brasil, reconhecendo nossa excelência em segurança e qualidade assistencial.</p>
+                <p>Maior nível de acreditação hospitalar do Brasil.</p>
                 <span class="certificado-badge">Excelência Hospitalar</span>
             </div>
 
@@ -426,7 +1013,7 @@
                     <img src="{% static 'images/sust2023.png' %}" alt="Sustentabilidade">
                 </div>
                 <h4>Prêmio Sustentabilidade</h4>
-                <p>Reconhecimento pelas práticas ecológicas e de responsabilidade social adotadas pela SIMED em suas operações.</p>
+                <p>Reconhecimento pelas práticas ecológicas adotadas.</p>
                 <span class="certificado-badge">Responsabilidade Ambiental</span>
             </div>
 
@@ -435,10 +1022,21 @@
                     <img src="{% static 'images/excelenciamedica.png' %}" alt="Excelência Médica">
                 </div>
                 <h4>Selo Excelência Médica</h4>
-                <p>Emitido pela Associação Brasileira de Clínicas, reforçando nossa reputação de confiança e qualidade no atendimento.</p>
+                <p>Emitido pela Associação Brasileira de Clínicas.</p>
                 <span class="certificado-badge">Qualidade Assistencial</span>
             </div>
         </div>
+    </div>
+</section>
+
+<section class="cta-section">
+    <div class="cta-content" data-aos="fade-up">
+        <h2>Agende sua Consulta Hoje</h2>
+        <p>Nossa equipe está pronta para cuidar de você e sua família com o carinho e profissionalismo que você merece.</p>
+        <a href="{% url 'consulta_rapida' %}" class="btn-cta">
+            <i class="bi bi-calendar-plus"></i>
+            Agendar Agora
+        </a>
     </div>
 </section>
 
