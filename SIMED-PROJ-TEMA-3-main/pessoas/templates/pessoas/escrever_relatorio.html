@@ -1,0 +1,22 @@
+{% extends 'pessoas/base.html' %}
+
+{% block content %}
+<div class="relatorio-consulta">
+    <h2>Relatório da Consulta</h2>
+    <p>
+        <strong>Paciente:</strong> {{ consulta.paciente.username }} {{ consulta.paciente.get_full_name }}<br>
+        <strong>Data:</strong> {{ consulta.data_hora|date:"d/m/Y, H:i" }}
+    </p>
+    <hr>
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="id_relatorio" class="form-label"><strong>Relatório Médico:</strong></label>
+            {{ form.relatorio }}
+        </div>
+        <button type="submit" class="btn btn-success">Salvar Relatório e Concluir Consulta</button>
+        <a href="{% url 'painel_medico' %}" class="btn btn-secondary">Voltar</a>
+    </form>
+</div>
+{% endblock %}

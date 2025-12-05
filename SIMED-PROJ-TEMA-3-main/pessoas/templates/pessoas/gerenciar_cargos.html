@@ -1,0 +1,304 @@
+{% extends 'pessoas/dashboard_base.html' %}
+
+{% block title %}Gerenciar Cargos - {{ usuario.get_full_name }}{% endblock %}
+
+{% block content %}
+<style>
+.cargo-container {
+    max-width: 600px;
+    background: white;
+    border-radius: 16px;
+    padding: 40px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.cargo-header {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #f0f4f8;
+}
+
+.cargo-header h2 {
+    font-size: 1.5rem;
+    color: #1B325F;
+    margin-bottom: 10px;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.user-avatar {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #1B325F 0%, #2c4875 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.user-details h3 {
+    font-size: 1.2rem;
+    color: #1B325F;
+    margin: 0 0 5px 0;
+}
+
+.user-details p {
+    color: #666;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.current-role {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: linear-gradient(135deg, #e8f4fc 0%, #d4e8f5 100%);
+    border-radius: 20px;
+    color: #1B325F;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.cargo-form {
+    margin-top: 30px;
+}
+
+.cargo-form label {
+    display: block;
+    font-weight: 600;
+    color: #1B325F;
+    margin-bottom: 15px;
+    font-size: 1rem;
+}
+
+.cargo-options {
+    display: grid;
+    gap: 12px;
+    margin-bottom: 30px;
+}
+
+.cargo-option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 20px;
+    border: 2px solid #e4e9f2;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.cargo-option:hover {
+    border-color: #1B325F;
+    background: #f8fafc;
+}
+
+.cargo-option.selected {
+    border-color: #1B325F;
+    background: linear-gradient(135deg, #1B325F 0%, #2c4875 100%);
+}
+
+.cargo-option.selected .cargo-label,
+.cargo-option.selected .cargo-desc {
+    color: white;
+}
+
+.cargo-option input {
+    display: none;
+}
+
+.cargo-icon {
+    width: 40px;
+    height: 40px;
+    background: #e8f4fc;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #1B325F;
+    font-size: 1.2rem;
+}
+
+.cargo-option.selected .cargo-icon {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.cargo-info {
+    flex: 1;
+}
+
+.cargo-label {
+    font-weight: 600;
+    color: #1B325F;
+    font-size: 1rem;
+    margin-bottom: 3px;
+}
+
+.cargo-desc {
+    font-size: 0.85rem;
+    color: #666;
+}
+
+.hierarchy-badge {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.hierarchy-4 { background: #fce4ec; color: #c2185b; }
+.hierarchy-3 { background: #e3f2fd; color: #1976d2; }
+.hierarchy-2 { background: #f3e5f5; color: #7b1fa2; }
+.hierarchy-1 { background: #e8f5e9; color: #388e3c; }
+
+.cargo-option.selected .hierarchy-badge {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.form-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.btn-save {
+    flex: 1;
+    padding: 14px 30px;
+    background: linear-gradient(135deg, #1B325F 0%, #2c4875 100%);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-save:hover {
+    background: linear-gradient(135deg, #F26C4F 0%, #e55a3d 100%);
+    transform: translateY(-2px);
+}
+
+.btn-cancel {
+    padding: 14px 30px;
+    background: #f0f4f8;
+    color: #1B325F;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-cancel:hover {
+    background: #e4e9f2;
+}
+</style>
+
+<div class="cargo-container">
+    <div class="cargo-header">
+        <h2>Gerenciar Cargo</h2>
+        <div class="user-info">
+            <div class="user-avatar">
+                {{ usuario.first_name|slice:":1"|upper }}{{ usuario.last_name|slice:":1"|upper }}
+            </div>
+            <div class="user-details">
+                <h3>{{ usuario.get_full_name|default:usuario.username }}</h3>
+                <p>{{ usuario.email }}</p>
+            </div>
+        </div>
+        <div class="current-role">
+            <i class="bi bi-person-badge"></i>
+            Cargo Atual: {{ perfil.get_tipo_usuario_display }}
+        </div>
+    </div>
+
+    <form method="post" class="cargo-form">
+        {% csrf_token %}
+        
+        <label>Selecione o Novo Cargo:</label>
+        
+        <div class="cargo-options">
+            <label class="cargo-option {% if perfil.tipo_usuario == 'admin' %}selected{% endif %}">
+                <input type="radio" name="tipo_usuario" value="admin" {% if perfil.tipo_usuario == 'admin' %}checked{% endif %}>
+                <div class="cargo-icon">
+                    <i class="bi bi-shield-check"></i>
+                </div>
+                <div class="cargo-info">
+                    <div class="cargo-label">Administrador</div>
+                    <div class="cargo-desc">Acesso total ao sistema, gerenciamento de usuários e configurações</div>
+                </div>
+                <span class="hierarchy-badge hierarchy-4">Nível 4</span>
+            </label>
+            
+            <label class="cargo-option {% if perfil.tipo_usuario == 'medico' %}selected{% endif %}">
+                <input type="radio" name="tipo_usuario" value="medico" {% if perfil.tipo_usuario == 'medico' %}checked{% endif %}>
+                <div class="cargo-icon">
+                    <i class="bi bi-heart-pulse"></i>
+                </div>
+                <div class="cargo-info">
+                    <div class="cargo-label">Médico</div>
+                    <div class="cargo-desc">Acesso às consultas, prontuários e relatórios médicos</div>
+                </div>
+                <span class="hierarchy-badge hierarchy-3">Nível 3</span>
+            </label>
+            
+            <label class="cargo-option {% if perfil.tipo_usuario == 'atendente' %}selected{% endif %}">
+                <input type="radio" name="tipo_usuario" value="atendente" {% if perfil.tipo_usuario == 'atendente' %}checked{% endif %}>
+                <div class="cargo-icon">
+                    <i class="bi bi-headset"></i>
+                </div>
+                <div class="cargo-info">
+                    <div class="cargo-label">Atendente</div>
+                    <div class="cargo-desc">Agendamento de consultas e atendimento ao paciente</div>
+                </div>
+                <span class="hierarchy-badge hierarchy-2">Nível 2</span>
+            </label>
+            
+            <label class="cargo-option {% if perfil.tipo_usuario == 'paciente' %}selected{% endif %}">
+                <input type="radio" name="tipo_usuario" value="paciente" {% if perfil.tipo_usuario == 'paciente' %}checked{% endif %}>
+                <div class="cargo-icon">
+                    <i class="bi bi-person"></i>
+                </div>
+                <div class="cargo-info">
+                    <div class="cargo-label">Paciente</div>
+                    <div class="cargo-desc">Acesso às próprias consultas e agendamentos</div>
+                </div>
+                <span class="hierarchy-badge hierarchy-1">Nível 1</span>
+            </label>
+        </div>
+        
+        <div class="form-actions">
+            <button type="submit" class="btn-save">
+                <i class="bi bi-check-lg"></i> Salvar Alterações
+            </button>
+            <a href="{% url 'dashboard_pacientes' %}" class="btn-cancel">Cancelar</a>
+        </div>
+    </form>
+</div>
+
+<script>
+document.querySelectorAll('.cargo-option').forEach(option => {
+    option.addEventListener('click', function() {
+        document.querySelectorAll('.cargo-option').forEach(o => o.classList.remove('selected'));
+        this.classList.add('selected');
+    });
+});
+</script>
+{% endblock %}

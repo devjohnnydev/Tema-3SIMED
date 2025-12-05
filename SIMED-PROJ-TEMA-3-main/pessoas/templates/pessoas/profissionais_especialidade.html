@@ -1,0 +1,263 @@
+{% extends 'pessoas/base.html' %}
+{% load static %}
+
+{% block title %}{{ especialidade.nome }} - Profissionais{% endblock %}
+
+{% block content %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+    
+    .profissionais-page {
+        font-family: "Poppins", sans-serif;
+        background: linear-gradient(135deg, #E9F2F9 0%, #9CC4E4 100%);
+        min-height: 100vh;
+        padding-bottom: 60px;
+    }
+
+    .hero-section {
+        background: linear-gradient(135deg, #1B325F 0%, #2c4875 100%);
+        color: white;
+        padding: 60px 20px;
+        text-align: center;
+    }
+
+    .hero-section h1 {
+        font-size: 2.5em;
+        font-weight: 700;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+    }
+
+    .hero-section p {
+        font-size: 1.1em;
+        opacity: 0.9;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: white;
+        text-decoration: none;
+        font-weight: 500;
+        padding: 20px;
+        transition: opacity 0.3s;
+        position: absolute;
+        left: 20px;
+        top: 20px;
+    }
+
+    .back-link:hover {
+        opacity: 0.8;
+    }
+
+    .profissionais-container {
+        max-width: 1200px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
+
+    .profissionais-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 30px;
+    }
+
+    .profissional-card {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+        animation: fadeInUp 0.6s ease forwards;
+        opacity: 0;
+    }
+
+    .profissional-card:nth-child(1) { animation-delay: 0.1s; }
+    .profissional-card:nth-child(2) { animation-delay: 0.2s; }
+    .profissional-card:nth-child(3) { animation-delay: 0.3s; }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .profissional-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+    }
+
+    .profissional-img {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+        background: linear-gradient(135deg, #E9F2F9 0%, #9CC4E4 100%);
+    }
+
+    .profissional-info {
+        padding: 25px;
+    }
+
+    .profissional-nome {
+        font-size: 1.4em;
+        font-weight: 700;
+        color: #1B325F;
+        margin-bottom: 10px;
+    }
+
+    .profissional-crm {
+        font-size: 13px;
+        color: #666;
+        margin-bottom: 15px;
+    }
+
+    .profissional-bio {
+        font-size: 14px;
+        color: #555;
+        line-height: 1.6;
+        margin-bottom: 20px;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .profissional-actions {
+        display: flex;
+        gap: 10px;
+    }
+
+    .btn-ver-perfil, .btn-agendar {
+        flex: 1;
+        padding: 12px 20px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        text-align: center;
+        transition: all 0.3s ease;
+    }
+
+    .btn-ver-perfil {
+        background: #1B325F;
+        color: white;
+    }
+
+    .btn-ver-perfil:hover {
+        background: #F26C4F;
+    }
+
+    .btn-agendar {
+        background: #4CAF50;
+        color: white;
+    }
+
+    .btn-agendar:hover {
+        background: #388E3C;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: #666;
+        background: white;
+        border-radius: 15px;
+    }
+
+    .empty-state i {
+        font-size: 60px;
+        color: #ccc;
+        margin-bottom: 20px;
+    }
+
+    @media (max-width: 768px) {
+        .hero-section h1 {
+            font-size: 1.8em;
+        }
+        
+        .profissionais-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .back-link {
+            position: relative;
+            left: 0;
+            top: 0;
+            display: block;
+            text-align: center;
+            padding: 10px;
+        }
+    }
+</style>
+
+<div class="profissionais-page">
+    <section class="hero-section" style="position: relative;">
+        <a href="{% url 'profissionais' %}" class="back-link">
+            <i class="fas fa-arrow-left"></i> Voltar
+        </a>
+        <h1>
+            <i class="fas {{ especialidade.icone }}"></i>
+            {{ especialidade.nome }}
+        </h1>
+        {% if especialidade.descricao %}
+        <p>{{ especialidade.descricao }}</p>
+        {% else %}
+        <p>Conheça nossos especialistas em {{ especialidade.nome }}.</p>
+        {% endif %}
+    </section>
+
+    <div class="profissionais-container">
+        {% if profissionais %}
+        <div class="profissionais-grid">
+            {% for prof in profissionais %}
+            <div class="profissional-card">
+                {% if prof.foto %}
+                <img src="{{ prof.foto.url }}" alt="{{ prof.nome }}" class="profissional-img">
+                {% else %}
+                <div class="profissional-img" style="display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-user-md" style="font-size: 80px; color: #1B325F; opacity: 0.3;"></i>
+                </div>
+                {% endif %}
+                <div class="profissional-info">
+                    <h3 class="profissional-nome">{{ prof.nome }}</h3>
+                    {% if prof.crm %}
+                    <p class="profissional-crm"><i class="fas fa-id-card"></i> {{ prof.crm }}</p>
+                    {% endif %}
+                    {% if prof.biografia %}
+                    <p class="profissional-bio">{{ prof.biografia }}</p>
+                    {% endif %}
+                    <div class="profissional-actions">
+                        <a href="{% url 'profissional_detalhe' prof.slug %}" class="btn-ver-perfil">
+                            <i class="fas fa-user"></i> Ver Perfil
+                        </a>
+                        <a href="{% url 'agenda' %}" class="btn-agendar">
+                            <i class="fas fa-calendar-check"></i> Agendar
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <i class="fas fa-user-md"></i>
+            <h3>Nenhum profissional encontrado</h3>
+            <p>Não há profissionais cadastrados nesta especialidade no momento.</p>
+            <a href="{% url 'profissionais' %}" class="btn-ver-perfil" style="display: inline-block; margin-top: 20px;">
+                Ver Todos os Profissionais
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

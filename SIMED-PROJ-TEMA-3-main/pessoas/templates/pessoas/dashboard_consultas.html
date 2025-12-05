@@ -1,0 +1,41 @@
+{% extends 'pessoas/dashboard_base.html' %}
+
+{% block title %}Dashboard - Consultas{% endblock %}
+
+{% block content %}
+
+<h2 class="page-title">Gerenciar consultas cadastradas no sistema</h2>
+
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <h3>Número de consultas</h3>
+        <div class="stat-value">{{ total_consultas }}</div>
+    </div>
+    
+    <div class="stat-card">
+        <h3>Consultas realizadas</h3>
+        <div class="stat-value">{{ consultas_realizadas }}</div>
+    </div>
+    
+    <div class="stat-card">
+        <h3>Máx de atendimentos/D</h3>
+        <div class="stat-value">{{ max_atendimentos_dia }}</div>
+    </div>
+    
+    <div class="stat-card">
+        <h3>Atendimentos marcados</h3>
+        <div class="stat-value">{{ consultas_agendadas }}</div>
+    </div>
+    
+    <div class="stat-card">
+        <h3>Atendimentos cancelados</h3>
+        <div class="stat-value">{{ consultas_canceladas }}</div>
+    </div>
+    
+    <div class="stat-card">
+        <h3>Profissional mais ocupado</h3>
+        <div class="stat-value" style="font-size: 24px;">{{ profissional_nome }}</div>
+    </div>
+</div>
+{% endblock %}

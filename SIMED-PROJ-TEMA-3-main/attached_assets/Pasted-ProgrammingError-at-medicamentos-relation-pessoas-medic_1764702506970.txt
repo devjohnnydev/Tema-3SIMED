@@ -1,0 +1,202 @@
+ProgrammingError at /medicamentos/
+relation "pessoas_medicamento" does not exist
+LINE 1: ..."descricao", "pessoas_medicamento"."estoque" FROM "pessoas_m...
+                                                             ^
+Request Method:	GET
+Request URL:	https://ce225f1d-9f35-4b17-a72c-a84c65cbac23-00-1i1qsqutt89in.kirk.replit.dev/medicamentos/
+Django Version:	5.2.6
+Exception Type:	ProgrammingError
+Exception Value:	
+relation "pessoas_medicamento" does not exist
+LINE 1: ..."descricao", "pessoas_medicamento"."estoque" FROM "pessoas_m...
+                                                             ^
+Exception Location:	/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/django/db/backends/utils.py, line 105, in _execute
+Raised during:	pessoas.views.lista_medicamentos
+Python Executable:	/home/runner/workspace/.pythonlibs/bin/python
+Python Version:	3.11.13
+Python Path:	
+['/home/runner/workspace',
+ '/nix/store/zz7i75jb78idaz0rb1y1i4rzdyxq28vf-sitecustomize/lib/python/site-packages',
+ '/nix/store/yaps09f01jp3fd1405qlr0qz6haf6z03-python3.11-pip-25.0.1/lib/python3.11/site-packages',
+ '/nix/store/7d088dip86hlzri9sk0h78b63yfmx0a0-python3-3.11.13/lib/python311.zip',
+ '/nix/store/7d088dip86hlzri9sk0h78b63yfmx0a0-python3-3.11.13/lib/python3.11',
+ '/nix/store/7d088dip86hlzri9sk0h78b63yfmx0a0-python3-3.11.13/lib/python3.11/lib-dynload',
+ '/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages',
+ '/nix/store/7d088dip86hlzri9sk0h78b63yfmx0a0-python3-3.11.13/lib/python3.11/site-packages',
+ '/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages',
+ '/nix/store/y0iwy8ma2m45pr23bw4r7lyz69v2b6wf-python3.11-setuptools-80.7.1/lib/python3.11/site-packages']
+Server time:	Tue, 02 Dec 2025 16:06:45 -0300
+Error during template rendering
+In template /home/runner/workspace/pessoas/templates/pessoas/lista_medicamentos.html, error at line 46
+
+relation "pessoas_medicamento" does not exist LINE 1: ..."descricao", "pessoas_medicamento"."estoque" FROM "pessoas_m... ^
+36	        <table class="table">
+37	            <thead>
+38	                <tr>
+39	                    <th>Foto</th>
+40	                    <th>Nome do Produto</th>
+41	                    <th>Valor</th>
+42	                    <th>Necessita Receita?</th>
+43	                </tr>
+44	            </thead>
+45	            <tbody>
+46	                {% for med in medicamentos %}
+47	                <tr>
+48	                    <td>
+49	                        {% if med.foto %}
+50	                            <img src="{{ med.foto.url }}" alt="{{ med.nome }}" width="100">
+51	                        {% else %}
+52	                            <span>Sem Imagem</span>
+53	                        {% endif %}
+54	                    </td>
+55	                    <td>{{ med.nome }}</td>
+56	                    <td>R$ {{ med.valor }}</td>
+Traceback Switch to copy-and-paste view
+/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/django/db/backends/utils.py, line 105, in _execute
+                return self.cursor.execute(sql, params)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ …
+Local vars
+The above exception (relation "pessoas_medicamento" does not exist LINE 1: ..."descricao", "pessoas_medicamento"."estoque" FROM "pessoas_m... ^ ) was the direct cause of the following exception:
+/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/django/core/handlers/exception.py, line 55, in inner
+                response = get_response(request)
+                               ^^^^^^^^^^^^^^^^^^^^^ …
+Local vars
+/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/django/core/handlers/base.py, line 197, in _get_response
+                response = wrapped_callback(request, *callback_args, **callback_kwargs)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ …
+Local vars
+/home/runner/workspace/pessoas/views.py, line 230, in lista_medicamentos
+    return render(request, 'pessoas/lista_medicamentos.html', contexto)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ …
+Local vars
+/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/django/shortcuts.py, line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ …
+Local vars
+/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/django/template/loader.py, line 62, in render_to_string
+    return template.render(context, request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ …
+Local vars
+/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/django/template/backends/django.py, line 107, in render
+            return self.template.render(context)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ …
+Local vars
+/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/django/template/base.py, line 171, in render
+                    return self._render(context)
+                                ^^^^^^^^^^^^^^^^^^^^^ …
+Local vars
+/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/django/template/base.py, line 163, in _render
+        return self.nodelist.render(context)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ …
+Local vars
+/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/django/template/base.py, line 1016, in render
+        return SafeString("".join([node.render_annotated(context) for node in self]))
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ …
+Local vars
+/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/django/template/base.py, line 1016, in <listcomp>
+        return SafeString("".join([node.render_annotated(context) for node in self]))
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ …
+Local vars
+/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/django/template/base.py, line 977, in render_annotated
+            return self.render(context)
+                        ^^^^^^^^^^^^^^^^^^^^ …
+Local vars
+/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/django/template/loader_tags.py, line 159, in render
+            return compiled_parent._render(context)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ …
+Local vars
+/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/django/template/base.py, line 163, in _render
+        return self.nodelist.render(context)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ …
+Local vars
+/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/django/template/base.py, line 1016, in render
+        return SafeString("".join([node.render_annotated(context) for node in self]))
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ …
+Local vars
+/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/django/template/base.py, line 1016, in <listcomp>
+        return SafeString("".join([node.render_annotated(context) for node in self]))
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ …
+Local vars
+/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/django/template/base.py, line 977, in render_annotated
+            return self.render(context)
+                        ^^^^^^^^^^^^^^^^^^^^ …
+Local vars
+/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/django/template/loader_tags.py, line 65, in render
+                result = block.nodelist.render(context)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ …
+Local vars
+/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/django/template/base.py, line 1016, in render
+        return SafeString("".join([node.render_annotated(context) for node in self]))
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ …
+Local vars
+/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/django/template/base.py, line 1016, in <listcomp>
+        return SafeString("".join([node.render_annotated(context) for node in self]))
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ …
+Local vars
+/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/django/template/base.py, line 977, in render_annotated
+            return self.render(context)
+                        ^^^^^^^^^^^^^^^^^^^^ …
+Local vars
+/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/django/template/defaulttags.py, line 199, in render
+            len_values = len(values)
+                              ^^^^^^^^^^^ …
+Local vars
+/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/django/db/models/query.py, line 366, in __len__
+        self._fetch_all()
+             ^^^^^^^^^^^^^^^^^ …
+Local vars
+/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/django/db/models/query.py, line 1949, in _fetch_all
+            self._result_cache = list(self._iterable_class(self))
+                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ …
+Local vars
+/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/django/db/models/query.py, line 91, in __iter__
+        results = compiler.execute_sql(
+                       …
+Local vars
+/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/django/db/models/sql/compiler.py, line 1623, in execute_sql
+            cursor.execute(sql, params)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^ …
+Local vars
+/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/django/db/backends/utils.py, line 122, in execute
+            return super().execute(sql, params)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ …
+Local vars
+/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/django/db/backends/utils.py, line 79, in execute
+        return self._execute_with_wrappers(
+                    …
+Local vars
+/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/django/db/backends/utils.py, line 92, in _execute_with_wrappers
+        return executor(sql, params, many, context)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ …
+Local vars
+/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/django/db/backends/utils.py, line 100, in _execute
+        with self.db.wrap_database_errors:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ …
+Local vars
+/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/django/db/utils.py, line 91, in __exit__
+                raise dj_exc_value.with_traceback(traceback) from exc_value
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ …
+Local vars
+/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/django/db/backends/utils.py, line 105, in _execute
+                return self.cursor.execute(sql, params)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ …
+Local vars
+Request information
+USER
+AnonymousUser
+
+GET
+No GET data
+
+POST
+No POST data
+
+FILES
+No FILES data
+
+COOKIES
+No cookie data
+
+META
+Variable	Value
+CFLAGS

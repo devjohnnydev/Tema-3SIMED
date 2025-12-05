@@ -1,0 +1,399 @@
+{% extends 'pessoas/base.html' %}
+{% load static %}
+
+{% block title %}{{ profissional.nome }} - CIMED{% endblock %}
+
+{% block content %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+    
+    .profissional-page {
+        font-family: "Poppins", sans-serif;
+        background: linear-gradient(135deg, #E9F2F9 0%, #9CC4E4 100%);
+        min-height: 100vh;
+        padding-bottom: 60px;
+    }
+
+    .section-hero {
+        background-color: #E9F2F9;
+        padding: 60px 20px;
+    }
+
+    .hero-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        gap: 60px;
+        flex-wrap: wrap;
+    }
+
+    .hero-image {
+        flex: 1;
+        min-width: 300px;
+        animation: slideInLeft 0.8s ease forwards;
+    }
+
+    @keyframes slideInLeft {
+        from {
+            opacity: 0;
+            transform: translateX(-50px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    .hero-image img {
+        width: 100%;
+        max-width: 400px;
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    }
+
+    .hero-image .placeholder {
+        width: 100%;
+        max-width: 400px;
+        height: 400px;
+        background: linear-gradient(135deg, #1B325F 0%, #2c4875 100%);
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 120px;
+        opacity: 0.8;
+    }
+
+    .hero-content {
+        flex: 1.5;
+        min-width: 300px;
+        animation: slideInRight 0.8s ease forwards;
+    }
+
+    @keyframes slideInRight {
+        from {
+            opacity: 0;
+            transform: translateX(50px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    .especialidade-badge {
+        display: inline-block;
+        background: #1B325F;
+        color: white;
+        padding: 8px 20px;
+        border-radius: 25px;
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 15px;
+    }
+
+    .hero-content h1 {
+        font-size: 2.8em;
+        font-weight: 700;
+        color: #1B325F;
+        margin-bottom: 10px;
+    }
+
+    .hero-content .crm {
+        font-size: 16px;
+        color: #666;
+        margin-bottom: 20px;
+    }
+
+    .hero-content .bio {
+        font-size: 1.1em;
+        color: #555;
+        line-height: 1.8;
+        margin-bottom: 30px;
+    }
+
+    .hero-buttons {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .btn-primary {
+        background: #1B325F;
+        color: white;
+        padding: 15px 35px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .btn-primary:hover {
+        background: #F26C4F;
+        transform: translateY(-3px);
+    }
+
+    .btn-secondary {
+        background: transparent;
+        border: 2px solid #1B325F;
+        color: #1B325F;
+        padding: 15px 35px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .btn-secondary:hover {
+        background: #1B325F;
+        color: white;
+    }
+
+    .section-info {
+        padding: 60px 20px;
+    }
+
+    .info-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 40px;
+    }
+
+    .info-card {
+        background: white;
+        border-radius: 15px;
+        padding: 35px;
+        box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+        animation: fadeInUp 0.6s ease forwards;
+        opacity: 0;
+    }
+
+    .info-card:nth-child(1) { animation-delay: 0.2s; }
+    .info-card:nth-child(2) { animation-delay: 0.4s; }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .info-card h2 {
+        font-size: 1.6em;
+        color: #1B325F;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .info-card h2 i {
+        color: #F26C4F;
+    }
+
+    .info-card p, .info-card ul {
+        color: #555;
+        line-height: 1.8;
+        font-size: 15px;
+    }
+
+    .info-card ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    .info-card ul li {
+        padding: 10px 0;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .info-card ul li:last-child {
+        border-bottom: none;
+    }
+
+    .info-card ul li i {
+        color: #4CAF50;
+    }
+
+    .contact-info {
+        background: linear-gradient(135deg, #1B325F 0%, #2c4875 100%);
+        color: white;
+    }
+
+    .contact-info h2 {
+        color: white;
+    }
+
+    .contact-info h2 i {
+        color: #F26C4F;
+    }
+
+    .contact-item {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 15px 0;
+        border-bottom: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .contact-item:last-child {
+        border-bottom: none;
+    }
+
+    .contact-item i {
+        font-size: 20px;
+        width: 30px;
+        color: #F26C4F;
+    }
+
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: #1B325F;
+        text-decoration: none;
+        font-weight: 500;
+        padding: 20px;
+        transition: color 0.3s;
+    }
+
+    .back-link:hover {
+        color: #F26C4F;
+    }
+
+    @media (max-width: 768px) {
+        .hero-container {
+            flex-direction: column;
+            text-align: center;
+        }
+        
+        .hero-content h1 {
+            font-size: 2em;
+        }
+        
+        .hero-buttons {
+            justify-content: center;
+        }
+        
+        .info-container {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<div class="profissional-page">
+    <a href="{% url 'profissionais' %}" class="back-link">
+        <i class="fas fa-arrow-left"></i> Voltar para Profissionais
+    </a>
+
+    <section class="section-hero">
+        <div class="hero-container">
+            <div class="hero-image">
+                {% if profissional.foto %}
+                <img src="{{ profissional.foto.url }}" alt="{{ profissional.nome }}">
+                {% else %}
+                <div class="placeholder">
+                    <i class="fas fa-user-md"></i>
+                </div>
+                {% endif %}
+            </div>
+            <div class="hero-content">
+                {% if profissional.especialidade %}
+                <span class="especialidade-badge">
+                    <i class="fas {{ profissional.especialidade.icone }}"></i> {{ profissional.especialidade.nome }}
+                </span>
+                {% endif %}
+                <h1>{{ profissional.nome }}</h1>
+                {% if profissional.crm %}
+                <p class="crm"><i class="fas fa-id-card"></i> {{ profissional.crm }}</p>
+                {% endif %}
+                {% if profissional.biografia %}
+                <p class="bio">{{ profissional.biografia }}</p>
+                {% endif %}
+                <div class="hero-buttons">
+                    <a href="{% url 'agenda' %}" class="btn-primary">
+                        <i class="fas fa-calendar-check"></i> Agendar Consulta
+                    </a>
+                    {% if profissional.telefone %}
+                    <a href="tel:{{ profissional.telefone }}" class="btn-secondary">
+                        <i class="fas fa-phone"></i> {{ profissional.telefone }}
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-info">
+        <div class="info-container">
+            {% if profissional.formacao or profissional.certificacoes %}
+            <div class="info-card">
+                <h2><i class="fas fa-graduation-cap"></i> Formação e Certificações</h2>
+                {% if profissional.formacao %}
+                <p><strong>Formação Acadêmica:</strong></p>
+                <p>{{ profissional.formacao|linebreaks }}</p>
+                {% endif %}
+                {% if profissional.certificacoes %}
+                <p><strong>Certificações:</strong></p>
+                <ul>
+                    {% for cert in profissional.certificacoes.splitlines %}
+                    {% if cert.strip %}
+                    <li><i class="fas fa-check-circle"></i> {{ cert }}</li>
+                    {% endif %}
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+            {% endif %}
+
+            {% if profissional.objetivos %}
+            <div class="info-card">
+                <h2><i class="fas fa-bullseye"></i> Objetivos e Filosofia</h2>
+                <p>{{ profissional.objetivos|linebreaks }}</p>
+            </div>
+            {% endif %}
+
+            <div class="info-card contact-info">
+                <h2><i class="fas fa-address-card"></i> Informações de Contato</h2>
+                {% if profissional.telefone %}
+                <div class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    <span>{{ profissional.telefone }}</span>
+                </div>
+                {% endif %}
+                {% if profissional.email %}
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <span>{{ profissional.email }}</span>
+                </div>
+                {% endif %}
+                <div class="contact-item">
+                    <i class="fas fa-clock"></i>
+                    <span>Segunda a Sexta: 8h às 18h</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Clínica CIMED - Centro Médico</span>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

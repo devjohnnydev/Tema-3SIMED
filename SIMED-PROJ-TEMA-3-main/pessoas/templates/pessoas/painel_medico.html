@@ -1,0 +1,36 @@
+{% extends 'pessoas/base.html' %}
+
+{% block content %}
+    <section class="section-painelmedico">
+    <h2 class="titulo-painelmedico">Painel do Médico</h2>
+    <div class="painelmedico-container">
+        <div class="card-consultas">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Paciente</th>
+                        <th>Data e Hora</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for consulta in consultas %}
+                    <tr>
+                        <td>{{ consulta.paciente.username }} {{ consulta.paciente.get_full_name }}</td>
+                        <td>{{ consulta.data_hora|date:"d/m/Y, H:i" }}</td>
+                        <td><span>{{ consulta.get_status_display }}</span></td>
+                        <td><a href="{% url 'escrever_relatorio' consulta.id %}">Ver/Escrever Relatório</a></td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4">Nenhuma consulta agendada.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    </section>
+
+{% endblock %}

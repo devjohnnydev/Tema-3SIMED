@@ -1,0 +1,43 @@
+{% extends 'pessoas/dashboard_base.html' %}
+
+{% block title %}Dashboard - Médicos{% endblock %}
+
+{% block content %}
+
+<div style="display: flex; justify-content: flex-end; margin-bottom: 20px;">
+    <a href="{% url 'cadastro' %}" class="btn-editar" style="background-color: #28a745; padding: 10px 20px;">+ Registrar Novo Médico</a>
+</div>
+<h2 class="page-title">Gerenciar médicos cadastrados no sistema</h2>
+
+<div class="data-table-container">
+    <div class="table-header grid-medicos">
+        <div>Nome:</div>
+        <div>Área:</div>
+        <div>Remover:</div>
+    </div>
+    
+    {% for medico in medicos %}
+    <div class="table-row grid-medicos">
+        <div>Dr(a). {{ medico.username }} {{ medico.last_name }}</div>
+        <div>
+            {% if medico.perfil.endereco %}
+                {{ medico.perfil.endereco }}
+            {% else %}
+                Especialidade não informada
+            {% endif %}
+        </div>
+        <div style="display: flex; gap: 5px;">
+            <a href="{% url 'gerenciar_cargos' medico.id %}" class="btn-editar" style="padding: 8px 10px;">CARGO</a>
+            <form method="post" action="{% url 'remover_medico' medico.id %}" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn-remover" onclick="return confirm('Deseja realmente remover este médico?')">REMOVER</button>
+            </form>
+        </div>
+    </div>
+    {% empty %}
+    <div class="table-row">
+        <div style="text-align: center; padding: 20px; color: #999; grid-column: 1 / -1;">Nenhum médico cadastrado.</div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

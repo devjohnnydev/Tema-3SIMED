@@ -1,0 +1,75 @@
+{% extends 'pessoas/base.html' %}
+
+{% load static %}
+
+{% block content %}
+{% comment %} <style>
+    /* Estilos específicos para esta página, se necessário */
+    .table-container { padding: 2em; }
+    .table { width: 100%; border-collapse: collapse; margin-top: 1em; background-color: #fff; box-shadow: 0 2px 3px rgba(0,0,0,0.1); }
+    .table th, .table td { padding: 12px 15px; border: 1px solid #ddd; text-align: left; vertical-align: middle; }
+    .table thead { background-color: #007bff; color: white; }
+    .table tr:nth-child(even) { background-color: #f2f2f2; }
+    .table img { border-radius: 5px; }
+    .empty-message { text-align: center; padding: 20px; font-style: italic; color: #777; }
+    .action-buttons form, .action-buttons a { margin-right: 5px; display: inline; }
+</style> {% endcomment %}
+<section class="section1 meds">
+    <div class="section-content meds">
+        <div class="section-50 content">
+            <h1>Farmácia</h1>
+            <p>A Farmácia da Simed foi desenvolvida para oferecer mais praticidade e transparência aos nossos pacientes e à comunidade. Em nosso catálogo, você pode consultar os medicamentos disponíveis, visualizar seus valores atualizados e verificar se cada item necessita ou não de receita médica para aquisição. Tudo isso de forma simples, clara e acessível, permitindo que você compare preços e encontre exatamente o que precisa com segurança e confiança.</p>
+            <div class="btns">
+                <a href="#" class="btn">Agende sua Consulta</a>
+            </div>
+        </div>
+        <div class="section-50 img">
+            <img src="{% static 'images/equipeMedica.png' %}" alt="">
+        </div>
+    </div>
+</section>
+<section class="lista-meds">
+    <div class="table-container">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h1>Catálogo de Medicamentos</h1>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Foto</th>
+                    <th>Nome do Produto</th>
+                    <th>Valor</th>
+                    <th>Necessita Receita?</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for med in medicamentos %}
+                <tr>
+                    <td>
+                        {% if med.foto %}
+                            <img src="{{ med.foto.url }}" alt="{{ med.nome }}" width="100">
+                        {% else %}
+                            <span>Sem Imagem</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ med.nome }}</td>
+                    <td>R$ {{ med.valor }}</td>
+                    <td>
+                        {% if med.necessita_receita %}
+                            Sim
+                        {% else %}
+                            Não
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="empty-message">Nenhum medicamento cadastrado.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+
+{% endblock %}

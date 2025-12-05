@@ -1,0 +1,456 @@
+{% extends 'pessoas/base.html' %}
+
+{% load static %}
+
+{% block title %}Sobre{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+<link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<style>
+.hero-section {
+    background: linear-gradient(135deg, #1B325F 0%, #2c4875 100%);
+    padding: 80px 5% 60px;
+    color: white;
+}
+
+.hero-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 60px;
+    flex-wrap: wrap;
+}
+
+.hero-content {
+    flex: 1;
+    min-width: 300px;
+}
+
+.hero-content h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    line-height: 1.2;
+}
+
+.hero-content h1 .highlight {
+    color: #F26C4F;
+}
+
+.hero-content p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    opacity: 0.9;
+}
+
+.hero-image {
+    flex: 1;
+    min-width: 300px;
+    display: flex;
+    justify-content: center;
+}
+
+.hero-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.info-section {
+    padding: 80px 5%;
+    background-color: #f8fafc;
+}
+
+.info-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.info-container {
+    display: flex;
+    gap: 60px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.info-left {
+    flex: 1;
+    min-width: 300px;
+    display: grid;
+    gap: 20px;
+}
+
+.info-box {
+    background: white;
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-left: 4px solid #1B325F;
+}
+
+.info-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.info-box h3 {
+    color: #1B325F;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.info-box p {
+    color: #555;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.info-right {
+    flex: 1;
+    min-width: 300px;
+    position: relative;
+}
+
+.hospital-image {
+    position: relative;
+    z-index: 2;
+}
+
+.hospital-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    object-fit: cover;
+}
+
+.shadow-box {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #1B325F 0%, #2c4875 100%);
+    border-radius: 20px;
+    top: 20px;
+    left: 20px;
+    z-index: 1;
+}
+
+.certificados-section {
+    padding: 100px 5%;
+    background: linear-gradient(180deg, #ffffff 0%, #f0f4f8 100%);
+}
+
+.certificados-wrapper {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.certificados-header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.certificados-header h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #1B325F;
+    margin-bottom: 20px;
+}
+
+.certificados-header h2 .highlight {
+    background: linear-gradient(135deg, #F26C4F, #1B325F);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.certificados-header p {
+    font-size: 1.1rem;
+    color: #666;
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.7;
+}
+
+.certificados-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.certificado-card {
+    background: white;
+    border-radius: 20px;
+    padding: 40px 30px;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.certificado-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #1B325F, #F26C4F);
+    transform: scaleX(0);
+    transition: transform 0.4s ease;
+}
+
+.certificado-card:hover::before {
+    transform: scaleX(1);
+}
+
+.certificado-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+}
+
+.certificado-icon {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 25px;
+    background: linear-gradient(135deg, #e8f4fc 0%, #d4e8f5 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.4s ease;
+}
+
+.certificado-card:hover .certificado-icon {
+    background: linear-gradient(135deg, #1B325F 0%, #2c4875 100%);
+}
+
+.certificado-icon img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    transition: filter 0.4s ease;
+}
+
+.certificado-card:hover .certificado-icon img {
+    filter: brightness(0) invert(1);
+}
+
+.certificado-card h4 {
+    color: #1B325F;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.certificado-card p {
+    color: #666;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.certificado-badge {
+    display: inline-block;
+    padding: 6px 16px;
+    background: linear-gradient(135deg, #1B325F 0%, #2c4875 100%);
+    color: white;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    margin-top: 15px;
+}
+
+.stats-section {
+    padding: 60px 5%;
+    background: linear-gradient(135deg, #1B325F 0%, #2c4875 100%);
+}
+
+.stats-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 40px;
+    text-align: center;
+}
+
+.stat-item {
+    color: white;
+}
+
+.stat-number {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: #F26C4F;
+}
+
+.stat-label {
+    font-size: 1rem;
+    opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+    .hero-content h1 {
+        font-size: 2rem;
+    }
+    
+    .certificados-header h2 {
+        font-size: 1.8rem;
+    }
+    
+    .info-container {
+        flex-direction: column;
+    }
+    
+    .shadow-box {
+        display: none;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<section class="hero-section">
+    <div class="hero-container">
+        <div class="hero-content" data-aos="fade-right">
+            <h1>Sobre a<br><span class="highlight">SIMED</span></h1>
+            <p>A Clínica Geral Simed é um centro de saúde completo e moderno, dedicado a oferecer atendimento de alta qualidade para cuidar da saúde e bem-estar dos seus pacientes. Contamos com uma equipe de profissionais experientes e comprometidos, que atendem com atenção e respeito, proporcionando um ambiente acolhedor e humanizado.</p>
+        </div>
+        <div class="hero-image" data-aos="fade-left">
+            <img src="{% static 'images/medicos.png' %}" alt="Equipe médica SIMED">
+        </div>
+    </div>
+</section>
+
+<section class="stats-section">
+    <div class="stats-container">
+        <div class="stat-item" data-aos="fade-up" data-aos-delay="0">
+            <div class="stat-number">15+</div>
+            <div class="stat-label">Anos de Experiência</div>
+        </div>
+        <div class="stat-item" data-aos="fade-up" data-aos-delay="100">
+            <div class="stat-number">50k+</div>
+            <div class="stat-label">Pacientes Atendidos</div>
+        </div>
+        <div class="stat-item" data-aos="fade-up" data-aos-delay="200">
+            <div class="stat-number">30+</div>
+            <div class="stat-label">Especialistas</div>
+        </div>
+        <div class="stat-item" data-aos="fade-up" data-aos-delay="300">
+            <div class="stat-number">98%</div>
+            <div class="stat-label">Satisfação</div>
+        </div>
+    </div>
+</section>
+
+<section class="info-section">
+    <div class="info-wrapper">
+        <div class="info-container">
+            <div class="info-left" data-aos="fade-right">
+                <div class="info-box">
+                    <h3><i class="bi bi-telephone-fill"></i> Contato</h3>
+                    <p>Telefone: (11) 3456-7890<br>E-mail: clinica@simed.com</p>
+                </div>
+
+                <div class="info-box">
+                    <h3><i class="bi bi-clock-fill"></i> Funcionamento</h3>
+                    <p>Pronto-Socorro: 24h, todos os dias<br>Ambulatório: Seg a Sex, 7h às 19h</p>
+                </div>
+
+                <div class="info-box">
+                    <h3><i class="bi bi-people-fill"></i> Visitas</h3>
+                    <p>Visitas a pacientes internados: todos os dias, das 14h às 17h.</p>
+                </div>
+
+                <div class="info-box">
+                    <h3><i class="bi bi-building"></i> Endereço</h3>
+                    <p>Av. das Palmeiras, 1520 – Centro, Monte Verde – SP<br>CEP: 08120-000</p>
+                </div>
+
+                <div class="info-box">
+                    <h3><i class="bi bi-geo-alt-fill"></i> Localização</h3>
+                    <p>Situado no centro de Monte Verde, próximo ao Parque Central e a 10 min da estação de metrô Aurora.</p>
+                </div>
+            </div>
+
+            <div class="info-right" data-aos="fade-left">
+                <div class="shadow-box"></div>
+                <div class="hospital-image">
+                    <img src="{% static 'images/PredioClinica.png' %}" alt="Fachada da Clínica SIMED">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="certificados-section" id="certificados">
+    <div class="certificados-wrapper">
+        <div class="certificados-header" data-aos="fade-up">
+            <h2>Nossos <span class="highlight">Certificados & Reconhecimentos</span></h2>
+            <p>Garantimos qualidade, segurança e excelência em todos os nossos atendimentos. Conheça alguns dos selos que comprovam o compromisso da SIMED com a saúde e o bem-estar.</p>
+        </div>
+
+        <div class="certificados-grid">
+            <div class="certificado-card" data-aos="fade-up" data-aos-delay="0">
+                <div class="certificado-icon">
+                    <img src="{% static 'images/iso9001.png' %}" alt="ISO 9001">
+                </div>
+                <h4>ISO 9001</h4>
+                <p>Certificação internacional que garante a padronização e excelência dos nossos processos de gestão da qualidade.</p>
+                <span class="certificado-badge">Gestão da Qualidade</span>
+            </div>
+
+            <div class="certificado-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="certificado-icon">
+                    <img src="{% static 'images/ona3.png' %}" alt="ONA Nível 3">
+                </div>
+                <h4>Acreditação ONA Nível 3</h4>
+                <p>Maior nível de acreditação hospitalar do Brasil, reconhecendo nossa excelência em segurança e qualidade assistencial.</p>
+                <span class="certificado-badge">Excelência Hospitalar</span>
+            </div>
+
+            <div class="certificado-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="certificado-icon">
+                    <img src="{% static 'images/sust2023.png' %}" alt="Sustentabilidade">
+                </div>
+                <h4>Prêmio Sustentabilidade</h4>
+                <p>Reconhecimento pelas práticas ecológicas e de responsabilidade social adotadas pela SIMED em suas operações.</p>
+                <span class="certificado-badge">Responsabilidade Ambiental</span>
+            </div>
+
+            <div class="certificado-card" data-aos="fade-up" data-aos-delay="300">
+                <div class="certificado-icon">
+                    <img src="{% static 'images/excelenciamedica.png' %}" alt="Excelência Médica">
+                </div>
+                <h4>Selo Excelência Médica</h4>
+                <p>Emitido pela Associação Brasileira de Clínicas, reforçando nossa reputação de confiança e qualidade no atendimento.</p>
+                <span class="certificado-badge">Qualidade Assistencial</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    AOS.init({
+        duration: 800,
+        once: true,
+        offset: 100
+    });
+});
+</script>
+
+{% endblock %}

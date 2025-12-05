@@ -1,0 +1,61 @@
+{% extends 'pessoas/dashboard_base.html' %}
+
+{% block title %}Editar Medicamento{% endblock %}
+
+{% block content %}
+<h2 class="page-title">Editar Medicamento</h2>
+
+<div class="data-table-container">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <div style="margin-bottom: 20px;">
+            <label for="id_nome" style="display: block; margin-bottom: 5px; font-weight: 600;">Nome do Medicamento:</label>
+            {{ form.nome }}
+        </div>
+        
+        <div style="margin-bottom: 20px;">
+            <label for="id_valor" style="display: block; margin-bottom: 5px; font-weight: 600;">Valor (R$):</label>
+            {{ form.valor }}
+        </div>
+        
+        <div style="margin-bottom: 20px;">
+            <label for="id_necessita_receita" style="display: block; margin-bottom: 5px; font-weight: 600;">
+                <input type="checkbox" name="necessita_receita" id="id_necessita_receita" {% if form.necessita_receita.value %}checked{% endif %}>
+                Necessita receita médica
+            </label>
+        </div>
+        
+        <div style="margin-bottom: 20px;">
+            <label for="id_foto" style="display: block; margin-bottom: 5px; font-weight: 600;">Foto do Medicamento:</label>
+            {% if medicamento.foto %}
+                <div style="margin-bottom: 10px;">
+                    <img src="{{ medicamento.foto.url }}" alt="{{ medicamento.nome }}" style="max-width: 200px; border-radius: 8px;">
+                    <p style="font-size: 12px; color: #666; margin-top: 5px;">Foto atual</p>
+                </div>
+            {% endif %}
+            {{ form.foto }}
+        </div>
+        
+        <div style="display: flex; gap: 10px; margin-top: 30px;">
+            <button type="submit" class="btn-editar" style="padding: 12px 30px;">Salvar Alterações</button>
+            <a href="{% url 'dashboard_produtos' %}" class="btn-cancelar" style="padding: 12px 30px;">Cancelar</a>
+        </div>
+    </form>
+</div>
+
+<style>
+    input[type="text"], input[type="number"], input[type="file"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 14px;
+    }
+    
+    input[type="text"]:focus, input[type="number"]:focus {
+        outline: none;
+        border-color: #5ba3d0;
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,333 @@
+# SIMED - Sistema Integrado de Medicina
+
+Sistema completo de gerenciamento de clínica médica com agendamento de consultas, gestão de pacientes, profissionais e farmácia.
+
+## Sumário
+
+- [Visão Geral](#visão-geral)
+- [Funcionalidades](#funcionalidades)
+- [Tecnologias Utilizadas](#tecnologias-utilizadas)
+- [Requisitos](#requisitos)
+- [Instalação Local](#instalação-local)
+- [Configuração do Google OAuth](#configuração-do-google-oauth)
+- [Deploy no Railway](#deploy-no-railway)
+- [Estrutura do Projeto](#estrutura-do-projeto)
+- [Banco de Dados](#banco-de-dados)
+- [Variáveis de Ambiente](#variáveis-de-ambiente)
+- [Comandos Úteis](#comandos-úteis)
+
+---
+
+## Visão Geral
+
+O SIMED é uma aplicação web desenvolvida em Django para gerenciamento completo de clínicas médicas. O sistema oferece:
+
+- Portal público com informações da clínica
+- Sistema de agendamento de consultas online
+- Painel administrativo para médicos, pacientes e atendentes
+- Catálogo de medicamentos da farmácia
+- Autenticação com Google OAuth
+- Dashboard administrativo completo
+
+---
+
+## Funcionalidades
+
+### Para Pacientes
+- Cadastro e login (tradicional ou Google)
+- Agendamento de consultas online
+- Visualização de histórico de consultas
+- Consulta de medicamentos disponíveis
+
+### Para Médicos
+- Painel com agenda de consultas
+- Registro de relatórios de atendimento
+- Visualização de informações dos pacientes
+
+### Para Atendentes
+- Gestão de agendamentos
+- Cadastro de pacientes
+- Gerenciamento de horários
+
+### Para Administradores
+- Dashboard com estatísticas
+- Gestão de usuários e cargos
+- Gerenciamento de medicamentos
+- Relatórios de ocupação
+
+---
+
+## Tecnologias Utilizadas
+
+- **Backend:** Django 5.2.6
+- **Banco de Dados:** PostgreSQL
+- **Autenticação:** django-allauth (Google OAuth)
+- **Frontend:** HTML5, CSS3, JavaScript
+- **Servidor de Produção:** Gunicorn
+- **Arquivos Estáticos:** WhiteNoise
+- **Imagens:** Pillow
+
+---
+
+## Requisitos
+
+- Python 3.11+
+- PostgreSQL 13+
+- pip (gerenciador de pacotes Python)
+
+---
+
+## Instalação Local
+
+### 1. Clone o repositório
+
+\`\`\`bash
+git clone <url-do-repositorio>
+cd simed
+\`\`\`
+
+### 2. Instale as dependências
+
+\`\`\`bash
+pip install -r requirements.txt
+\`\`\`
+
+### 3. Configure as variáveis de ambiente
+
+Crie um arquivo \`.env\` ou exporte as variáveis:
+
+\`\`\`bash
+export SECRET_KEY='sua-chave-secreta-aqui'
+export DEBUG='True'
+export PGDATABASE='simed_db'
+export PGUSER='seu_usuario'
+export PGPASSWORD='sua_senha'
+export PGHOST='localhost'
+export PGPORT='5432'
+\`\`\`
+
+### 4. Configure o banco de dados
+
+\`\`\`bash
+# Opção 1: Usar migrações do Django (recomendado)
+python manage.py migrate
+
+# Opção 2: Executar script SQL diretamente
+psql -U seu_usuario -d simed_db -f scripts/create_database.sql
+\`\`\`
+
+### 5. Crie um superusuário
+
+\`\`\`bash
+python manage.py createsuperuser
+\`\`\`
+
+### 6. Colete arquivos estáticos
+
+\`\`\`bash
+python manage.py collectstatic --noinput
+\`\`\`
+
+### 7. Execute o servidor de desenvolvimento
+
+\`\`\`bash
+python manage.py runserver 0.0.0.0:5000
+\`\`\`
+
+Acesse: http://localhost:5000
+
+---
+
+## Configuração do Google OAuth
+
+Para habilitar o login com Google, siga estes passos:
+
+### 1. Crie um projeto no Google Cloud Console
+
+1. Acesse https://console.cloud.google.com
+2. Crie um novo projeto ou selecione um existente
+3. Vá em "APIs e Serviços" > "Tela de consentimento OAuth"
+4. Configure a tela de consentimento (tipo: Externo)
+
+### 2. Crie as credenciais OAuth
+
+1. Vá em "APIs e Serviços" > "Credenciais"
+2. Clique em "Criar credenciais" > "ID do cliente OAuth"
+3. Tipo de aplicativo: "Aplicativo da Web"
+4. Adicione as URIs de redirecionamento autorizadas:
+   - Para desenvolvimento: \`http://localhost:5000/accounts/google/login/callback/\`
+   - Para Replit: \`https://seu-projeto.replit.dev/accounts/google/login/callback/\`
+   - Para Railway: \`https://seu-app.railway.app/accounts/google/login/callback/\`
+
+### 3. Configure as variáveis de ambiente
+
+\`\`\`bash
+export GOOGLE_CLIENT_ID='seu-client-id'
+export GOOGLE_CLIENT_SECRET='seu-client-secret'
+\`\`\`
+
+### 4. Configure o Site no Django Admin
+
+1. Acesse \`/admin/\` com seu superusuário
+2. Vá em "Sites" e edite o site existente:
+   - Domain: seu-dominio.com
+   - Display name: SIMED
+
+---
+
+## Deploy no Railway
+
+### 1. Prepare o projeto
+
+O projeto já inclui os arquivos necessários:
+- \`Procfile\` - Comandos de inicialização
+- \`railway.json\` - Configuração do Railway
+- \`runtime.txt\` - Versão do Python
+- \`requirements.txt\` - Dependências
+
+### 2. Crie uma conta no Railway
+
+1. Acesse https://railway.app
+2. Faça login com sua conta GitHub
+
+### 3. Crie um novo projeto
+
+1. Clique em "New Project"
+2. Selecione "Deploy from GitHub repo"
+3. Escolha o repositório do SIMED
+
+### 4. Adicione o banco de dados PostgreSQL
+
+1. No projeto Railway, clique em "New"
+2. Selecione "Database" > "PostgreSQL"
+3. O Railway criará automaticamente as variáveis de ambiente do banco
+
+### 5. Configure as variáveis de ambiente
+
+No painel do Railway, vá em "Variables" e adicione:
+
+\`\`\`
+SECRET_KEY=sua-chave-secreta-segura
+DEBUG=False
+ALLOWED_HOSTS=seu-app.railway.app
+GOOGLE_CLIENT_ID=seu-client-id
+GOOGLE_CLIENT_SECRET=seu-client-secret
+\`\`\`
+
+### 6. Deploy
+
+O Railway fará o deploy automaticamente após cada push no repositório.
+
+---
+
+## Estrutura do Projeto
+
+\`\`\`
+simed/
+├── cadastro_pessoas/        # Configurações do projeto Django
+│   ├── settings.py          # Configurações principais
+│   ├── urls.py              # URLs principais
+│   └── wsgi.py              # Configuração WSGI
+├── pessoas/                 # App principal
+│   ├── migrations/          # Migrações do banco de dados
+│   ├── static/              # Arquivos estáticos (CSS, JS, imagens)
+│   ├── templates/           # Templates HTML
+│   ├── admin.py             # Configuração do admin
+│   ├── models.py            # Modelos de dados
+│   ├── views.py             # Views/Controllers
+│   ├── urls.py              # URLs do app
+│   └── signals.py           # Signals do Django
+├── media/                   # Uploads de usuários
+├── scripts/                 # Scripts úteis
+│   └── create_database.sql  # Script de criação do banco
+├── manage.py                # CLI do Django
+├── requirements.txt         # Dependências Python
+├── Procfile                 # Comandos para Railway/Heroku
+├── railway.json             # Configuração do Railway
+└── runtime.txt              # Versão do Python
+\`\`\`
+
+---
+
+## Banco de Dados
+
+### Modelos Principais
+
+1. **Perfil** - Extensão do usuário com tipo (médico/paciente/atendente)
+2. **Especialidade** - Categorias de especialidades médicas
+3. **Profissional** - Informações detalhadas dos profissionais
+4. **Consulta** - Agendamentos de consultas
+5. **Medicamento** - Catálogo da farmácia
+
+### Script de Criação
+
+Para criar o banco manualmente, execute:
+
+\`\`\`bash
+psql -U usuario -d database -f scripts/create_database.sql
+\`\`\`
+
+Ou use as migrações do Django:
+
+\`\`\`bash
+python manage.py migrate
+\`\`\`
+
+---
+
+## Variáveis de Ambiente
+
+| Variável | Descrição | Obrigatória |
+|----------|-----------|-------------|
+| \`SECRET_KEY\` | Chave secreta do Django | Sim |
+| \`DEBUG\` | Modo debug (True/False) | Não (padrão: True) |
+| \`ALLOWED_HOSTS\` | Hosts permitidos | Não (padrão: *) |
+| \`PGDATABASE\` | Nome do banco PostgreSQL | Sim |
+| \`PGUSER\` | Usuário do banco | Sim |
+| \`PGPASSWORD\` | Senha do banco | Sim |
+| \`PGHOST\` | Host do banco | Sim |
+| \`PGPORT\` | Porta do banco | Sim |
+| \`GOOGLE_CLIENT_ID\` | ID do cliente Google OAuth | Não |
+| \`GOOGLE_CLIENT_SECRET\` | Secret do Google OAuth | Não |
+
+---
+
+## Comandos Úteis
+
+\`\`\`bash
+# Executar servidor de desenvolvimento
+python manage.py runserver 0.0.0.0:5000
+
+# Criar migrações após alterar models
+python manage.py makemigrations
+
+# Aplicar migrações
+python manage.py migrate
+
+# Criar superusuário
+python manage.py createsuperuser
+
+# Coletar arquivos estáticos
+python manage.py collectstatic
+
+# Abrir shell do Django
+python manage.py shell
+
+# Executar testes
+python manage.py test
+
+# Servidor de produção com Gunicorn
+gunicorn cadastro_pessoas.wsgi:application --bind 0.0.0.0:5000
+\`\`\`
+
+---
+
+## Suporte
+
+Para dúvidas ou problemas, abra uma issue no repositório.
+
+---
+
+## Licença
+
+Este projeto é privado e de uso exclusivo.

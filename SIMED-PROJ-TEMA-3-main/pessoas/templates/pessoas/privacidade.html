@@ -1,0 +1,205 @@
+{% extends 'pessoas/base.html' %}
+{% load static %}
+
+{% block content %}
+
+   <!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Política de Privacidade – SIMED</title>
+
+<style>
+    /* ----- Reset e correções globais ----- */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body, html {
+        margin: 0 !important;
+        padding: 0 !important;
+        font-family: "Inter", Arial, sans-serif;
+        background: #f4f6f8;
+        color: #333;
+        line-height: 1.7;
+    }
+
+    /* ----- Container principal ----- */
+    .container {
+        max-width: 900px;
+        margin: 40px auto 60px auto; /* Distância controlada do header */
+        background: #fff;
+        padding: 40px 50px;
+        border-radius: 16px;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+    }
+
+    /* ----- Títulos e textos ----- */
+    h1 {
+        font-size: 2.2rem;
+        margin-bottom: 10px;
+        color: #0B4C78;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+        color: #0B4C78;
+        margin-top: 40px;
+    }
+
+    ul {
+        margin-top: 8px;
+        padding-left: 22px;
+    }
+
+    li {
+        margin-bottom: 6px;
+    }
+
+    /* ----- Linha separadora ----- */
+    hr {
+        border: none;
+        border-top: 1px solid #e5e5e5;
+        margin: 35px 0;
+    }
+
+    /* ----- Nota final ----- */
+    .final-note {
+        margin-top: 45px;
+        padding: 20px 25px;
+        background: #f1f8f6;
+        border-left: 4px solid #1b8f5a;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 1rem;
+    }
+
+    /* ----- Correções específicas p/ header/footer do seu site ----- */
+    header, footer {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    header {
+        width: 100%;
+        background: #fff;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    }
+
+    footer {
+        width: 100%;
+        background: #0B4C78;
+        color: #fff;
+        padding: 30px 0 !important;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Política de Privacidade – SIMED | Clínica de Medicina</h1>
+    <p>
+        A SIMED valoriza a confiança depositada por seus pacientes e usuários. Nosso compromisso é proteger os dados pessoais e sensíveis tratados em nossos ambientes físicos e digitais, conforme as diretrizes da Lei Geral de Proteção de Dados (Lei nº 13.709/2018 – LGPD).
+    </p>
+
+    <hr>
+
+    <h2>1. Coleta de Dados</h2>
+    <p>Coletamos dados pessoais e médicos fornecidos no momento do agendamento, atendimento ou por meio de formulários digitais e presenciais.</p>
+    <p>Entre os dados coletados estão: nome completo, CPF, telefone, endereço, data de nascimento, dados do plano de saúde, histórico clínico, exames e prescrições.</p>
+
+    <hr>
+
+    <h2>2. Finalidade do Tratamento</h2>
+    <p>Os dados são utilizados exclusivamente para:</p>
+    <ul>
+        <li>prestação de serviços médicos e de saúde;</li>
+        <li>agendamento e confirmação de consultas;</li>
+        <li>emissão de receitas e laudos;</li>
+        <li>faturamento junto a planos de saúde ou pagamentos particulares;</li>
+        <li>obrigações legais e regulatórias.</li>
+    </ul>
+
+    <hr>
+
+    <h2>3. Compartilhamento de Dados</h2>
+    <p>A SIMED poderá compartilhar dados com:</p>
+    <ul>
+        <li>operadoras de saúde conveniadas;</li>
+        <li>laboratórios e parceiros técnicos, quando necessário para o atendimento;</li>
+        <li>autoridades públicas, mediante exigência legal ou judicial.</li>
+    </ul>
+    <p>O compartilhamento é sempre realizado com base legal e visando à segurança do paciente.</p>
+
+    <hr>
+
+    <h2>4. Consentimento e Direitos do Titular</h2>
+    <p>O paciente tem o direito de:</p>
+    <ul>
+        <li>acessar seus dados pessoais;</li>
+        <li>corrigir informações incompletas ou desatualizadas;</li>
+        <li>solicitar a exclusão de dados, quando aplicável;</li>
+        <li>revogar o consentimento a qualquer momento.</li>
+    </ul>
+    <p>Solicitações podem ser feitas por nossos canais de atendimento.</p>
+
+    <hr>
+
+    <h2>5. Segurança das Informações</h2>
+    <p>
+        Adotamos medidas técnicas e administrativas rigorosas para proteger os dados contra acessos não autorizados, perdas, vazamentos ou qualquer forma de tratamento inadequado.
+    </p>
+    <p>Os prontuários eletrônicos são armazenados em sistemas criptografados e com acesso restrito.</p>
+
+    <hr>
+
+    <h2>6. Armazenamento e Retenção</h2>
+    <p>
+        Os dados são armazenados pelo tempo necessário à prestação do serviço e cumprimento de obrigações legais.
+    </p>
+    <p>Prontuários médicos são mantidos conforme prazos definidos pelo Conselho Federal de Medicina (CFM).</p>
+
+    <hr>
+
+    <h2>7. Cookies e Navegação Online</h2>
+    <p>
+        Nosso site e sistema online podem utilizar cookies para melhorar a navegação, garantir funcionalidades e gerar estatísticas de acesso.
+    </p>
+    <p>
+        O usuário pode, a qualquer momento, configurar seu navegador para recusar o uso de cookies.
+    </p>
+
+    <hr>
+
+    <h2>8. Encarregado de Dados (DPO)</h2>
+    <p>
+        A SIMED possui um Encarregado pelo Tratamento de Dados Pessoais (DPO), responsável por atender dúvidas, sugestões ou solicitações relativas à privacidade.
+    </p>
+    <p>O contato pode ser feito por meio dos nossos canais institucionais.</p>
+
+    <hr>
+
+    <h2>9. Atualizações desta Política</h2>
+    <p>
+        Esta Política poderá ser atualizada periodicamente para refletir mudanças legislativas ou melhorias internas.
+    </p>
+    <p>A versão atual estará sempre disponível em nossos canais oficiais.</p>
+
+    <hr>
+
+    <h2>10. Aceite e Concordância</h2>
+    <p>
+        Ao utilizar os serviços da SIMED ou fornecer seus dados, o paciente declara estar ciente e de acordo com esta Política de Privacidade.
+    </p>
+
+</div>
+
+</body>
+</html>
+
+{% endblock %}

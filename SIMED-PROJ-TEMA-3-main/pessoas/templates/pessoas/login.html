@@ -1,0 +1,338 @@
+{% load socialaccount %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - CIMED</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        .section-login {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #E9F2F9 0%, #9CC4E4 100%);
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .login-panel {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            max-width: 400px;
+            width: 100%;
+            animation: slideUp 0.6s ease;
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .card-title {
+            text-align: center;
+            color: #1B325F;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 30px;
+        }
+        
+        .google-btn {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .google-btn a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: white;
+            border: 2px solid #ddd;
+            padding: 12px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .google-btn a:hover {
+            background: #f8f9fa;
+            border-color: #1B325F;
+            transform: translateY(-2px);
+        }
+        
+        .divisor {
+            text-align: center;
+            margin: 20px 0;
+            position: relative;
+        }
+        
+        .divisor::before,
+        .divisor::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 40%;
+            height: 1px;
+            background: #ddd;
+        }
+        
+        .divisor::before { left: 0; }
+        .divisor::after { right: 0; }
+        
+        .divisor span {
+            background: white;
+            padding: 0 15px;
+            color: #999;
+            font-size: 14px;
+        }
+        
+        .input-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        
+        .input-group i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+            transition: color 0.3s;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 15px 15px 15px 45px;
+            border: 2px solid #E9F2F9;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+        
+        .input-group input:focus {
+            border-color: #1B325F;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(27, 50, 95, 0.1);
+        }
+        
+        .input-group input:focus + i,
+        .input-group:focus-within i {
+            color: #1B325F;
+        }
+        
+        .btn-login {
+            width: 100%;
+            padding: 15px;
+            background: #1B325F;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 20px 0;
+        }
+        
+        .btn-login:hover {
+            background: #F26C4F;
+            transform: translateY(-2px);
+        }
+        
+        .redirecionamentos {
+            text-align: center;
+            margin: 10px 0;
+        }
+        
+        .redirecionamentos a {
+            color: #1B325F;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+        
+        .redirecionamentos a:hover {
+            color: #F26C4F;
+        }
+        
+        .content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 60px;
+            padding: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .image-content {
+            max-width: 400px;
+            animation: slideLeft 0.8s ease;
+        }
+        
+        @keyframes slideLeft {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .image-content img {
+            max-width: 100%;
+            height: auto;
+        }
+        
+        .alert {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: slideDown 0.4s ease;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .errorlist {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 15px 0;
+        }
+        
+        .errorlist li {
+            color: #dc3545;
+            font-size: 13px;
+            padding: 5px 0;
+        }
+        
+        @media (max-width: 768px) {
+            .image-content {
+                display: none;
+            }
+            
+            .login-panel {
+                margin: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="section-login">
+    <div class="container">
+        <div class="content">
+            <div class="login-panel">
+                <h2 class="card-title">
+                    <i class="fas fa-user-circle"></i> Login
+                </h2>
+                
+                {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    <i class="fas {% if message.tags == 'success' %}fa-check-circle{% else %}fa-exclamation-circle{% endif %}"></i>
+                    {{ message }}
+                </div>
+                {% endfor %}
+                {% endif %}
+                
+                <div class="google-btn">
+                    <a href="{% provider_login_url 'google' %}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M15.545 6.558a9.42 9.42 0 0 1 .139 1.626c0 2.434-.87 4.492-2.384 5.885h.002C11.978 15.292 10.158 16 8 16A8 8 0 1 1 8 0a7.689 7.689 0 0 1 5.352 2.082l-2.284 2.284A4.347 4.347 0 0 0 8 3.166c-2.087 0-3.86 1.408-4.492 3.304a4.792 4.792 0 0 0 0 3.063h.003c.635 1.893 2.405 3.301 4.492 3.301 1.078 0 2.004-.276 2.722-.764h-.003a3.702 3.702 0 0 0 1.599-2.431H8v-3.08h7.545z"/>
+                        </svg>
+                        Entrar com Google
+                    </a>
+                </div>
+                
+                <div class="divisor">
+                    <span>ou</span>
+                </div>
+                
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    {% if form.non_field_errors %}
+                    <ul class="errorlist">
+                        {% for error in form.non_field_errors %}
+                        <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                    
+                    <div class="input-group">
+                        <i class="fa-solid fa-user"></i>
+                        {{ form.username }}
+                    </div>
+
+                    <div class="input-group">
+                        <i class="fa-solid fa-lock"></i>
+                        {{ form.password }}
+                    </div>
+
+                    <div class="redirecionamentos cima">
+                        <a href="#">Esqueceu sua senha?</a>
+                    </div>
+                    
+                    <button type="submit" class="btn-login">
+                        <i class="fas fa-sign-in-alt"></i> Entrar
+                    </button>
+
+                    <div class="redirecionamentos baixo">
+                        <a href="{% url 'cadastro' %}">Não possui uma conta? <strong>Cadastre-se</strong></a>
+                    </div>
+                </form>
+            </div>
+            <div class="image-content">
+                <img src="{% static 'images/enfermeira.png' %}" alt="Enfermeira">
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

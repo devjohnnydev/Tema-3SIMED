@@ -1,0 +1,37 @@
+{% extends 'pessoas/dashboard_base.html' %}
+
+{% block title %}Dashboard - Pacientes Cadastrados{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: flex-end; margin-bottom: 20px;">
+    <a href="{% url 'cadastro' %}" class="btn-editar" style="background-color: #28a745; padding: 10px 20px;">+ Registrar Novo Paciente</a>
+</div>
+
+<h2 class="page-title">Gerenciar pacientes cadastrados no sistema</h2>
+
+<div class="data-table-container">
+    <div class="table-header grid-pacientes">
+        <div>Nome:</div>
+        <div>E-mail:</div>
+        <div>Remover:</div>
+    </div>
+    
+    {% for paciente in pacientes %}
+    <div class="table-row grid-pacientes">
+        <div>{{ paciente.username }} {{ paciente.last_name }}</div>
+        <div>{{ paciente.email }}</div>
+        <div style="display: flex; gap: 5px;">
+            <a href="{% url 'gerenciar_cargos' paciente.id %}" class="btn-editar" style="padding: 8px 10px;">CARGO</a>
+            <form method="post" action="{% url 'remover_paciente' paciente.id %}" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn-remover" onclick="return confirm('Deseja realmente remover este paciente?')">REMOVER</button>
+            </form>
+        </div>
+    </div>
+    {% empty %}
+    <div class="table-row">
+        <div style="text-align: center; padding: 20px; color: #999; grid-column: 1 / -1;">Nenhum paciente cadastrado.</div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

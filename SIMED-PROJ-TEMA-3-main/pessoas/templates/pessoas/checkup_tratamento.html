@@ -1,0 +1,26 @@
+{% extends 'pessoas/base.html' %}
+
+{% load static %}
+
+{% block title %}Check-up{% endblock %}
+
+{% block content %}
+
+<main class="container-checkup">
+    <section class="treatment-selection">
+        <h2>Selecione um tratamento:</h2>
+        <select id="treatment-select">
+            <option value="">-- Escolha um tratamento --</option>
+        </select>
+    </section>
+    <!-- Container para os detalhes do tratamento -->
+    <div id="treatment-details-container">
+    <!-- Detalhes serão inseridos aqui pelo JavaScript -->
+    </div>
+</main>
+<script>
+    const CHECKUP_TRATAMENTO_URL = "{% url 'checkup_tratamento' %}";
+</script>
+<script src="{% static 'script/script.js' %}"></script>
+
+{% endblock %}

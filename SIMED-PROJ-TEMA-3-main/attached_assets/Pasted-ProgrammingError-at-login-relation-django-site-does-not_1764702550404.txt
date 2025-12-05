@@ -1,0 +1,42 @@
+ProgrammingError at /login/
+relation "django_site" does not exist
+LINE 1: ..."django_site"."domain", "django_site"."name" FROM "django_si...
+                                                             ^
+Request Method:	GET
+Request URL:	https://ce225f1d-9f35-4b17-a72c-a84c65cbac23-00-1i1qsqutt89in.kirk.replit.dev/login/
+Django Version:	5.2.6
+Exception Type:	ProgrammingError
+Exception Value:	
+relation "django_site" does not exist
+LINE 1: ..."django_site"."domain", "django_site"."name" FROM "django_si...
+                                                             ^
+Exception Location:	/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/django/db/backends/utils.py, line 105, in _execute
+Raised during:	pessoas.views.login_view
+Python Executable:	/home/runner/workspace/.pythonlibs/bin/python
+Python Version:	3.11.13
+Python Path:	
+['/home/runner/workspace',
+ '/nix/store/zz7i75jb78idaz0rb1y1i4rzdyxq28vf-sitecustomize/lib/python/site-packages',
+ '/nix/store/yaps09f01jp3fd1405qlr0qz6haf6z03-python3.11-pip-25.0.1/lib/python3.11/site-packages',
+ '/nix/store/7d088dip86hlzri9sk0h78b63yfmx0a0-python3-3.11.13/lib/python311.zip',
+ '/nix/store/7d088dip86hlzri9sk0h78b63yfmx0a0-python3-3.11.13/lib/python3.11',
+ '/nix/store/7d088dip86hlzri9sk0h78b63yfmx0a0-python3-3.11.13/lib/python3.11/lib-dynload',
+ '/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages',
+ '/nix/store/7d088dip86hlzri9sk0h78b63yfmx0a0-python3-3.11.13/lib/python3.11/site-packages',
+ '/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages',
+ '/nix/store/y0iwy8ma2m45pr23bw4r7lyz69v2b6wf-python3.11-setuptools-80.7.1/lib/python3.11/site-packages']
+Server time:	Tue, 02 Dec 2025 16:07:22 -0300
+Error during template rendering
+In template /home/runner/workspace/pessoas/templates/pessoas/login.html, error at line 284
+
+relation "django_site" does not exist LINE 1: ..."django_site"."domain", "django_site"."name" FROM "django_si... ^
+274	                {% if messages %}
+275	                {% for message in messages %}
+276	                <div class="alert alert-{{ message.tags }}">
+277	                    <i class="fas {% if message.tags == 'success' %}fa-check-circle{% else %}fa-exclamation-circle{% endif %}"></i>
+278	                    {{ message }}
+279	                </div>
+280	                {% endfor %}
+281	                {% endif %}
+282	                
+283	                <div class="google-btn">

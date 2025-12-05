@@ -1,0 +1,50 @@
+{% extends 'pessoas/dashboard_base.html' %}
+
+{% block title %}Dashboard - Produtos{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: flex-end; margin-bottom: 20px;">
+    <a href="{% url 'cadastrar_medicamento' %}" class="btn-editar" style="background-color: #28a745; padding: 10px 20px;">+ Adicionar Novo Medicamento</a>
+</div>
+
+<h2 class="page-title">Gerenciar prodtuos cadastrados no sistema</h2>
+
+<div class="data-table-container">
+    <div class="table-header grid-produtos">
+        <div>Foto</div>
+        <div>Medicamentos disponíveis:</div>
+        <div>Valores:</div>
+        <div>Necessita de Receita médica:</div>
+        <div>Editar:</div>
+        <div>Remover:</div>
+    </div>
+    
+    {% for medicamento in medicamentos %}
+    <div class="table-row grid-produtos">
+        <div>
+            {% if medicamento.foto %}
+                <img src="{{ medicamento.foto.url }}" alt="{{ medicamento.nome }}" class="product-img">
+            {% else %}
+                <div class="product-img" style="background-color: #e0e0e0; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #999;">Sem foto</div>
+            {% endif %}
+        </div>
+        <div>{{ medicamento.nome }}</div>
+        <div>R${{ medicamento.valor }}</div>
+        <div>{% if medicamento.necessita_receita %}Sim{% else %}Não{% endif %}</div>
+        <div>
+            <a href="{% url 'editar_medicamento' medicamento.id %}" class="btn-editar">EDITAR</a>
+        </div>
+        <div>
+            <form method="post" action="{% url 'excluir_medicamento' medicamento.id %}" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn-remover" onclick="return confirm('Deseja realmente remover este medicamento?')">REMOVER</button>
+            </form>
+        </div>
+    </div>
+    {% empty %}
+    <div class="table-row">
+        <div style="text-align: center; padding: 20px; color: #999;">Nenhum medicamento cadastrado.</div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

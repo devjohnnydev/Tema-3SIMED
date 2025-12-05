@@ -1,0 +1,258 @@
+{% extends 'pessoas/base.html' %}
+
+{% load static %}
+
+{% block title %}Página Inicial{% endblock %}
+
+{% block content %}
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+<!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+
+<section class="section1" id="inicio">
+    <div class="section-content">
+        <div class="section-50">
+            <h1>SIMED - SERVIÇO INTEGRADO DE MEDICINA</h1>
+            <p>Na SIMED, unimos tecnologia, cuidado e experiência para oferecer um atendimento humanizado e de qualidade. Nossa equipe de profissionais está preparada para cuidar da sua saúde com dedicação, respeito e excelência em cada detalhe. Aqui, você encontra o suporte que precisa para viver melhor todos os dias.<br>Com estrutura moderna e diversos especialistas, a SIMED oferece consultas, exames e programas de prevenção em um só lugar. Nosso compromisso é garantir conforto, agilidade e confiança em cada etapa do seu atendimento, porque cuidar de você é a nossa prioridade.</p>
+            <div class="btns">
+                <a href="{% if user.is_authenticated %}{% url 'painel_paciente' %}{% else %}{% url 'login' %}{% endif %}" class="btn btn-primary">Agende sua Consulta</a>
+            </div>
+        </div>
+        <div class="section-50">
+            <img src="{% static 'images/medicoHome.jpg' %}" alt="">
+        </div>
+    </div>
+</section>
+
+<section class="cards-navegacao">
+    <div class="cards-nav-content">
+        <a href="{% url 'painel_paciente' %}">
+          <div class="cards-nav-card">
+              <i class="bi bi-card-heading icon-nav"></i>
+              <h3>Consulta</h3>
+          </div>
+        </a>
+        <a href="{% url 'exames' %}">
+          <div class="cards-nav-card">
+              <i class="bi bi-clipboard2-pulse icon-nav"></i>
+              <h3>Exame</h3>
+          </div>
+        </a>
+        <a href="{% url 'odontologia' %}">
+          <div class="cards-nav-card">
+             <i class="bi bi-emoji-smile icon-nav"></i>
+              <h3>Odontologia</h3>
+          </div>
+        </a>
+        <a href="{% url 'cirurgia' %}">
+          <div class="cards-nav-card">
+              <i class="bi bi-heart-pulse icon-nav"></i>
+              <h3>Cirurgia</h3>
+          </div>
+        </a>
+        <a href="{% url 'home' %}">
+          <div class="cards-nav-card">
+              <i class="bi bi-person-check icon-nav"></i>
+              <h3>Check-up</h3>
+          </div>
+        </a>
+    </div>
+</section>
+
+<section class="nss-srvcs" id="servicos">
+  <div class="container text-center">
+    <h2 class="nss-srvcs-titulo">Nossos Serviços</h2>
+    <p class="nss-srvcs-descricao">
+      Cuidamos da sua saúde com tecnologia, experiência e acolhimento. Conheça nossos principais serviços:
+    </p>
+
+    <div class="nss-srvcs-content">
+      <!-- Card 1 -->
+      <div class="nss-srvcs-card">
+        <div class="nss-srvcs-icone">
+          <i class="bi bi-laptop"></i>
+        </div>
+        <h3>Consulta Online</h3>
+        <p>
+          Agende com facilidade e receba atendimento de onde estiver, com segurança e praticidade.
+        </p>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="nss-srvcs-card">
+        <div class="nss-srvcs-icone">
+          <i class="bi bi-person-badge"></i>
+        </div>
+        <h3>Consulta Presencial</h3>
+        <p>
+          Atendimento médico humanizado com profissionais experientes e estrutura moderna.
+        </p>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="nss-srvcs-card">
+        <div class="nss-srvcs-icone">
+          <i class="bi bi-heart-pulse"></i>
+        </div>
+        <h3>Exames</h3>
+        <p>
+          Realize exames laboratoriais e de imagem com tecnologia de ponta e resultados rápidos.
+        </p>
+      </div>
+    </div>
+
+    <p class="nss-srvcs-descricao-final">
+      Na <strong>SIMED</strong>, você encontra um cuidado completo, desde o diagnóstico até o acompanhamento contínuo.
+    </p>
+  </div>
+</section>
+
+<section class="convenios" id="convenios">
+  <div class="container">
+    <h1 class="titulo-secao">Convênios</h1>
+    <p class="texto-intro">
+      Na nossa clínica, trabalhamos com uma ampla variedade de convênios para garantir que você tenha acesso
+      aos melhores cuidados de saúde com praticidade e tranquilidade.
+    </p>
+
+    <!-- Carrossel Slick -->
+    <div class="convenios-slider">
+      <div class="convenio-item" style="--bg-color: #2a00ff;">
+        <div class="convenio-texto">
+          <h3>Amil</h3>
+          <p>A Amil é uma das maiores operadoras de planos de saúde do Brasil, oferecendo ampla rede de atendimento e foco em qualidade, tecnologia e bem-estar.</p>
+        </div>
+        <div class="convenio-logo">
+          <img src="{% static 'images/amil.png' %}" alt="Amil">
+        </div>
+      </div>
+
+      <div class="convenio-item" style="--bg-color: #009c3b;">
+        <div class="convenio-texto">
+          <h3>Unimed</h3>
+          <p>A Unimed é a maior cooperativa de saúde do Brasil, reconhecida por sua ampla rede de médicos e hospitais e pelo compromisso com a qualidade e o cuidado humanizado.</p>
+        </div>
+        <div class="convenio-logo">
+          <img src="{% static 'images/unimed22.png' %}" alt="Unimed">
+        </div>
+      </div>
+
+      <div class="convenio-item" style="--bg-color: #e60000;">
+        <div class="convenio-texto">
+          <h3>Bradesco Saúde</h3>
+          <p>A Bradesco Saúde é uma das principais operadoras do país, oferecendo planos de saúde com ampla cobertura, rede de qualidade e atendimento diferenciado.</p>
+        </div>
+        <div class="convenio-logo">
+          <img src="{% static 'images/bradesco.png' %}" alt="Bradesco Saúde">
+        </div>
+      </div>
+
+      <div class="convenio-item" style="--bg-color: #ff8800;">
+        <div class="convenio-texto">
+          <h3>SulAmérica</h3>
+          <p>A SulAmérica é uma tradicional empresa de seguros e saúde, conhecida pela confiança, inovação e foco no bem-estar e na prevenção.</p>
+        </div>
+        <div class="convenio-logo">
+          <img src="{% static 'images/sulamerica.png' %}" alt="SulAmérica">
+        </div>
+      </div>
+
+      <div class="convenio-item" style="--bg-color: #0076a8;">
+        <div class="convenio-texto">
+          <h3>Porto Saúde</h3>
+          <p>A Porto Saúde faz parte do grupo Porto, oferecendo planos com atendimento humanizado, tecnologia e ampla rede credenciada.</p>
+        </div>
+        <div class="convenio-logo">
+          <img src="{% static 'images/portosaude.png' %}" alt="Porto Saúde">
+        </div>
+      </div>
+
+      <div class="convenio-item" style="--bg-color: #ff9900;">
+        <div class="convenio-texto">
+          <h3>NotreDame Intermédica</h3>
+          <p>A NotreDame Intermédica é referência em saúde integrada, combinando hospitais próprios, clínicas e programas de prevenção para um cuidado completo.</p>
+        </div>
+        <div class="convenio-logo">
+          <img src="{% static 'images/notredame.png' %}" alt="NotreDame">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Dependências do Slick -->
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+
+<!-- Script de inicialização -->
+<script>
+$(document).ready(function(){
+  $('.convenios-slider').slick({
+    dots: true,
+    infinite: true,
+    arrows: true,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 4000,
+    prevArrow: '<button type="button" class="slick-prev"><i class="bi bi-chevron-left"></i></button>',
+    nextArrow: '<button type="button" class="slick-next"><i class="bi bi-chevron-right"></i></button>'
+  });
+});
+</script>
+
+<section class="consultorios" id="consultorios">
+  <div class="consultorios-overlay">
+    <div class="consultorios-texto">
+      <h2>Conheça nossos consultórios!</h2>
+      <p>
+        Marque agora seu atendimento, adapte seu tempo livre ao nosso horário de funcionamento
+      </p>
+      <a href="{% if user.is_authenticated %}{% url 'painel_paciente' %}{% else %}{% url 'login' %}{% endif %}" class="btn-agendar">Marque agora sua agenda</a>
+    </div>
+  </div>
+</section>
+
+<section class="experiencia" id="experiencia">
+  <div class="container">
+    <h2 class="titulo-secao">A experiência dos clientes com Simed</h2>
+
+    <div class="avaliacao">
+      <div class="avaliacao-item">
+        <h6>Roberto</h6>
+        <span>01/01/2026</span>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut a posuere sapien. Vestibulum dictum nunc nunc,
+          vitae aliquet ante suscipit et. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae.
+        </p>
+      </div>
+
+      <div class="avaliacao-item">
+        <h6>Nicole</h6>
+        <span>01/01/2026</span>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut a posuere sapien. Vestibulum dictum nunc nunc,
+          vitae aliquet ante suscipit et.
+        </p>
+      </div>
+
+      <div class="avaliacao-item">
+        <h6>Alex</h6>
+        <span>01/01/2026</span>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut a posuere sapien. Vestibulum dictum nunc nunc,
+          vitae aliquet ante suscipit et.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Bootstrap JS Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+{% endblock %}

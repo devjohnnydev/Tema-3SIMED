@@ -1,0 +1,177 @@
+{% extends 'pessoas/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    /* ----- Correções globais ----- */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: "Inter", Arial, sans-serif;
+        background: #f4f6f8;
+        color: #333;
+        line-height: 1.7;
+    }
+
+    /* Remove qualquer margin-top que o body estivesse herdando */
+    body, html {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    /* ----- Container principal ----- */
+    .container {
+        max-width: 900px;
+        margin: 40px auto 60px auto;   /* distância controlada entre header e conteúdo */
+        background: #fff;
+        padding: 40px 50px;
+        border-radius: 16px;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+    }
+
+    /* ----- Títulos e textos ----- */
+    h1 {
+        font-size: 2.2rem;
+        margin-bottom: 10px;
+        color: #0B4C78;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+        color: #0B4C78;
+        margin-top: 35px;
+    }
+
+    ul {
+        margin-top: 8px;
+        padding-left: 20px;
+    }
+
+    li {
+        margin-bottom: 6px;
+    }
+
+    /* ----- Nota final ----- */
+    .final-note {
+        margin-top: 45px;
+        padding: 20px 25px;
+        background: #f1f8f6;
+        border-left: 4px solid #1b8f5a;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 1rem;
+    }
+
+    /* ----- Correções específicas para header/footer do seu layout ----- */
+    header, footer {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    header {
+        display: block;
+        width: 100%;
+        background: #fff;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    }
+
+    footer {
+        display: block;
+        width: 100%;
+        background: #0B4C78;
+        color: #fff;
+        padding: 30px 0 !important;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Política de Uso – SIMED</h1>
+    <p>
+        A SIMED tem como compromisso oferecer um atendimento ético, seguro e humanizado.  
+        Para garantir uma convivência harmoniosa e a qualidade dos serviços prestados, apresentamos abaixo
+        nossas <strong>Políticas de Uso</strong>, válidas para todos os pacientes, acompanhantes e usuários dos nossos sistemas.
+    </p>
+
+    <h2>1. Agendamento e Comparecimento</h2>
+    <ul>
+        <li>Atendimentos são realizados exclusivamente com horário marcado.</li>
+        <li>Recomenda-se chegar com pelo menos 15 minutos de antecedência.</li>
+        <li>Cancelamentos devem ser solicitados com no mínimo 24 horas de antecedência.</li>
+        <li>A ausência sem aviso prévio poderá restringir futuros agendamentos.</li>
+    </ul>
+
+    <h2>2. Pontualidade e Tolerância</h2>
+    <ul>
+        <li>A tolerância máxima para atrasos é de <strong>10 minutos</strong>.</li>
+        <li>Após esse período, o atendimento poderá ser reagendado.</li>
+        <li>Casos de emergência terão prioridade conforme avaliação médica.</li>
+    </ul>
+
+    <h2>3. Conduta nas Unidades</h2>
+    <ul>
+        <li>Comportamento respeitoso é obrigatório.</li>
+        <li>Agressões e condutas discriminatórias resultarão em suspensão do atendimento.</li>
+        <li>É proibido portar armas ou substâncias ilícitas.</li>
+    </ul>
+
+    <h2>4. Privacidade e Proteção de Dados (LGPD)</h2>
+    <ul>
+        <li>Todos os dados são tratados conforme a LGPD (Lei nº 13.709/2018).</li>
+        <li>Utilizados apenas para finalidades clínicas, administrativas ou legais.</li>
+        <li>O paciente pode solicitar alteração, consulta ou exclusão de seus dados.</li>
+    </ul>
+
+    <h2>5. Entrega de Exames e Emissão de Receitas</h2>
+    <ul>
+        <li>Resultados e receitas podem ser retirados por terceiros apenas com autorização.</li>
+        <li>Medicamentos controlados exigem prescrição presencial.</li>
+    </ul>
+
+    <h2>6. Uso do Sistema Online e Localização por CEP</h2>
+    <ul>
+        <li>O sistema permite agendar consultas e acessar resultados.</li>
+        <li>O paciente é responsável pela veracidade das informações fornecidas.</li>
+    </ul>
+
+    <h2>7. Acompanhantes</h2>
+    <ul>
+        <li>Menores, idosos e pessoas com necessidades especiais devem estar acompanhados.</li>
+        <li>Em procedimentos restritos, acompanhantes aguardam na área indicada.</li>
+    </ul>
+
+    <h2>8. Formas de Pagamento e Convênios</h2>
+    <ul>
+        <li>A SIMED aceita convênios e consultas particulares.</li>
+        <li>Convênios devem ser informados no agendamento.</li>
+        <li>O paciente deve verificar a cobertura do plano.</li>
+    </ul>
+
+    <h2>9. Responsabilidade Clínica</h2>
+    <ul>
+        <li>As condutas seguem protocolos técnicos e éticos.</li>
+        <li>Procedimentos fora das diretrizes médicas podem ser recusados.</li>
+    </ul>
+
+    <h2>10. Revisões e Atualizações</h2>
+    <p>
+        Esta política poderá ser revisada periodicamente, em conformidade com a legislação vigente.
+    </p>
+
+    <div class="final-note">
+        Ao utilizar os serviços da SIMED, o paciente declara estar ciente e de acordo com esta Política de Uso.
+    </div>
+
+</div>
+</body>
+</html>
+
+{% endblock %}

@@ -1,0 +1,128 @@
+{% extends 'pessoas/base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<section class="section-painelpaciente">
+
+    <h2 class="titulo-painel">Painel do Paciente</h2>
+
+    <div class="painel-container">
+
+        <!-- Coluna do formulário de agendamento -->
+        <div class="col-agendamento">
+            <div class="card-agendamento">
+                <div class="card-body-agendamento">
+                    <h4 class="titulo-agendamento">Agendar Nova Consulta</h4>
+                    <form method="post" class="form-agendamento">
+                        {% csrf_token %}
+                        {% for field in form %}
+    {% if field.name == 'data' %}
+        <p>
+            <label for="{{ field.id_for_label }}">{{ field.label }}:</label>
+            {{ field }}
+            {% if field.errors %}<small class="text-danger">{{ field.errors }}</small>{% endif %}
+        </p>
+    {% elif field.name == 'hora' %}
+        <p id="hora-field-container">
+            <label for="{{ field.id_for_label }}">{{ field.label }}:</label>
+            {{ field }}
+            {% if field.errors %}<small class="text-danger">{{ field.errors }}</small>{% endif %}
+        </p>
+    {% elif field.name == 'medico' %}
+        <p>
+            <label for="{{ field.id_for_label }}">{{ field.label }}:</label>
+            {{ field }}
+            {% if field.errors %}<small class="text-danger">{{ field.errors }}</small>{% endif %}
+        </p>
+    {% else %}
+        {{ field.as_p }}
+    {% endif %}
+{% endfor %}
+                        <button type="submit" class="btn btn-primary btn-agendar">Agendar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Coluna das consultas -->
+        <div class="col-consultas">
+            <h4 class="titulo-consultas">Minhas Consultas</h4>
+            <ul class="lista-consultas list-group">
+                {% for consulta in consultas %}
+                    <li class="item-consulta list-group-item d-flex justify-content-between align-items-center">
+                        <div class="info-consulta">
+                            <strong>Dr(a). {{ consulta.medico.username }} {{ consulta.medico.last_name }}</strong><br>
+                            <small class="text-muted">{{ consulta.data_hora|date:"d/m/Y, H:i" }}</small>
+                        </div>
+                        <span class="status-consulta badge bg-info rounded-pill">{{ consulta.get_status_display }}</span>
+                    </li>
+                {% empty %}
+                    <li class="item-vazio list-group-item">Você ainda não tem consultas agendadas.</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const medicoSelect = document.getElementById('id_medico');
+        const dataInput = document.getElementById('id_data');
+        const horaSelect = document.getElementById('id_hora');
+        const horaContainer = document.getElementById('hora-field-container');
+
+                // Função para buscar e atualizar os horários
+        function atualizarHorarios() {
+            const medicoId = medicoSelect.value;
+            const dataSelecionada = dataInput.value;
+
+            // Se o médico ou a data não estiverem selecionados, limpa o campo de hora
+            if (!medicoId || !dataSelecionada) {
+                horaSelect.innerHTML = '<option value="">---------</option>';
+                return;
+            }
+
+            // Faz a chamada AJAX para a nova view
+            fetch(`/ajax/horarios_disponiveis/?medico_id=${medicoId}&data=${dataSelecionada}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Limpa as opções atuais
+                    horaSelect.innerHTML = '<option value="">---------</option>';
+
+                    if (data.horarios && data.horarios.length > 0) {
+                        // Adiciona as novas opções
+                        data.horarios.forEach(horario => {
+                            const option = document.createElement('option');
+                            option.value = horario.value;
+                            option.textContent = horario.display;
+                            horaSelect.appendChild(option);
+                        });
+                    } else {
+                        const option = document.createElement('option');
+                        option.value = '';
+                        option.textContent = 'Nenhum horário disponível';
+                        horaSelect.appendChild(option);
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro ao buscar horários:', error);
+                    horaSelect.innerHTML = '<option value="">Erro ao carregar horários</option>';
+                });
+        }
+
+        // Adiciona listeners para mudança nos campos
+        medicoSelect.addEventListener('change', atualizarHorarios);
+        dataInput.addEventListener('change', atualizarHorarios);
+        
+        // Chama a função na carga inicial se os campos já estiverem preenchidos (ex: após erro de validação)
+        if (medicoSelect.value && dataInput.value) {
+            atualizarHorarios();
+        }
+    });
+</script>
+{% endblock %}

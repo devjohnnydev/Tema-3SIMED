@@ -1,0 +1,412 @@
+{% extends 'pessoas/base.html' %}
+{% load static %}
+
+{% block title %}Cirurgia{% endblock %}
+
+{% block content %}
+<style>
+  /* --- RESET / GLOBAL --- */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+    font-family: "Poppins", sans-serif;
+  }
+
+  /* --- SEÇÃO PRINCIPAL --- */
+  .area {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    height: 700px;
+    background: linear-gradient(135deg, #E9F2F9 0%, #F0F8FF 100%);
+    overflow: hidden;
+  }
+
+  .area-content {
+    width: 50%;
+    padding: 70px 80px;
+    z-index: 2;
+    animation: slideInLeft 0.8s ease-out;
+  }
+
+  @keyframes slideInLeft {
+    from {
+      opacity: 0;
+      transform: translateX(-50px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .area-content h2 {
+    color: #0b1e45;
+    margin-bottom: 15px;
+    font-size: 48px;
+    font-weight: 800;
+    letter-spacing: -1px;
+  }
+
+  .area-content p {
+    color: #555;
+    font-size: 16px;
+    line-height: 1.8;
+    margin-bottom: 30px;
+    max-width: 450px;
+  }
+
+  .botoes {
+    display: flex;
+    gap: 15px;
+  }
+
+  .botoes button {
+    border: none;
+    border-radius: 8px;
+    padding: 14px 28px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+  }
+
+  .botoes button:first-child {
+    background-color: #0b1e45;
+    color: #fff;
+  }
+
+  .botoes button:first-child:hover {
+    background-color: #F26C4F;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(242, 108, 79, 0.3);
+  }
+
+  .botoes button:last-child {
+    background-color: transparent;
+    color: #0b1e45;
+    border: 2px solid #0b1e45;
+  }
+
+  .botoes button:last-child:hover {
+    background-color: #0b1e45;
+    color: #fff;
+    transform: translateY(-3px);
+  }
+
+  /* --- CÍRCULO DA DIREITA COM IMAGEM --- */
+  .area-bg {
+    position: absolute;
+    right: -5%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 850px;
+    height: 850px;
+    background: linear-gradient(135deg, #0b1e45 0%, #1a2f5a 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    box-shadow: 0 30px 60px rgba(11, 30, 69, 0.2);
+    animation: floatCircle 10s ease-in-out infinite;
+  }
+
+  @keyframes floatCircle {
+    0%, 100% {
+      transform: translateY(-50%);
+    }
+    50% {
+      transform: translateY(-60px);
+    }
+  }
+
+  /* Imagem dentro do círculo */
+  .circle-image {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
+    opacity: 0.95;
+  }
+
+  /* Overlay decorativo */
+  .circle-overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, rgba(242, 108, 79, 0.15), transparent);
+    pointer-events: none;
+  }
+
+  /* --- CONVÊNIO --- */
+  .convenio {
+    padding: 80px;
+    background-color: #fff;
+  }
+
+  .convenio h2 {
+    color: #0b1e45;
+    font-size: 42px;
+    font-weight: 800;
+    margin-bottom: 50px;
+    text-align: center;
+  }
+
+  .convenio-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* --- DETALHES --- */
+  .detalhes {
+    padding: 80px;
+    background: linear-gradient(135deg, #F5F9FC 0%, #E9F2F9 100%);
+  }
+
+  .detalhes h2 {
+    color: #0b1e45;
+    font-size: 42px;
+    font-weight: 800;
+    margin-bottom: 50px;
+  }
+
+  .detalhes-box {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+    max-width: 1000px;
+  }
+
+  .detalhes-box p {
+    color: #555;
+    line-height: 1.8;
+    font-size: 16px;
+  }
+
+  /* --- RESPONSIVO --- */
+  @media (max-width: 1024px) {
+    .area {
+      height: 600px;
+      flex-direction: column;
+      padding: 60px 40px;
+    }
+
+    .area-content {
+      width: 100%;
+      padding: 0;
+      margin-bottom: 40px;
+    }
+
+    .area-bg {
+      width: 600px;
+      height: 600px;
+      right: auto;
+      position: static;
+      transform: none;
+    }
+
+    .area-content h2 {
+      font-size: 36px;
+    }
+
+    .detalhes-box {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .area-bg {
+      width: 400px;
+      height: 400px;
+    }
+
+    .area-content {
+      padding: 0;
+    }
+
+    .area-content h2 {
+      font-size: 28px;
+    }
+
+    .botoes {
+      flex-direction: column;
+    }
+
+    .botoes button {
+      width: 100%;
+    }
+
+    .convenio,
+    .detalhes {
+      padding: 40px;
+    }
+
+    .convenio h2,
+    .detalhes h2 {
+      font-size: 28px;
+      margin-bottom: 30px;
+    }
+  }
+
+  /* Slick Slider customizations */
+
+  .convenio-texto h3{
+    color: #ffffffff
+  }
+</style>
+
+<section class="area">
+  <div class="area-content">
+    <h2>Cirurgia</h2>
+    <p>
+      Nossa equipe de cirurgia oferece atendimento completo para procedimentos eletivos e
+      emergenciais, seguindo protocolos modernos e acompanhamento humanizado em todas as etapas.
+    </p>
+    <div class="botoes">
+      <a href="{% if user.is_authenticated %}{% url 'painel_paciente' %}{% else %}{% url 'login' %}{% endif %}">
+        <button>Ver Agenda</button>
+      </a>
+      <a href="{% url 'profissionais' %}">
+        <button>Ver o seu Profissional</button>
+      </a>
+    </div>
+  </div>
+
+  <div class="area-bg">
+    <!-- <CHANGE> Adicionando imagem dentro do círculo com overlay -->
+    <img
+      src="{% static 'images/cirurgia-hero.jpg' %}"
+      alt="Equipe de Cirurgia"
+      class="circle-image"
+    />
+    <div class="circle-overlay"></div>
+  </div>
+</section>
+
+<section class="convenio">
+  <h2>Qual seu convênio?</h2>
+
+  <!-- Carrossel Slick -->
+  <div class="convenios-slider">
+    <div class="convenio-item" style="--bg-color: #2a00ff;">
+      <div class="convenio-texto">
+        <h3>Amil</h3>
+        A Amil é uma das maiores operadoras de planos de saúde do Brasil, oferecendo ampla rede de
+        atendimento e foco em qualidade, tecnologia e bem-estar.
+      </div>
+      <div class="convenio-logo">
+        <img src="{% static 'images/amil.png' %}" alt="Amil" />
+      </div>
+    </div>
+
+    <div class="convenio-item" style="--bg-color: #009c3b;">
+      <div class="convenio-texto">
+        <h3>Unimed</h3>
+        A Unimed é a maior cooperativa de saúde do Brasil, reconhecida por sua ampla rede de
+        médicos e hospitais e pelo compromisso com a qualidade e o cuidado humanizado.
+      </div>
+      <div class="convenio-logo">
+        <img src="{% static 'images/unimed22.png' %}" alt="Unimed" />
+      </div>
+    </div>
+
+    <div class="convenio-item" style="--bg-color: #e60000;">
+      <div class="convenio-texto">
+        <h3>Bradesco Saúde</h3>
+        A Bradesco Saúde é uma das principais operadoras do país, oferecendo planos de saúde com
+        ampla cobertura, rede de qualidade e atendimento diferenciado.
+      </div>
+      <div class="convenio-logo">
+        <img src="{% static 'images/bradesco.png' %}" alt="Bradesco Saúde" />
+      </div>
+    </div>
+
+    <div class="convenio-item" style="--bg-color: #ff8800;">
+      <div class="convenio-texto">
+        <h3>SulAmérica</h3>
+        A SulAmérica é uma tradicional empresa de seguros e saúde, conhecida pela confiança,
+        inovação e foco no bem-estar e na prevenção.
+      </div>
+      <div class="convenio-logo">
+        <img src="{% static 'images/sulamerica.png' %}" alt="SulAmérica" />
+      </div>
+    </div>
+
+    <div class="convenio-item" style="--bg-color: #0076a8;">
+      <div class="convenio-texto">
+        <h3>Porto Saúde</h3>
+        A Porto Saúde faz parte do grupo Porto, oferecendo planos com atendimento humanizado,
+        tecnologia e ampla rede credenciada.
+      </div>
+      <div class="convenio-logo">
+        <img src="{% static 'images/portosaude.png' %}" alt="Porto Saúde" />
+      </div>
+    </div>
+
+    <div class="convenio-item" style="--bg-color: #ff9900;">
+      <div class="convenio-texto">
+        <h3>NotreDame Intermédica</h3>
+        A NotreDame Intermédica é referência em saúde integrada, combinando hospitais próprios,
+        clínicas e programas de prevenção para um cuidado completo.
+      </div>
+      <div class="convenio-logo">
+        <img src="{% static 'images/notredame.png' %}" alt="NotreDame" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="detalhes">
+  <h2>Mais Detalhes</h2>
+  <div class="detalhes-box">
+    <p>
+      Oferecemos avaliação completa pré-operatória e suporte integral durante todo o processo
+      cirúrgico.
+    </p>
+    <p>
+      Entre em contato para saber mais sobre exames necessários, preparo, internação e tempo de
+      recuperação.
+    </p>
+  </div>
+</section>
+
+<!-- Dependências do Slick -->
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"
+/>
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"
+/>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+
+<!-- Script de inicialização -->
+<script>
+  $(document).ready(function () {
+    $(".convenios-slider").slick({
+      dots: true,
+      infinite: true,
+      arrows: true,
+      slidesToShow: 1,
+      slidesToScroll: 1,
+      autoplay: true,
+      autoplaySpeed: 4000,
+      prevArrow:
+        '<button type="button" class="slick-prev"><i class="bi bi-chevron-left"></i></button>',
+      nextArrow:
+        '<button type="button" class="slick-next"><i class="bi bi-chevron-right"></i></button>',
+    });
+  });
+</script>
+{% endblock %}

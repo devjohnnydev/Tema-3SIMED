@@ -1,0 +1,33 @@
+{% extends 'pessoas/dashboard_base.html' %}
+
+{% block title %}Dashboard - Ocupação Média{% endblock %}
+
+{% block content %}
+
+<h2 class="page-title">Gerenciar ocupação da clínica</h2>
+
+<div class="data-table-container">
+    <div class="table-header grid-ocupacao">
+        <div>Médico</div>
+        <div>Horário</div>
+        <div>Cancelar consulta</div>
+    </div>
+    
+    {% for consulta in consultas %}
+    <div class="table-row grid-ocupacao">
+        <div>Dr(a). {{ consulta.medico.username }} {{ consulta.medico.last_name }}</div>
+        <div>{{ consulta.data_hora|date:"H:i" }}h</div>
+        <div>
+            <form method="post" action="{% url 'cancelar_consulta_admin' consulta.id %}" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn-cancelar" onclick="return confirm('Deseja realmente cancelar esta consulta?')">CANCELAR</button>
+            </form>
+        </div>
+    </div>
+    {% empty %}
+    <div class="table-row">
+        <div style="text-align: center; padding: 20px; color: #999; grid-column: 1 / -1;">Nenhuma consulta agendada.</div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends 'pessoas/base.html' %}
+{% load static %}
+
+{% block title %}Nos Encontre{% endblock %}
+
+{% block content %}
+
+<section class="unidade-proxima">
+    <div class="content-wrapper">
+        <div class="image-container">
+            <div class="blue-circle"></div>
+            <img src="{% static 'images/HospitalAzul.png' %}" 
+                 alt="Hospital SIMED" 
+                 class="hospital-image">
+        </div>
+        <div class="text-content">
+            <h1>Unidade mais  
+<span class="highlight">PRÓXIMA</span></h1>
+            <p>
+                Contamos com um sistema inteligente que localiza a unidade SIMED mais próxima de você. 
+                Basta informar seu CEP e, em segundos, mostraremos qual clínica atende sua região!
+            </p>
+        </div>
+    </div>
+</section>
+
+<section class="nos-encontre">
+    <!-- A imagem de fundo e o overlay agora são controlados pelo CSS -->
+    <div class="content-wrapper-bottom">
+        <div class="text-section">
+            <h2>Nos Encontre</h2>
+            <p class="subtitle">SIMED – Clínica Médica Integrada</p>
+
+            <div class="info-block">
+                <p><strong>📍 Rua das Palmeiras, nº 120</strong></p>
+                <p>Bairro Jardim Central – São Paulo / SP</p>
+            </div>
+
+            <div class="info-block">
+                <p><strong>CEP:</strong> 01234-567</p>
+            </div>
+
+            <div class="info-block">
+                <p>
+                    <strong>Telefone:</strong> (11) 4000-1234 | 
+                    <strong>Plantão:</strong> (11) 9 8765-4321
+                </p>
+            </div>
+
+            <div class="info-block">
+                <p>
+                    🕐 <strong>Horário de Funcionamento:</strong> Segunda a sexta, 
+                    das 07:30 às 20:00 — Sábado, das 08:00 às 14:00
+                </p>
+            </div>
+
+            <p class="footer-text">
+                Na SIMED, usamos seu CEP para encontrar a unidade mais próxima. 
+                Mesmo que não haja uma perto, estamos prontos para orientar e ajudar, 
+                sempre pensando no seu cuidado.
+            </p>
+        </div>
+
+        <div class="map-section">
+            <div class="map-container">
+                <iframe 
+                    src="https://www.google.com/maps/d/embed?mid=1d5GXzDh0WT2fJmvmF0la_5yC_jV2TME&ehbc=2E312F&noprof=1"
+                    allowfullscreen 
+                    loading="lazy">
+                </iframe>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

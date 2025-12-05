@@ -1,0 +1,683 @@
+{% extends 'pessoas/base.html' %}
+
+{% load static %}
+
+{% block title %}Agenda{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<style>
+.agenda-page {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e4e9f2 100%);
+    padding: 40px 5%;
+}
+
+.agenda-container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.agenda-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.agenda-header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #1B325F;
+    margin-bottom: 10px;
+}
+
+.agenda-header p {
+    color: #666;
+    font-size: 1.1rem;
+}
+
+.agenda-content {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    gap: 30px;
+    align-items: start;
+}
+
+.calendar-card {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.calendar-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #1B325F;
+}
+
+.calendar-nav {
+    display: flex;
+    gap: 10px;
+}
+
+.nav-btn {
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: linear-gradient(135deg, #1B325F 0%, #2c4875 100%);
+    color: white;
+    border-radius: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+}
+
+.nav-btn:hover {
+    background: linear-gradient(135deg, #F26C4F 0%, #e55a3d 100%);
+    transform: scale(1.05);
+}
+
+.weekdays-row {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+    margin-bottom: 10px;
+}
+
+.weekday {
+    text-align: center;
+    font-weight: 600;
+    color: #888;
+    font-size: 0.85rem;
+    padding: 10px 0;
+}
+
+.days-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+}
+
+.day-cell {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 500;
+    color: #333;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+}
+
+.day-cell:hover:not(.empty):not(.selected) {
+    background: #e8f4fc;
+    color: #1B325F;
+}
+
+.day-cell.today {
+    background: linear-gradient(135deg, #e8f4fc 0%, #d4e8f5 100%);
+    color: #1B325F;
+    font-weight: 700;
+}
+
+.day-cell.selected {
+    background: linear-gradient(135deg, #1B325F 0%, #2c4875 100%);
+    color: white;
+    font-weight: 700;
+}
+
+.day-cell.empty {
+    cursor: default;
+}
+
+.day-cell.has-appointments {
+    position: relative;
+}
+
+.day-cell.has-appointments::after {
+    content: '';
+    position: absolute;
+    bottom: 6px;
+    width: 6px;
+    height: 6px;
+    background: #F26C4F;
+    border-radius: 50%;
+}
+
+.scheduling-card {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+}
+
+.date-display {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #f0f4f8;
+}
+
+.date-icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #1B325F 0%, #2c4875 100%);
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.date-icon .day {
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.date-icon .month {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+}
+
+.date-info h2 {
+    font-size: 1.4rem;
+    color: #1B325F;
+    font-weight: 600;
+    margin: 0;
+}
+
+.date-info p {
+    color: #888;
+    font-size: 0.9rem;
+    margin: 5px 0 0;
+}
+
+.time-slots-section {
+    margin-bottom: 30px;
+}
+
+.time-slots-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.time-slots-header h3 {
+    font-size: 1.1rem;
+    color: #1B325F;
+    font-weight: 600;
+    margin: 0;
+}
+
+.time-slots-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 12px;
+}
+
+.time-slot {
+    padding: 12px;
+    text-align: center;
+    border: 2px solid #e4e9f2;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 500;
+    color: #555;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+}
+
+.time-slot:hover:not(.unavailable) {
+    border-color: #1B325F;
+    background: #e8f4fc;
+    color: #1B325F;
+}
+
+.time-slot.selected {
+    border-color: #1B325F;
+    background: linear-gradient(135deg, #1B325F 0%, #2c4875 100%);
+    color: white;
+}
+
+.time-slot.unavailable {
+    background: #f5f5f5;
+    color: #ccc;
+    cursor: not-allowed;
+    text-decoration: line-through;
+}
+
+.professional-section {
+    margin-bottom: 30px;
+}
+
+.professional-section h3 {
+    font-size: 1.1rem;
+    color: #1B325F;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.professionals-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.professional-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 15px;
+    border: 2px solid #e4e9f2;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.professional-card:hover {
+    border-color: #1B325F;
+    background: #e8f4fc;
+}
+
+.professional-card.selected {
+    border-color: #1B325F;
+    background: linear-gradient(135deg, #1B325F 0%, #2c4875 100%);
+}
+
+.professional-card.selected .professional-name,
+.professional-card.selected .professional-specialty {
+    color: white;
+}
+
+.professional-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: linear-gradient(135deg, #e8f4fc 0%, #d4e8f5 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #1B325F;
+    font-size: 1.3rem;
+}
+
+.professional-info {
+    flex: 1;
+}
+
+.professional-name {
+    font-weight: 600;
+    color: #1B325F;
+    font-size: 0.95rem;
+}
+
+.professional-specialty {
+    font-size: 0.8rem;
+    color: #888;
+}
+
+.appointment-summary {
+    background: linear-gradient(135deg, #f8fafc 0%, #e8f4fc 100%);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 25px;
+}
+
+.summary-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1B325F;
+    margin-bottom: 15px;
+}
+
+.summary-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.summary-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.summary-item i {
+    color: #1B325F;
+    font-size: 1.1rem;
+}
+
+.summary-item span {
+    color: #555;
+    font-size: 0.9rem;
+}
+
+.btn-confirm {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, #1B325F 0%, #2c4875 100%);
+    color: white;
+    border: none;
+    border-radius: 14px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.btn-confirm:hover {
+    background: linear-gradient(135deg, #F26C4F 0%, #e55a3d 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(242, 108, 79, 0.3);
+}
+
+.btn-confirm:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+@media (max-width: 992px) {
+    .agenda-content {
+        grid-template-columns: 1fr;
+    }
+    
+    .calendar-card {
+        max-width: 400px;
+        margin: 0 auto;
+    }
+}
+
+@media (max-width: 576px) {
+    .agenda-header h1 {
+        font-size: 1.8rem;
+    }
+    
+    .time-slots-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .professionals-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="agenda-page">
+    <div class="agenda-container">
+        <div class="agenda-header">
+            <h1><i class="bi bi-calendar-check"></i> Agendar Consulta</h1>
+            <p>Escolha a data, horário e profissional para sua consulta</p>
+        </div>
+
+        <div class="agenda-content">
+            <div class="calendar-card">
+                <div class="calendar-header">
+                    <span class="calendar-title" id="monthYear">Janeiro 2025</span>
+                    <div class="calendar-nav">
+                        <button class="nav-btn prev-btn" onclick="previousMonth()">
+                            <i class="bi bi-chevron-left"></i>
+                        </button>
+                        <button class="nav-btn next-btn" onclick="nextMonth()">
+                            <i class="bi bi-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="weekdays-row">
+                    <div class="weekday">Dom</div>
+                    <div class="weekday">Seg</div>
+                    <div class="weekday">Ter</div>
+                    <div class="weekday">Qua</div>
+                    <div class="weekday">Qui</div>
+                    <div class="weekday">Sex</div>
+                    <div class="weekday">Sáb</div>
+                </div>
+                
+                <div class="days-grid" id="calendarDays"></div>
+            </div>
+
+            <div class="scheduling-card">
+                <div class="date-display">
+                    <div class="date-icon">
+                        <span class="day" id="selectedDay">1</span>
+                        <span class="month" id="selectedMonth">JAN</span>
+                    </div>
+                    <div class="date-info">
+                        <h2 id="dateTitle">1 de Janeiro de 2025</h2>
+                        <p id="dayOfWeek">Quarta-feira</p>
+                    </div>
+                </div>
+
+                <div class="time-slots-section">
+                    <div class="time-slots-header">
+                        <h3><i class="bi bi-clock"></i> Horários Disponíveis</h3>
+                    </div>
+                    <div class="time-slots-grid" id="timeSlotsGrid">
+                        <div class="time-slot" data-time="08:00">08:00</div>
+                        <div class="time-slot" data-time="08:30">08:30</div>
+                        <div class="time-slot" data-time="09:00">09:00</div>
+                        <div class="time-slot" data-time="09:30">09:30</div>
+                        <div class="time-slot" data-time="10:00">10:00</div>
+                        <div class="time-slot" data-time="10:30">10:30</div>
+                        <div class="time-slot" data-time="11:00">11:00</div>
+                        <div class="time-slot" data-time="11:30">11:30</div>
+                        <div class="time-slot" data-time="14:00">14:00</div>
+                        <div class="time-slot" data-time="14:30">14:30</div>
+                        <div class="time-slot" data-time="15:00">15:00</div>
+                        <div class="time-slot" data-time="15:30">15:30</div>
+                        <div class="time-slot" data-time="16:00">16:00</div>
+                        <div class="time-slot" data-time="16:30">16:30</div>
+                        <div class="time-slot" data-time="17:00">17:00</div>
+                        <div class="time-slot" data-time="17:30">17:30</div>
+                    </div>
+                </div>
+
+                <div class="professional-section">
+                    <h3><i class="bi bi-person-badge"></i> Selecione o Profissional</h3>
+                    <div class="professionals-grid" id="professionalsGrid">
+                        <div class="professional-card" data-professional="1">
+                            <div class="professional-avatar">
+                                <i class="bi bi-person"></i>
+                            </div>
+                            <div class="professional-info">
+                                <div class="professional-name">Dr. Kleber Russo</div>
+                                <div class="professional-specialty">Clínico Geral</div>
+                            </div>
+                        </div>
+                        <div class="professional-card" data-professional="2">
+                            <div class="professional-avatar">
+                                <i class="bi bi-person"></i>
+                            </div>
+                            <div class="professional-info">
+                                <div class="professional-name">Dra. Maria Santos</div>
+                                <div class="professional-specialty">Cardiologista</div>
+                            </div>
+                        </div>
+                        <div class="professional-card" data-professional="3">
+                            <div class="professional-avatar">
+                                <i class="bi bi-person"></i>
+                            </div>
+                            <div class="professional-info">
+                                <div class="professional-name">Dr. Carlos Silva</div>
+                                <div class="professional-specialty">Dermatologista</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="appointment-summary" id="appointmentSummary" style="display: none;">
+                    <div class="summary-title">Resumo do Agendamento</div>
+                    <div class="summary-items">
+                        <div class="summary-item">
+                            <i class="bi bi-calendar"></i>
+                            <span id="summaryDate">-</span>
+                        </div>
+                        <div class="summary-item">
+                            <i class="bi bi-clock"></i>
+                            <span id="summaryTime">-</span>
+                        </div>
+                        <div class="summary-item">
+                            <i class="bi bi-person-badge"></i>
+                            <span id="summaryProfessional">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn-confirm" id="confirmButton" disabled>
+                    <i class="bi bi-check-circle"></i>
+                    Confirmar Agendamento
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+const months = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+const monthsShort = ['JAN', 'FEV', 'MAR', 'ABR', 'MAI', 'JUN', 'JUL', 'AGO', 'SET', 'OUT', 'NOV', 'DEZ'];
+const daysOfWeek = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
+
+let currentDate = new Date();
+let selectedDate = new Date();
+let selectedTime = null;
+let selectedProfessional = null;
+
+function renderCalendar() {
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth();
+    
+    document.getElementById('monthYear').textContent = `${months[month]} ${year}`;
+    
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    
+    const calendarDays = document.getElementById('calendarDays');
+    calendarDays.innerHTML = '';
+    
+    for (let i = 0; i < firstDay; i++) {
+        const emptyCell = document.createElement('div');
+        emptyCell.className = 'day-cell empty';
+        calendarDays.appendChild(emptyCell);
+    }
+    
+    const today = new Date();
+    
+    for (let day = 1; day <= daysInMonth; day++) {
+        const dayCell = document.createElement('div');
+        dayCell.className = 'day-cell';
+        dayCell.textContent = day;
+        
+        const cellDate = new Date(year, month, day);
+        
+        if (cellDate.toDateString() === today.toDateString()) {
+            dayCell.classList.add('today');
+        }
+        
+        if (cellDate.toDateString() === selectedDate.toDateString()) {
+            dayCell.classList.add('selected');
+        }
+        
+        dayCell.addEventListener('click', () => selectDate(year, month, day));
+        calendarDays.appendChild(dayCell);
+    }
+}
+
+function selectDate(year, month, day) {
+    selectedDate = new Date(year, month, day);
+    
+    document.getElementById('selectedDay').textContent = day;
+    document.getElementById('selectedMonth').textContent = monthsShort[month];
+    document.getElementById('dateTitle').textContent = `${day} de ${months[month]} de ${year}`;
+    document.getElementById('dayOfWeek').textContent = daysOfWeek[selectedDate.getDay()];
+    
+    renderCalendar();
+    updateSummary();
+}
+
+function previousMonth() {
+    currentDate.setMonth(currentDate.getMonth() - 1);
+    renderCalendar();
+}
+
+function nextMonth() {
+    currentDate.setMonth(currentDate.getMonth() + 1);
+    renderCalendar();
+}
+
+document.querySelectorAll('.time-slot').forEach(slot => {
+    slot.addEventListener('click', function() {
+        if (this.classList.contains('unavailable')) return;
+        
+        document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('selected'));
+        this.classList.add('selected');
+        selectedTime = this.dataset.time;
+        updateSummary();
+    });
+});
+
+document.querySelectorAll('.professional-card').forEach(card => {
+    card.addEventListener('click', function() {
+        document.querySelectorAll('.professional-card').forEach(c => c.classList.remove('selected'));
+        this.classList.add('selected');
+        selectedProfessional = this.querySelector('.professional-name').textContent;
+        updateSummary();
+    });
+});
+
+function updateSummary() {
+    const summary = document.getElementById('appointmentSummary');
+    const confirmBtn = document.getElementById('confirmButton');
+    
+    if (selectedDate && selectedTime && selectedProfessional) {
+        summary.style.display = 'block';
+        document.getElementById('summaryDate').textContent = `${selectedDate.getDate()} de ${months[selectedDate.getMonth()]}`;
+        document.getElementById('summaryTime').textContent = selectedTime;
+        document.getElementById('summaryProfessional').textContent = selectedProfessional;
+        confirmBtn.disabled = false;
+    } else {
+        summary.style.display = 'none';
+        confirmBtn.disabled = true;
+    }
+}
+
+document.getElementById('confirmButton').addEventListener('click', function() {
+    if (selectedDate && selectedTime && selectedProfessional) {
+        alert(`Agendamento confirmado!\n\nData: ${selectedDate.getDate()} de ${months[selectedDate.getMonth()]}\nHorário: ${selectedTime}\nProfissional: ${selectedProfessional}`);
+    }
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const today = new Date();
+    currentDate = new Date(today.getFullYear(), today.getMonth(), 1);
+    selectedDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    renderCalendar();
+    selectDate(today.getFullYear(), today.getMonth(), today.getDate());
+});
+</script>
+{% endblock %}

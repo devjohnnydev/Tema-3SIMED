@@ -1,0 +1,75 @@
+{% load static %}
+
+<footer class="footer">
+    <div class="footer-container">
+        <!-- Logo Section -->
+        <div class="footer-logo">
+            <div class="logo-text">SIMED</div>
+        </div>
+
+        <!-- Home Section -->
+        <div class="footer-column">
+            <h3>Home</h3>
+            <ul>
+                <li><a href="{% url 'home' %}#inicio">Início</a></li>
+                <li><a href="{% url 'home' %}#servicos">Serviços</a></li>
+                <li><a href="{% url 'home' %}#convenios">Convênios</a></li>
+                <li><a href="{% url 'home' %}#consultorios">Consultorios</a></li>
+                <li><a href="{% url 'home' %}#experiencia">Experiência</a></li>
+                <li><a href="{% url 'lista_medicamentos' %}">Produtos</a></li>
+            </ul>
+        </div>
+
+        <!-- Sobre Nós Section -->
+        <div class="footer-column">
+            <h3>Sobre Nós</h3>
+            <ul>
+                <li><a href="{% url 'sobre' %}">Objetivos</a></li>
+                <li><a href="{% url 'sobre' %}#certificados">Certificados</a></li>
+                <li><a href="{% url 'profissionais' %}">Profissionais</a></li>
+                <li><a href="{% url 'politicas-de-uso' %}">Políticas de uso</a></li>
+                <li><a href="{% url 'privacidade' %}">Privacidade</a></li>
+            </ul>
+        </div>
+
+        <!-- Contato Section -->
+        <div class="footer-column">
+            <h3>Contato</h3>
+            <ul class="contact-list">
+                <li><a href="mailto:contatosimed@gmail.com">contatosimed@gmail.com</a></li>
+                <li>A. Regente Feijó, 1945</li>
+                <li><a href="tel:+551198352-2274">+55 (11) 98352-2274</a></li>
+            </ul>
+        </div>
+
+        <!-- Redes Sociais Section -->
+        <div class="footer-column social-column">
+            <h3>Redes Sociais</h3>
+            <div class="social-icons">
+                <a href="#" class="social-icon" aria-label="WhatsApp">
+                    <i class="bi bi-whatsapp" style="font-size: 25px;"></i>
+                </a>
+                <a href="https://www.instagram.com/simed.hospital?igsh=MW84bDl3eTdzMz-QyaA==" class="social-icon" aria-label="Instagram">
+                    <i class="bi bi-instagram" style="font-size: 25px;"></i>
+                </a>
+                <a href="#" class="social-icon" aria-label="Facebook">
+                    <i class="bi bi-facebook" style="font-size: 25px;"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Bottom -->
+    <div class="footer-bottom">
+        <div class="footer-bottom-left">
+            <p>C | 2025 - Clínica SIMED</p>
+        </div>
+        <div class="footer-bottom-right">
+            <a href="#termos-privacidade">Termos de Privacidade</a>
+            <span class="separator">|</span>
+            <a href="#termos-uso">Termos de Uso</a>
+            <span class="separator">|</span>
+            <a href="{% url 'sobre' %}#certificados">Certificados</a>
+        </div>
+    </div>
+</footer>

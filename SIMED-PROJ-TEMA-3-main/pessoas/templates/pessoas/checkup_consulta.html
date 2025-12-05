@@ -1,0 +1,24 @@
+{% extends 'pessoas/base.html' %}
+
+{% load static %}
+
+{% block title %}Check-up{% endblock %}
+
+{% block content %}
+
+<main class="container-checkup">
+    <h1>Qual Seu Check-up?</h1>
+    <div class="search-box">
+        <input type="text" id="checkup-input" placeholder="Digite o Nome do seu Check-up">
+        <div id="checkup-selection-list" class="selection-list">
+            <!-- Opções de check-up serão inseridas aqui pelo JavaScript -->
+        </div>
+    </div>
+    <!-- Conteúdo principal - Esta é a página de busca inicial, sem resultados -->
+</main>
+<script>
+    const CHECKUP_TRATAMENTO_URL = "{% url 'checkup_tratamento' %}";
+</script>
+<script src="{% static 'script/script.js' %}"></script>
+
+{% endblock %}

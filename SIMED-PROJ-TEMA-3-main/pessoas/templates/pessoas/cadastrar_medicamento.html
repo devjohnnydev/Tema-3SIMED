@@ -1,0 +1,27 @@
+{% extends 'pessoas/base.html' %}
+
+{% block content %}
+<div class="container mt4">
+    <div class="cad-med-container">
+        <div class="cad-med-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Cadastrar Novo Medicamento</h2>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        {{ form.as_p }}
+
+                        <div class="cad-med-botoes">
+                            <button type="submit" class="btn btn-primary">Salvar Medicamento</button>
+                            <a href="{% url 'lista_medicamentos' %}" class="btn btn-secondary">Cancelar</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
