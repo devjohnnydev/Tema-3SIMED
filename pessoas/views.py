@@ -16,8 +16,11 @@ from .decorators import (
 from django.utils import timezone
 from datetime import timedelta, time, datetime
 from django.db.models import Q
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.views.decorators.http import require_GET
+from django.template.loader import render_to_string
+from weasyprint import HTML
+import io
 
 def gerar_horarios_disponiveis(medico_id, data_selecionada=None):
     """
@@ -263,9 +266,9 @@ def painel_medico(request):
 def painel_paciente(request):
     user_role = get_user_role(request.user)
     if user_role == 'admin':
-        consultas = Consulta.objects.all().order_by('data_hora')
+        consultas = Consulta.objects.all().order_by('-data_hora')
     else:
-        consultas = Consulta.objects.filter(paciente=request.user).order_by('data_hora')
+        consultas = Consulta.objects.filter(paciente=request.user).order_by('-data_hora')
 
     if request.method == 'POST':
         form = AgendarConsultaForm(request.POST)
@@ -274,6 +277,9 @@ def painel_paciente(request):
             nova_consulta.paciente = request.user
             nova_consulta.data_hora = form.cleaned_data.get('data_hora')
             nova_consulta.save()
+            medico_nome = f"{nova_consulta.medico.first_name} {nova_consulta.medico.last_name}"
+            data_formatada = nova_consulta.data_hora.strftime("%d/%m/%Y às %H:%M")
+            messages.success(request, f'Sua consulta com Dr(a). {medico_nome} foi agendada para {data_formatada}. Você pode baixar o comprovante em PDF.')
             return redirect('painel_paciente')
     else:
         form = AgendarConsultaForm()
@@ -456,3 +462,39 @@ def gerenciar_cargos(request, user_id):
 
 def consulta_rapida(request):
     return render(request, 'pessoas/consulta_rapida.html')
+
+
+@login_required
+def download_consulta_pdf(request, consulta_id):
+    """
+    Gera e baixa um PDF com os detalhes da consulta agendada.
+    Apenas o paciente dono da consulta ou um admin/médico pode baixar.
+    """
+    consulta = get_object_or_404(Consulta, pk=consulta_id)
+    
+    if request.user != consulta.paciente and not request.user.is_staff:
+        try:
+            perfil = request.user.perfil
+            if perfil.tipo_usuario not in ['admin', 'medico', 'atendente']:
+                messages.error(request, 'Você não tem permissão para baixar este documento.')
+                return redirect('painel_paciente')
+        except Perfil.DoesNotExist:
+            messages.error(request, 'Você não tem permissão para baixar este documento.')
+            return redirect('painel_paciente')
+    
+    html_string = render_to_string('pessoas/consulta_pdf.html', {
+        'consulta': consulta,
+        'now': timezone.now(),
+    })
+    
+    html = HTML(string=html_string)
+    pdf_buffer = io.BytesIO()
+    html.write_pdf(target=pdf_buffer)
+    pdf_buffer.seek(0)
+    
+    filename = f"consulta_{consulta.id:05d}_{consulta.data_hora.strftime('%Y%m%d')}.pdf"
+    
+    response = HttpResponse(pdf_buffer.read(), content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="{filename}"'
+    
+    return response

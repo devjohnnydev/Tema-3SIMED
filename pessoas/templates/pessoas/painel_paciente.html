@@ -2,70 +2,726 @@
 
 {% load static %}
 
+{% block extra_css %}
+<style>
+    .painel-paciente-modern {
+        min-height: calc(100vh - 200px);
+        background: linear-gradient(135deg, #E9F2F9 0%, #d4e6f5 100%);
+        padding: 40px 20px;
+    }
+
+    .painel-header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .painel-header h1 {
+        color: #1B325F;
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+
+    .painel-header p {
+        color: #5a6c7d;
+        font-size: 1.1rem;
+    }
+
+    .painel-welcome {
+        background: linear-gradient(135deg, #1B325F 0%, #2c4a7a 100%);
+        color: white;
+        padding: 25px 30px;
+        border-radius: 16px;
+        margin-bottom: 30px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        box-shadow: 0 10px 30px rgba(27, 50, 95, 0.3);
+    }
+
+    .painel-welcome-icon {
+        width: 60px;
+        height: 60px;
+        background: rgba(255,255,255,0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.8rem;
+    }
+
+    .painel-welcome-text h2 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin: 0 0 5px 0;
+    }
+
+    .painel-welcome-text p {
+        margin: 0;
+        opacity: 0.9;
+        font-size: 0.95rem;
+    }
+
+    .painel-grid {
+        display: grid;
+        grid-template-columns: 1fr 1.5fr;
+        gap: 30px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .card-modern {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card-modern:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+    }
+
+    .card-header-modern {
+        background: linear-gradient(135deg, #1B325F 0%, #2c4a7a 100%);
+        color: white;
+        padding: 20px 25px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .card-header-modern i {
+        font-size: 1.5rem;
+    }
+
+    .card-header-modern h3 {
+        margin: 0;
+        font-size: 1.2rem;
+        font-weight: 600;
+    }
+
+    .card-body-modern {
+        padding: 25px;
+    }
+
+    .form-group-modern {
+        margin-bottom: 20px;
+    }
+
+    .form-group-modern label {
+        display: block;
+        color: #1B325F;
+        font-weight: 600;
+        margin-bottom: 8px;
+        font-size: 0.95rem;
+    }
+
+    .form-group-modern select,
+    .form-group-modern input[type="date"],
+    .form-group-modern input[type="text"],
+    .form-group-modern textarea {
+        width: 100%;
+        padding: 12px 15px;
+        border: 2px solid #e0e7ef;
+        border-radius: 10px;
+        font-size: 1rem;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .form-group-modern select:focus,
+    .form-group-modern input:focus,
+    .form-group-modern textarea:focus {
+        outline: none;
+        border-color: #4C98D0;
+        box-shadow: 0 0 0 4px rgba(76, 152, 208, 0.15);
+    }
+
+    .btn-agendar-modern {
+        width: 100%;
+        padding: 15px;
+        background: linear-gradient(135deg, #1B325F 0%, #2c4a7a 100%);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .btn-agendar-modern:hover {
+        background: linear-gradient(135deg, #F26C4F 0%, #e85a3d 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(242, 108, 79, 0.3);
+    }
+
+    .consultas-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .consultas-count {
+        background: #E9F2F9;
+        color: #1B325F;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+
+    .consulta-card {
+        background: #f8fafc;
+        border-radius: 14px;
+        padding: 20px;
+        margin-bottom: 15px;
+        border-left: 4px solid #4C98D0;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    .consulta-card:hover {
+        background: #f0f7ff;
+        transform: translateX(5px);
+    }
+
+    .consulta-card.status-agendada {
+        border-left-color: #4C98D0;
+    }
+
+    .consulta-card.status-confirmada {
+        border-left-color: #28a745;
+    }
+
+    .consulta-card.status-concluida {
+        border-left-color: #6c757d;
+    }
+
+    .consulta-card.status-cancelada {
+        border-left-color: #dc3545;
+    }
+
+    .consulta-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+
+    .consulta-details h4 {
+        color: #1B325F;
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin: 0 0 8px 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .consulta-details h4 i {
+        color: #4C98D0;
+    }
+
+    .consulta-date {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #5a6c7d;
+        font-size: 0.95rem;
+    }
+
+    .consulta-date i {
+        color: #F26C4F;
+    }
+
+    .consulta-status {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 10px;
+    }
+
+    .status-badge {
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-transform: capitalize;
+    }
+
+    .status-badge.agendada {
+        background: linear-gradient(135deg, #4C98D0 0%, #3a8bc9 100%);
+        color: white;
+    }
+
+    .status-badge.confirmada {
+        background: linear-gradient(135deg, #28a745 0%, #218838 100%);
+        color: white;
+    }
+
+    .status-badge.concluida {
+        background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
+        color: white;
+    }
+
+    .status-badge.cancelada {
+        background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+        color: white;
+    }
+
+    .btn-download-pdf {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 14px;
+        background: linear-gradient(135deg, #1B325F 0%, #2c4a7a 100%);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        cursor: pointer;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .btn-download-pdf:hover {
+        background: linear-gradient(135deg, #F26C4F 0%, #e85a3d 100%);
+        transform: translateY(-2px);
+        color: white;
+    }
+
+    .consultas-empty {
+        text-align: center;
+        padding: 60px 30px;
+        color: #8c9ba8;
+    }
+
+    .consultas-empty i {
+        font-size: 4rem;
+        margin-bottom: 20px;
+        color: #d0dae4;
+    }
+
+    .consultas-empty h4 {
+        color: #5a6c7d;
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+
+    .consultas-empty p {
+        font-size: 0.95rem;
+    }
+
+    .success-card {
+        background: linear-gradient(135deg, #28a745 0%, #218838 100%);
+        color: white;
+        border-radius: 16px;
+        padding: 25px;
+        margin-bottom: 25px;
+        animation: slideIn 0.5s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .success-card::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 100%;
+        height: 200%;
+        background: rgba(255,255,255,0.1);
+        transform: rotate(30deg);
+    }
+
+    .success-card-content {
+        position: relative;
+        z-index: 1;
+    }
+
+    .success-card h3 {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 1.3rem;
+        margin: 0 0 15px 0;
+    }
+
+    .success-card p {
+        margin: 0;
+        opacity: 0.95;
+    }
+
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .appointment-confirmation {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.6);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .appointment-confirmation.show {
+        display: flex;
+    }
+
+    .confirmation-card {
+        background: white;
+        border-radius: 20px;
+        width: 90%;
+        max-width: 450px;
+        overflow: hidden;
+        animation: popIn 0.4s ease;
+        box-shadow: 0 25px 60px rgba(0,0,0,0.3);
+    }
+
+    @keyframes popIn {
+        from {
+            opacity: 0;
+            transform: scale(0.8);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    .confirmation-header {
+        background: linear-gradient(135deg, #28a745 0%, #218838 100%);
+        color: white;
+        padding: 30px;
+        text-align: center;
+    }
+
+    .confirmation-header i {
+        font-size: 4rem;
+        margin-bottom: 15px;
+    }
+
+    .confirmation-header h2 {
+        margin: 0;
+        font-size: 1.5rem;
+    }
+
+    .confirmation-body {
+        padding: 30px;
+    }
+
+    .confirmation-detail {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 15px;
+        background: #f8fafc;
+        border-radius: 12px;
+        margin-bottom: 12px;
+    }
+
+    .confirmation-detail i {
+        width: 40px;
+        height: 40px;
+        background: #E9F2F9;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #1B325F;
+        font-size: 1.2rem;
+    }
+
+    .confirmation-detail-text {
+        flex: 1;
+    }
+
+    .confirmation-detail-text span {
+        display: block;
+        font-size: 0.85rem;
+        color: #8c9ba8;
+    }
+
+    .confirmation-detail-text strong {
+        color: #1B325F;
+        font-size: 1rem;
+    }
+
+    .confirmation-actions {
+        display: flex;
+        gap: 12px;
+        margin-top: 20px;
+    }
+
+    .btn-confirmation {
+        flex: 1;
+        padding: 14px;
+        border-radius: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        text-decoration: none;
+        font-size: 0.95rem;
+    }
+
+    .btn-confirmation.primary {
+        background: linear-gradient(135deg, #1B325F 0%, #2c4a7a 100%);
+        color: white;
+        border: none;
+    }
+
+    .btn-confirmation.primary:hover {
+        background: linear-gradient(135deg, #F26C4F 0%, #e85a3d 100%);
+    }
+
+    .btn-confirmation.secondary {
+        background: #f0f4f8;
+        color: #1B325F;
+        border: 2px solid #e0e7ef;
+    }
+
+    .btn-confirmation.secondary:hover {
+        background: #e0e7ef;
+    }
+
+    @media (max-width: 900px) {
+        .painel-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .painel-header h1 {
+            font-size: 2rem;
+        }
+
+        .painel-welcome {
+            flex-direction: column;
+            text-align: center;
+        }
+    }
+
+    @media print {
+        .painel-paciente-modern,
+        nav,
+        footer,
+        .btn-download-pdf,
+        .form-group-modern,
+        .btn-agendar-modern {
+            display: none !important;
+        }
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-
-<section class="section-painelpaciente">
-
-    <h2 class="titulo-painel">Painel do Paciente</h2>
-
-    <div class="painel-container">
-
-        <!-- Coluna do formulário de agendamento -->
-        <div class="col-agendamento">
-            <div class="card-agendamento">
-                <div class="card-body-agendamento">
-                    <h4 class="titulo-agendamento">Agendar Nova Consulta</h4>
-                    <form method="post" class="form-agendamento">
-                        {% csrf_token %}
-                        {% for field in form %}
-    {% if field.name == 'data' %}
-        <p>
-            <label for="{{ field.id_for_label }}">{{ field.label }}:</label>
-            {{ field }}
-            {% if field.errors %}<small class="text-danger">{{ field.errors }}</small>{% endif %}
-        </p>
-    {% elif field.name == 'hora' %}
-        <p id="hora-field-container">
-            <label for="{{ field.id_for_label }}">{{ field.label }}:</label>
-            {{ field }}
-            {% if field.errors %}<small class="text-danger">{{ field.errors }}</small>{% endif %}
-        </p>
-    {% elif field.name == 'medico' %}
-        <p>
-            <label for="{{ field.id_for_label }}">{{ field.label }}:</label>
-            {{ field }}
-            {% if field.errors %}<small class="text-danger">{{ field.errors }}</small>{% endif %}
-        </p>
-    {% else %}
-        {{ field.as_p }}
-    {% endif %}
-{% endfor %}
-                        <button type="submit" class="btn btn-primary btn-agendar">Agendar</button>
-                    </form>
-                </div>
+<section class="painel-paciente-modern">
+    <div style="max-width: 1200px; margin: 0 auto;">
+        <div class="painel-welcome">
+            <div class="painel-welcome-icon">
+                <i class="bi bi-person-circle"></i>
+            </div>
+            <div class="painel-welcome-text">
+                <h2>Olá, {{ user.first_name|default:user.username }}!</h2>
+                <p>Gerencie suas consultas e agende novos atendimentos com facilidade.</p>
             </div>
         </div>
 
-        <!-- Coluna das consultas -->
-        <div class="col-consultas">
-            <h4 class="titulo-consultas">Minhas Consultas</h4>
-            <ul class="lista-consultas list-group">
-                {% for consulta in consultas %}
-                    <li class="item-consulta list-group-item d-flex justify-content-between align-items-center">
-                        <div class="info-consulta">
-                            <strong>Dr(a). {{ consulta.medico.username }} {{ consulta.medico.last_name }}</strong><br>
-                            <small class="text-muted">{{ consulta.data_hora|date:"d/m/Y, H:i" }}</small>
-                        </div>
-                        <span class="status-consulta badge bg-info rounded-pill">{{ consulta.get_status_display }}</span>
-                    </li>
-                {% empty %}
-                    <li class="item-vazio list-group-item">Você ainda não tem consultas agendadas.</li>
-                {% endfor %}
-            </ul>
-        </div>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="success-card">
+                    <div class="success-card-content">
+                        <h3><i class="bi bi-check-circle-fill"></i> Consulta Agendada!</h3>
+                        <p>{{ message }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
 
+        <div class="painel-grid">
+            <div class="card-modern">
+                <div class="card-header-modern">
+                    <i class="bi bi-calendar-plus"></i>
+                    <h3>Agendar Nova Consulta</h3>
+                </div>
+                <div class="card-body-modern">
+                    <form method="post" id="form-agendamento">
+                        {% csrf_token %}
+                        
+                        <div class="form-group-modern">
+                            <label for="id_medico"><i class="bi bi-person-badge"></i> Médico</label>
+                            {{ form.medico }}
+                        </div>
+                        
+                        <div class="form-group-modern">
+                            <label for="id_data"><i class="bi bi-calendar3"></i> Data</label>
+                            {{ form.data }}
+                        </div>
+                        
+                        <div class="form-group-modern" id="hora-field-container">
+                            <label for="id_hora"><i class="bi bi-clock"></i> Horário</label>
+                            {{ form.hora }}
+                        </div>
+
+                        {% if form.observacoes %}
+                        <div class="form-group-modern">
+                            <label for="id_observacoes"><i class="bi bi-chat-text"></i> Observações (opcional)</label>
+                            {{ form.observacoes }}
+                        </div>
+                        {% endif %}
+                        
+                        <button type="submit" class="btn-agendar-modern">
+                            <i class="bi bi-check-lg"></i>
+                            Confirmar Agendamento
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card-modern">
+                <div class="card-header-modern">
+                    <i class="bi bi-journal-medical"></i>
+                    <h3>Minhas Consultas</h3>
+                </div>
+                <div class="card-body-modern">
+                    <div class="consultas-header">
+                        <span class="consultas-count">
+                            <i class="bi bi-clipboard2-pulse"></i>
+                            {{ consultas|length }} consulta{{ consultas|length|pluralize:"s" }}
+                        </span>
+                    </div>
+
+                    {% for consulta in consultas %}
+                        <div class="consulta-card status-{{ consulta.status }}" id="consulta-{{ consulta.id }}">
+                            <div class="consulta-info">
+                                <div class="consulta-details">
+                                    <h4>
+                                        <i class="bi bi-person-badge-fill"></i>
+                                        Dr(a). {{ consulta.medico.first_name }} {{ consulta.medico.last_name }}
+                                    </h4>
+                                    <div class="consulta-date">
+                                        <i class="bi bi-calendar-event"></i>
+                                        {{ consulta.data_hora|date:"d/m/Y" }} às {{ consulta.data_hora|time:"H:i" }}
+                                    </div>
+                                </div>
+                                <div class="consulta-status">
+                                    <span class="status-badge {{ consulta.status }}">
+                                        {% if consulta.status == 'agendada' %}
+                                            <i class="bi bi-clock-history"></i>
+                                        {% elif consulta.status == 'confirmada' %}
+                                            <i class="bi bi-check-circle"></i>
+                                        {% elif consulta.status == 'concluida' %}
+                                            <i class="bi bi-check-all"></i>
+                                        {% elif consulta.status == 'cancelada' %}
+                                            <i class="bi bi-x-circle"></i>
+                                        {% endif %}
+                                        {{ consulta.get_status_display }}
+                                    </span>
+                                    <a href="{% url 'download_consulta_pdf' consulta.id %}" class="btn-download-pdf">
+                                        <i class="bi bi-download"></i>
+                                        Baixar PDF
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <div class="consultas-empty">
+                            <i class="bi bi-calendar-x"></i>
+                            <h4>Nenhuma consulta agendada</h4>
+                            <p>Agende sua primeira consulta utilizando o formulário ao lado.</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
     </div>
 </section>
+
+<div class="appointment-confirmation" id="confirmationModal">
+    <div class="confirmation-card" id="confirmationCardPDF">
+        <div class="confirmation-header">
+            <i class="bi bi-check-circle-fill"></i>
+            <h2>Comprovante de Consulta</h2>
+        </div>
+        <div class="confirmation-body">
+            <div class="confirmation-detail">
+                <i class="bi bi-hospital"></i>
+                <div class="confirmation-detail-text">
+                    <span>Clínica</span>
+                    <strong>SIMED - Serviço Integrado de Medicina</strong>
+                </div>
+            </div>
+            <div class="confirmation-detail">
+                <i class="bi bi-person-badge"></i>
+                <div class="confirmation-detail-text">
+                    <span>Médico</span>
+                    <strong id="pdfMedico">-</strong>
+                </div>
+            </div>
+            <div class="confirmation-detail">
+                <i class="bi bi-calendar-event"></i>
+                <div class="confirmation-detail-text">
+                    <span>Data</span>
+                    <strong id="pdfData">-</strong>
+                </div>
+            </div>
+            <div class="confirmation-detail">
+                <i class="bi bi-clock"></i>
+                <div class="confirmation-detail-text">
+                    <span>Horário</span>
+                    <strong id="pdfHora">-</strong>
+                </div>
+            </div>
+            <div class="confirmation-detail">
+                <i class="bi bi-person"></i>
+                <div class="confirmation-detail-text">
+                    <span>Paciente</span>
+                    <strong>{{ user.first_name }} {{ user.last_name }}</strong>
+                </div>
+            </div>
+            <div class="confirmation-detail">
+                <i class="bi bi-info-circle"></i>
+                <div class="confirmation-detail-text">
+                    <span>Status</span>
+                    <strong id="pdfStatus">-</strong>
+                </div>
+            </div>
+            <div class="confirmation-actions">
+                <button class="btn-confirmation secondary" onclick="closeModal()">
+                    <i class="bi bi-x-lg"></i>
+                    Fechar
+                </button>
+                <button class="btn-confirmation primary" onclick="printCard()">
+                    <i class="bi bi-printer"></i>
+                    Imprimir / PDF
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}
 
 {% block extra_js %}
@@ -76,26 +732,21 @@
         const horaSelect = document.getElementById('id_hora');
         const horaContainer = document.getElementById('hora-field-container');
 
-                // Função para buscar e atualizar os horários
         function atualizarHorarios() {
             const medicoId = medicoSelect.value;
             const dataSelecionada = dataInput.value;
 
-            // Se o médico ou a data não estiverem selecionados, limpa o campo de hora
             if (!medicoId || !dataSelecionada) {
-                horaSelect.innerHTML = '<option value="">---------</option>';
+                horaSelect.innerHTML = '<option value="">Selecione médico e data</option>';
                 return;
             }
 
-            // Faz a chamada AJAX para a nova view
             fetch(`/ajax/horarios_disponiveis/?medico_id=${medicoId}&data=${dataSelecionada}`)
                 .then(response => response.json())
                 .then(data => {
-                    // Limpa as opções atuais
-                    horaSelect.innerHTML = '<option value="">---------</option>';
+                    horaSelect.innerHTML = '<option value="">Selecione um horário</option>';
 
                     if (data.horarios && data.horarios.length > 0) {
-                        // Adiciona as novas opções
                         data.horarios.forEach(horario => {
                             const option = document.createElement('option');
                             option.value = horario.value;
@@ -111,17 +762,135 @@
                 })
                 .catch(error => {
                     console.error('Erro ao buscar horários:', error);
-                    horaSelect.innerHTML = '<option value="">Erro ao carregar horários</option>';
+                    horaSelect.innerHTML = '<option value="">Erro ao carregar</option>';
                 });
         }
 
-        // Adiciona listeners para mudança nos campos
-        medicoSelect.addEventListener('change', atualizarHorarios);
-        dataInput.addEventListener('change', atualizarHorarios);
+        if (medicoSelect) medicoSelect.addEventListener('change', atualizarHorarios);
+        if (dataInput) dataInput.addEventListener('change', atualizarHorarios);
         
-        // Chama a função na carga inicial se os campos já estiverem preenchidos (ex: após erro de validação)
-        if (medicoSelect.value && dataInput.value) {
+        if (medicoSelect && dataInput && medicoSelect.value && dataInput.value) {
             atualizarHorarios();
+        }
+    });
+
+    function downloadPDF(consultaId, medico, data, hora, status) {
+        document.getElementById('pdfMedico').textContent = 'Dr(a). ' + medico;
+        document.getElementById('pdfData').textContent = data;
+        document.getElementById('pdfHora').textContent = hora;
+        document.getElementById('pdfStatus').textContent = status;
+        document.getElementById('confirmationModal').classList.add('show');
+    }
+
+    function closeModal() {
+        document.getElementById('confirmationModal').classList.remove('show');
+    }
+
+    function printCard() {
+        const printContent = document.getElementById('confirmationCardPDF').innerHTML;
+        const originalContent = document.body.innerHTML;
+        
+        const printWindow = window.open('', '_blank');
+        printWindow.document.write(`
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>Comprovante de Consulta - SIMED</title>
+                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+                <style>
+                    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+                    * { margin: 0; padding: 0; box-sizing: border-box; }
+                    body { 
+                        font-family: 'Poppins', sans-serif; 
+                        padding: 20px;
+                        background: #f5f5f5;
+                    }
+                    .confirmation-card {
+                        background: white;
+                        border-radius: 20px;
+                        max-width: 500px;
+                        margin: 0 auto;
+                        overflow: hidden;
+                        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+                    }
+                    .confirmation-header {
+                        background: linear-gradient(135deg, #1B325F 0%, #2c4a7a 100%);
+                        color: white;
+                        padding: 30px;
+                        text-align: center;
+                    }
+                    .confirmation-header i {
+                        font-size: 3rem;
+                        margin-bottom: 10px;
+                        display: block;
+                    }
+                    .confirmation-header h2 {
+                        font-size: 1.4rem;
+                        font-weight: 600;
+                    }
+                    .confirmation-body { padding: 25px; }
+                    .confirmation-detail {
+                        display: flex;
+                        align-items: center;
+                        gap: 15px;
+                        padding: 12px;
+                        background: #f8fafc;
+                        border-radius: 10px;
+                        margin-bottom: 10px;
+                    }
+                    .confirmation-detail i {
+                        width: 35px;
+                        height: 35px;
+                        background: #E9F2F9;
+                        border-radius: 8px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        color: #1B325F;
+                    }
+                    .confirmation-detail-text span {
+                        display: block;
+                        font-size: 0.8rem;
+                        color: #8c9ba8;
+                    }
+                    .confirmation-detail-text strong {
+                        color: #1B325F;
+                        font-size: 0.95rem;
+                    }
+                    .confirmation-actions { display: none; }
+                    .footer-print {
+                        text-align: center;
+                        margin-top: 20px;
+                        padding-top: 15px;
+                        border-top: 1px dashed #ddd;
+                        color: #666;
+                        font-size: 0.85rem;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="confirmation-card">
+                    ${printContent}
+                </div>
+                <div class="footer-print">
+                    <p>SIMED - Serviço Integrado de Medicina</p>
+                    <p>Documento gerado em ${new Date().toLocaleDateString('pt-BR')}</p>
+                </div>
+                <script>
+                    setTimeout(function() {
+                        window.print();
+                        window.close();
+                    }, 500);
+                <\/script>
+            </body>
+            </html>
+        `);
+        printWindow.document.close();
+    }
+
+    document.getElementById('confirmationModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeModal();
         }
     });
 </script>

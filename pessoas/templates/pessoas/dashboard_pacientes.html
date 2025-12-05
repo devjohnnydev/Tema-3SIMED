@@ -1,37 +1,92 @@
 {% extends 'pessoas/dashboard_base.html' %}
 
-{% block title %}Dashboard - Pacientes Cadastrados{% endblock %}
+{% block title %}Dashboard - Pacientes{% endblock %}
+
+{% block page_icon %}<i class="bi bi-people"></i>{% endblock %}
+{% block page_title %}Gerenciar Pacientes{% endblock %}
 
 {% block content %}
-<div style="display: flex; justify-content: flex-end; margin-bottom: 20px;">
-    <a href="{% url 'cadastro' %}" class="btn-editar" style="background-color: #28a745; padding: 10px 20px;">+ Registrar Novo Paciente</a>
+<div class="stats-grid" style="margin-bottom: 30px;">
+    <div class="stat-card accent-2">
+        <div class="stat-card-header">
+            <h3>Total de Pacientes</h3>
+            <div class="stat-card-icon">
+                <i class="bi bi-people-fill"></i>
+            </div>
+        </div>
+        <div class="stat-value">{{ pacientes|length }}</div>
+        <div class="stat-label">pacientes cadastrados</div>
+    </div>
 </div>
 
-<h2 class="page-title">Gerenciar pacientes cadastrados no sistema</h2>
-
 <div class="data-table-container">
-    <div class="table-header grid-pacientes">
-        <div>Nome:</div>
-        <div>E-mail:</div>
-        <div>Remover:</div>
+    <div class="table-header-bar">
+        <div class="table-title">
+            <i class="bi bi-person-lines-fill"></i>
+            Lista de Pacientes
+        </div>
+        <a href="{% url 'cadastro' %}" class="btn-action btn-success">
+            <i class="bi bi-person-plus"></i>
+            Novo Paciente
+        </a>
     </div>
     
-    {% for paciente in pacientes %}
-    <div class="table-row grid-pacientes">
-        <div>{{ paciente.username }} {{ paciente.last_name }}</div>
-        <div>{{ paciente.email }}</div>
-        <div style="display: flex; gap: 5px;">
-            <a href="{% url 'gerenciar_cargos' paciente.id %}" class="btn-editar" style="padding: 8px 10px;">CARGO</a>
-            <form method="post" action="{% url 'remover_paciente' paciente.id %}" style="display: inline;">
-                {% csrf_token %}
-                <button type="submit" class="btn-remover" onclick="return confirm('Deseja realmente remover este paciente?')">REMOVER</button>
-            </form>
-        </div>
+    {% if pacientes %}
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Paciente</th>
+                <th>E-mail</th>
+                <th>Telefone</th>
+                <th>Cargo</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for paciente in pacientes %}
+            <tr>
+                <td>
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <div style="width: 45px; height: 45px; background: linear-gradient(135deg, #1B325F 0%, #2c4a7a 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">
+                            {{ paciente.first_name|slice:":1"|upper|default:"P" }}
+                        </div>
+                        <div>
+                            <strong>{{ paciente.first_name }} {{ paciente.last_name }}</strong>
+                            <div style="font-size: 0.85rem; color: #8c9ba8;">@{{ paciente.username }}</div>
+                        </div>
+                    </div>
+                </td>
+                <td>{{ paciente.email|default:"-" }}</td>
+                <td>{{ paciente.perfil.telefone|default:"-" }}</td>
+                <td>
+                    <span class="status-badge agendada">
+                        {{ paciente.perfil.get_tipo_usuario_display }}
+                    </span>
+                </td>
+                <td>
+                    <div class="action-buttons">
+                        <a href="{% url 'gerenciar_cargos' paciente.id %}" class="btn-action btn-editar">
+                            <i class="bi bi-person-gear"></i>
+                            Cargo
+                        </a>
+                        <form method="post" action="{% url 'remover_paciente' paciente.id %}" style="display: inline;" onsubmit="return confirm('Tem certeza que deseja remover este paciente?');">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-action btn-remover">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="empty-state">
+        <i class="bi bi-people"></i>
+        <h4>Nenhum paciente cadastrado</h4>
+        <p>Clique no botão acima para adicionar um novo paciente.</p>
     </div>
-    {% empty %}
-    <div class="table-row">
-        <div style="text-align: center; padding: 20px; color: #999; grid-column: 1 / -1;">Nenhum paciente cadastrado.</div>
-    </div>
-    {% endfor %}
+    {% endif %}
 </div>
 {% endblock %}

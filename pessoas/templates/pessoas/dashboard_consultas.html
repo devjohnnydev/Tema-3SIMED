@@ -2,40 +2,75 @@
 
 {% block title %}Dashboard - Consultas{% endblock %}
 
+{% block page_icon %}<i class="bi bi-calendar-check"></i>{% endblock %}
+{% block page_title %}Gerenciar Consultas{% endblock %}
+
 {% block content %}
-
-<h2 class="page-title">Gerenciar consultas cadastradas no sistema</h2>
-
-
 <div class="stats-grid">
-    <div class="stat-card">
-        <h3>Número de consultas</h3>
+    <div class="stat-card accent-1">
+        <div class="stat-card-header">
+            <h3>Total de Consultas</h3>
+            <div class="stat-card-icon">
+                <i class="bi bi-clipboard2-pulse"></i>
+            </div>
+        </div>
         <div class="stat-value">{{ total_consultas }}</div>
+        <div class="stat-label">consultas registradas</div>
     </div>
     
-    <div class="stat-card">
-        <h3>Consultas realizadas</h3>
+    <div class="stat-card accent-2">
+        <div class="stat-card-header">
+            <h3>Consultas Realizadas</h3>
+            <div class="stat-card-icon">
+                <i class="bi bi-check-circle"></i>
+            </div>
+        </div>
         <div class="stat-value">{{ consultas_realizadas }}</div>
+        <div class="stat-label">atendimentos concluídos</div>
     </div>
     
-    <div class="stat-card">
-        <h3>Máx de atendimentos/D</h3>
+    <div class="stat-card accent-3">
+        <div class="stat-card-header">
+            <h3>Atendimentos Hoje</h3>
+            <div class="stat-card-icon">
+                <i class="bi bi-calendar-day"></i>
+            </div>
+        </div>
         <div class="stat-value">{{ max_atendimentos_dia }}</div>
+        <div class="stat-label">consultas do dia</div>
     </div>
     
-    <div class="stat-card">
-        <h3>Atendimentos marcados</h3>
+    <div class="stat-card accent-1">
+        <div class="stat-card-header">
+            <h3>Agendamentos</h3>
+            <div class="stat-card-icon">
+                <i class="bi bi-clock-history"></i>
+            </div>
+        </div>
         <div class="stat-value">{{ consultas_agendadas }}</div>
+        <div class="stat-label">consultas pendentes</div>
     </div>
     
-    <div class="stat-card">
-        <h3>Atendimentos cancelados</h3>
+    <div class="stat-card accent-3">
+        <div class="stat-card-header">
+            <h3>Cancelamentos</h3>
+            <div class="stat-card-icon">
+                <i class="bi bi-x-circle"></i>
+            </div>
+        </div>
         <div class="stat-value">{{ consultas_canceladas }}</div>
+        <div class="stat-label">consultas canceladas</div>
     </div>
     
-    <div class="stat-card">
-        <h3>Profissional mais ocupado</h3>
-        <div class="stat-value" style="font-size: 24px;">{{ profissional_nome }}</div>
+    <div class="stat-card accent-4">
+        <div class="stat-card-header">
+            <h3>Profissional Destaque</h3>
+            <div class="stat-card-icon">
+                <i class="bi bi-star"></i>
+            </div>
+        </div>
+        <div class="stat-value" style="font-size: 1.3rem;">{{ profissional_nome }}</div>
+        <div class="stat-label">mais consultas agendadas</div>
     </div>
 </div>
 {% endblock %}

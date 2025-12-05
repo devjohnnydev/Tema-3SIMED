@@ -45,6 +45,7 @@ urlpatterns = [
 
     # URLs de Ações
     path("consulta/<int:consulta_id>/relatorio/", views.escrever_relatorio, name="escrever_relatorio"),
+    path("consulta/<int:consulta_id>/pdf/", views.download_consulta_pdf, name="download_consulta_pdf"),
     
     path('medicamentos/', views.lista_medicamentos, name='lista_medicamentos'),
     path('medicamentos/cadastrar/', views.cadastrar_medicamento, name='cadastrar_medicamento'),

@@ -1,33 +1,87 @@
 {% extends 'pessoas/dashboard_base.html' %}
 
-{% block title %}Dashboard - Ocupação Média{% endblock %}
+{% block title %}Dashboard - Ocupação{% endblock %}
+
+{% block page_icon %}<i class="bi bi-graph-up"></i>{% endblock %}
+{% block page_title %}Ocupação da Clínica{% endblock %}
 
 {% block content %}
-
-<h2 class="page-title">Gerenciar ocupação da clínica</h2>
+<div class="stats-grid" style="margin-bottom: 30px;">
+    <div class="stat-card accent-1">
+        <div class="stat-card-header">
+            <h3>Consultas Agendadas</h3>
+            <div class="stat-card-icon">
+                <i class="bi bi-calendar-check"></i>
+            </div>
+        </div>
+        <div class="stat-value">{{ consultas|length }}</div>
+        <div class="stat-label">aguardando atendimento</div>
+    </div>
+</div>
 
 <div class="data-table-container">
-    <div class="table-header grid-ocupacao">
-        <div>Médico</div>
-        <div>Horário</div>
-        <div>Cancelar consulta</div>
-    </div>
-    
-    {% for consulta in consultas %}
-    <div class="table-row grid-ocupacao">
-        <div>Dr(a). {{ consulta.medico.username }} {{ consulta.medico.last_name }}</div>
-        <div>{{ consulta.data_hora|date:"H:i" }}h</div>
-        <div>
-            <form method="post" action="{% url 'cancelar_consulta_admin' consulta.id %}" style="display: inline;">
-                {% csrf_token %}
-                <button type="submit" class="btn-cancelar" onclick="return confirm('Deseja realmente cancelar esta consulta?')">CANCELAR</button>
-            </form>
+    <div class="table-header-bar">
+        <div class="table-title">
+            <i class="bi bi-calendar-week"></i>
+            Agenda de Consultas
         </div>
     </div>
-    {% empty %}
-    <div class="table-row">
-        <div style="text-align: center; padding: 20px; color: #999; grid-column: 1 / -1;">Nenhuma consulta agendada.</div>
+    
+    {% if consultas %}
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Paciente</th>
+                <th>Médico</th>
+                <th>Data</th>
+                <th>Horário</th>
+                <th>Status</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for consulta in consultas %}
+            <tr>
+                <td>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <div style="width: 40px; height: 40px; background: #E9F2F9; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                            <i class="bi bi-person" style="color: #1B325F;"></i>
+                        </div>
+                        <strong>{{ consulta.paciente.first_name }} {{ consulta.paciente.last_name }}</strong>
+                    </div>
+                </td>
+                <td>Dr(a). {{ consulta.medico.first_name }} {{ consulta.medico.last_name }}</td>
+                <td>{{ consulta.data_hora|date:"d/m/Y" }}</td>
+                <td><strong>{{ consulta.data_hora|time:"H:i" }}</strong></td>
+                <td>
+                    <span class="status-badge {{ consulta.status }}">
+                        {% if consulta.status == 'agendada' %}
+                            <i class="bi bi-clock"></i>
+                        {% elif consulta.status == 'confirmada' %}
+                            <i class="bi bi-check-circle"></i>
+                        {% endif %}
+                        {{ consulta.get_status_display }}
+                    </span>
+                </td>
+                <td>
+                    <form method="post" action="{% url 'cancelar_consulta_admin' consulta.id %}" style="display: inline;" onsubmit="return confirm('Tem certeza que deseja cancelar esta consulta?');">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-action btn-cancelar">
+                            <i class="bi bi-x-lg"></i>
+                            Cancelar
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="empty-state">
+        <i class="bi bi-calendar-x"></i>
+        <h4>Nenhuma consulta agendada</h4>
+        <p>Não há consultas pendentes no momento.</p>
     </div>
-    {% endfor %}
+    {% endif %}
 </div>
 {% endblock %}
