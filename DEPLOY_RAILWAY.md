@@ -203,8 +203,10 @@ web: gunicorn cadastro_pessoas.wsgi --bind 0.0.0.0:$PORT
 
 **runtime.txt** (ja incluido no projeto):
 ```
-python-3.12.0
+python-3.11.0
 ```
+
+**Nota sobre PDF:** O projeto usa `xhtml2pdf` para geracao de PDFs, que e uma biblioteca Python pura e funciona perfeitamente no Railway sem dependencias de sistema adicionais.
 
 **railway.json** (ja incluido no projeto):
 ```json

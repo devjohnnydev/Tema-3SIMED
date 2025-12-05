@@ -210,7 +210,7 @@ See `requirements.txt` for full list. Main dependencies:
 - requests 2.32.3 (HTTP library)
 - gunicorn 23.0.0 (Production WSGI server)
 - whitenoise 6.8.2 (Static file serving)
-- weasyprint (PDF generation)
+- xhtml2pdf (PDF generation - pure Python, works on Railway)
 
 ## Notes
 - The application is configured to work with Replit's proxy/iframe setup

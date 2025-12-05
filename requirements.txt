@@ -7,4 +7,5 @@ Pillow==11.0.0
 requests==2.32.3
 gunicorn==23.0.0
 whitenoise==6.8.2
-weasyprint
+xhtml2pdf==0.2.16
+xhtml2pdf==0.2.16

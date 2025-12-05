@@ -19,7 +19,7 @@ from django.db.models import Q
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.http import require_GET, require_POST
 from django.template.loader import render_to_string
-from weasyprint import HTML
+from xhtml2pdf import pisa
 import io
 
 def gerar_horarios_disponiveis(medico_id, data_selecionada=None):
@@ -509,9 +509,13 @@ def download_consulta_pdf(request, consulta_id):
         'now': timezone.now(),
     })
     
-    html = HTML(string=html_string)
     pdf_buffer = io.BytesIO()
-    html.write_pdf(target=pdf_buffer)
+    pisa_status = pisa.CreatePDF(html_string, dest=pdf_buffer)
+    
+    if pisa_status.err:
+        messages.error(request, 'Erro ao gerar PDF.')
+        return redirect('painel_paciente')
+    
     pdf_buffer.seek(0)
     
     filename = f"consulta_{consulta.id:05d}_{consulta.data_hora.strftime('%Y%m%d')}.pdf"
