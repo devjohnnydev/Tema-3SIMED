@@ -5,7 +5,7 @@
     "buildCommand": "pip install -r requirements.txt && python manage.py collectstatic --noinput"
   },
   "deploy": {
-    "startCommand": "python manage.py migrate --noinput && gunicorn cadastro_pessoas.wsgi:application --bind 0.0.0.0:$PORT --workers 2 --threads 4",
+    "startCommand": "python manage.py migrate --noinput && python scripts/setup_users.py && gunicorn cadastro_pessoas.wsgi:application --bind 0.0.0.0:$PORT --workers 2 --threads 4",
     "healthcheckPath": "/",
     "healthcheckTimeout": 300,
     "restartPolicyType": "ON_FAILURE",
