@@ -47,10 +47,10 @@
                         <div style="width: 40px; height: 40px; background: #E9F2F9; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
                             <i class="bi bi-person" style="color: #1B325F;"></i>
                         </div>
-                        <strong>{{ consulta.paciente.first_name }} {{ consulta.paciente.last_name }}</strong>
+                        <strong>{{ consulta.paciente.username }} {{ consulta.paciente.last_name }}</strong>
                     </div>
                 </td>
-                <td>Dr(a). {{ consulta.medico.first_name }} {{ consulta.medico.last_name }}</td>
+                <td>Dr(a). {{ consulta.medico.username }} {{ consulta.medico.last_name }}</td>
                 <td>{{ consulta.data_hora|date:"d/m/Y" }}</td>
                 <td><strong>{{ consulta.data_hora|time:"H:i" }}</strong></td>
                 <td>

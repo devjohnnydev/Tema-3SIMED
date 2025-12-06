@@ -1,5 +1,123 @@
 {% extends 'pessoas/base.html' %}
 
+<style>
+
+/* Estilização geral do card */
+.mt4 .cad-med-container {
+    max-width: 900px;
+    margin: 50px auto;    
+}
+
+.mt4 .card {
+    border-radius: 10px;
+    border: none;
+    background: #ffffff;
+}
+
+.mt4 .card-body {
+    padding: 20px;
+}
+
+.mt4 .card-header {
+    background: #1a2f52;
+    color: white;
+    border-radius: 10px 10px 0 0;
+    padding: 20px;
+    text-align: center;
+}
+
+.mt4 .card-header h2 {
+    margin: 0;
+    font-weight: 600;
+    font-size: 1.6rem;
+}
+
+/* Estilização dos campos do formulário */
+.mt4 form p {
+    margin-bottom: 15px;
+}
+
+.mt4 form label {
+    font-weight: 600;
+    margin-bottom: 5px;
+    display: block;
+    color: #333;
+}
+
+.mt4 form input,
+.mt4 form select,
+.mt4 form textarea {
+    border-radius: 6px !important;
+    border: 1px solid #ced4da;
+    padding: 10px !important;
+    width: 100%;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+}
+
+.mt4 form .form-check-input {
+    width: 20px !important;
+}
+
+.mt4 form input:focus,
+.mt4 form select:focus,
+.mt4 form textarea:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 4px rgba(13, 110, 253, 0.4);
+}
+
+/* Botões */
+.cad-med-botoes {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.mt4 .btn-primary {
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: 0.5s ease-out;
+    border: none !important;
+    background-color: #1a2f52;
+    color: #fff;
+}
+
+.mt4 .btn-secondary {
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: 0.3s ease;
+}
+
+/* Espaçamento e alinhamento */
+.mt4 .container {
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+/* Sombras suaves */
+.mt4 .card {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Hover para botões */
+.mt4 .btn-primary:hover {
+    cursor: pointer;
+    color: #fff;
+    background-color: #f26c4f;
+}
+
+.mt4 .btn-secondary:hover {
+    color: #1a2f52;
+    background-color: #f1f1f1;
+}
+
+</style>
+
 {% block content %}
 <div class="container mt4">
     <div class="cad-med-container">

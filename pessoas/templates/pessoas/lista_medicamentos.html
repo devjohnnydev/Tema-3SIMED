@@ -2,26 +2,174 @@
 
 {% load static %}
 
+{% block title %}Farmácia{% endblock %}
+
+{% block extra_css %}
+<style>
+    
+/* Container principal */
+
+.lista-meds {
+    background-color: #1a2f52;
+    padding: 50px 0px 0px 0px;
+}
+
+.lista-meds .table-container {
+    padding: 2em;
+    max-width: 1200px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 30px 30px 0px 0px;
+    position: unset !important;
+    bottom: 0px !important;
+}
+
+.lista-meds .table {
+    width: 100%;
+}
+
+/* Título e botão superior */
+.lista-meds .header-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5em;
+}
+
+.lista-meds .btn-add {
+    background-color: #1a2f52;
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+.lista-meds .btn-add:hover {
+    background-color: #f26c4f;
+    color: #fff;
+}
+
+/* Tabela */
+.lista-meds .table-custom {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1em;
+    background: #fff;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.lista-meds thead {
+    background-color: #1a2f52;
+    color: #fff;
+}
+
+.lista-meds th,
+.lista-meds td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #ddd;
+}
+
+.lista-meds tr:nth-child(even) {
+    background-color: #f8f8f8;
+}
+
+/* Imagem */
+.lista-meds .img-produto {
+    width: 100px;
+    border-radius: 5px;
+    object-fit: cover;
+}
+
+/* Ações */
+.lista-meds .action-buttons {
+    display: flex;
+    gap: 6px;
+}
+
+.lista-meds .btn-edit {
+    background: #ffc107;
+    color: #000;
+    padding: 6px 12px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 14px;
+    transition: 0.2s ease;
+}
+
+.lista-meds .btn-edit:hover {
+    background: #e0a800;
+}
+
+.lista-meds .btn-delete {
+    background: #dc3545;
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.2s ease;
+}
+
+.lista-meds .btn-delete:hover {
+    background: #c82333;
+}
+
+/* Linha vazia */
+.lista-meds .empty-message {
+    text-align: center;
+    padding: 20px;
+    font-style: italic;
+    color: #777;
+}
+
+.section1.meds {
+    padding: 0px;
+    position: relative;
+}
+
+.section-content.meds {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.section-50.content {
+    padding: 50px 0px 50px 0px;
+}
+
+.section-50.img {
+    content: "";
+    width: 50%;
+    padding: 0px;
+    display: flex;
+}
+
+.section-50.img img {
+    max-width: 600px;
+    max-height: 500px;
+    position: absolute;
+    border-radius: 0px;
+    bottom: 0px;
+    right: 10%;
+}
+
+</style>
+{% endblock %}
+
 {% block content %}
-{% comment %} <style>
-    /* Estilos específicos para esta página, se necessário */
-    .table-container { padding: 2em; }
-    .table { width: 100%; border-collapse: collapse; margin-top: 1em; background-color: #fff; box-shadow: 0 2px 3px rgba(0,0,0,0.1); }
-    .table th, .table td { padding: 12px 15px; border: 1px solid #ddd; text-align: left; vertical-align: middle; }
-    .table thead { background-color: #007bff; color: white; }
-    .table tr:nth-child(even) { background-color: #f2f2f2; }
-    .table img { border-radius: 5px; }
-    .empty-message { text-align: center; padding: 20px; font-style: italic; color: #777; }
-    .action-buttons form, .action-buttons a { margin-right: 5px; display: inline; }
-</style> {% endcomment %}
+
 <section class="section1 meds">
     <div class="section-content meds">
         <div class="section-50 content">
             <h1>Farmácia</h1>
             <p>A Farmácia da Simed foi desenvolvida para oferecer mais praticidade e transparência aos nossos pacientes e à comunidade. Em nosso catálogo, você pode consultar os medicamentos disponíveis, visualizar seus valores atualizados e verificar se cada item necessita ou não de receita médica para aquisição. Tudo isso de forma simples, clara e acessível, permitindo que você compare preços e encontre exatamente o que precisa com segurança e confiança.</p>
-            <div class="btns">
-                <a href="#" class="btn">Agende sua Consulta</a>
-            </div>
         </div>
         <div class="section-50 img">
             <img src="{% static 'images/equipeMedica.png' %}" alt="">

@@ -5,9 +5,6 @@
 {% block title %}Sobre - SIMED{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
-<link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 <style>
 .hero-sobre {
     background: linear-gradient(135deg, #1B325F 0%, #2c4875 100%);
@@ -48,8 +45,8 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background: rgba(242, 108, 79, 0.2);
-    color: #F26C4F;
+    background: rgba(250, 250, 250, 0.2);
+    color: #fff;
     padding: 8px 16px;
     border-radius: 30px;
     font-size: 0.9rem;
@@ -65,7 +62,7 @@
 }
 
 .hero-content h1 .highlight {
-    background: linear-gradient(135deg, #F26C4F, #4C98D0);
+    background: #F26C4F;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -233,7 +230,7 @@
 .stat-number {
     font-size: 2.5rem;
     font-weight: 800;
-    background: linear-gradient(135deg, #F26C4F, #1B325F);
+    background: linear-gradient(90deg, #4190cc, #1B325F);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -269,7 +266,7 @@
 }
 
 .section-header h2 .highlight {
-    background: linear-gradient(135deg, #F26C4F, #4C98D0);
+    background: #F26C4F;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -306,7 +303,7 @@
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(90deg, #1B325F, #F26C4F);
+    background: linear-gradient(90deg, #1B325F, #4190cc);
     transform: scaleX(0);
     transition: transform 0.4s ease;
 }
@@ -577,7 +574,7 @@
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(90deg, #1B325F, #4C98D0, #F26C4F);
+    background: linear-gradient(90deg, #1B325F, #4C98D0);
     transform: scaleX(0);
     transition: transform 0.4s ease;
 }
@@ -612,10 +609,6 @@
     height: 55px;
     object-fit: contain;
     transition: filter 0.4s ease;
-}
-
-.certificado-card:hover .certificado-icon img {
-    filter: brightness(0) invert(1);
 }
 
 .certificado-card h4 {
@@ -745,7 +738,7 @@
         <div class="hero-content" data-aos="fade-right">
             <div class="hero-badge">
                 <i class="bi bi-heart-pulse"></i>
-                Cuidando de você desde 2009
+                Cuidando de você desde 1999
             </div>
             <h1>Conheça a<br><span class="highlight">SIMED</span></h1>
             <p>A Clínica Geral SIMED é um centro de saúde completo e moderno, dedicado a oferecer atendimento de alta qualidade para cuidar da saúde e bem-estar dos nossos pacientes. Contamos com uma equipe de profissionais experientes e comprometidos.</p>
@@ -761,7 +754,7 @@
             </div>
         </div>
         <div class="hero-image" data-aos="fade-left">
-            <img src="{% static 'images/medicos.png' %}" alt="Equipe médica SIMED">
+            <img src="{% static 'images/doutor.jpg' %}" alt="Equipe médica SIMED">
             <div class="hero-floating-card card-1">
                 <div class="floating-stat">
                     <div class="floating-stat-icon">
@@ -882,7 +875,7 @@
             <p>Profissionais altamente qualificados e dedicados ao seu bem-estar</p>
         </div>
 
-        <div class="team-grid">
+        <div class="team-grid" id="profissionais">
             {% for profissional in profissionais %}
             <div class="team-card" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:100 }}">
                 {% if profissional.foto %}

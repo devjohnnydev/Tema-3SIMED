@@ -733,7 +733,7 @@
                 <i class="bi bi-person-circle"></i>
             </div>
             <div class="painel-welcome-text">
-                <h2>Olá, {{ user.first_name|default:user.username }}!</h2>
+                <h2>Olá, {{ user.username|default:user.username }}!</h2>
                 <p>Gerencie suas consultas e agende novos atendimentos com facilidade.</p>
             </div>
         </div>
@@ -822,14 +822,14 @@
                         <div class="consulta-card status-{{ consulta.status }}" id="consulta-{{ consulta.id }}">
                             <div class="consulta-card-header">
                                 {% if consulta.medico_profissional and consulta.medico_profissional.foto %}
-                                    <img src="{{ consulta.medico_profissional.foto.url }}" alt="{{ consulta.medico.first_name }}" class="consulta-medico-foto">
+                                    <img src="{{ consulta.medico_profissional.foto.url }}" alt="{{ consulta.medico.username }}" class="consulta-medico-foto">
                                 {% else %}
                                     <div class="consulta-medico-placeholder">
-                                        {{ consulta.medico.first_name|slice:":1"|upper }}
+                                        {{ consulta.medico.username|slice:":1"|upper }}
                                     </div>
                                 {% endif %}
                                 <div class="consulta-medico-info">
-                                    <h4>Dr(a). {{ consulta.medico.first_name }} {{ consulta.medico.last_name }}</h4>
+                                    <h4>Dr(a). {{ consulta.medico.username }} {{ consulta.medico.last_name }}</h4>
                                     {% if consulta.medico_profissional and consulta.medico_profissional.especialidade %}
                                     <span class="especialidade-badge">
                                         <i class="bi bi-heart-pulse"></i>
@@ -938,7 +938,7 @@
                 <i class="bi bi-person"></i>
                 <div class="confirmation-detail-text">
                     <span>Paciente</span>
-                    <strong>{{ user.first_name }} {{ user.last_name }}</strong>
+                    <strong>{{ user.username }} {{ user.last_name }}</strong>
                 </div>
             </div>
             <div class="confirmation-detail">
