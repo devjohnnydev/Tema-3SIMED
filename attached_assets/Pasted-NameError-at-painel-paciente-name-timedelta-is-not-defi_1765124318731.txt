@@ -1,0 +1,72 @@
+NameError at /painel/paciente/
+name 'timedelta' is not defined
+Request Method:	GET
+Request URL:	https://web-production-ce4e4.up.railway.app/painel/paciente/
+Django Version:	5.2.6
+Exception Type:	NameError
+Exception Value:	
+name 'timedelta' is not defined
+Exception Location:	/app/pessoas/models.py, line 147, in google_calendar_url
+Raised during:	pessoas.views.painel_paciente
+Python Executable:	/opt/venv/bin/python
+Python Version:	3.11.10
+Python Path:	
+['/app',
+ '/opt/venv/bin',
+ '/root/.nix-profile/lib/python311.zip',
+ '/root/.nix-profile/lib/python3.11',
+ '/root/.nix-profile/lib/python3.11/lib-dynload',
+ '/opt/venv/lib/python3.11/site-packages']
+Server time:	Sun, 07 Dec 2025 13:18:25 -0300
+Error during template rendering
+In template /app/pessoas/templates/pessoas/painel_paciente.html, error at line 872
+
+name 'timedelta' is not defined
+862	                                    PDF
+863	                                </a>
+864	                                
+865	                                {% if consulta.status == 'agendada' or consulta.status == 'confirmada' %}
+866	                                <div class="calendar-dropdown">
+867	                                    <button type="button" class="btn-calendar" onclick="toggleCalendarOptions({{ consulta.id }})">
+868	                                        <i class="bi bi-calendar-plus"></i>
+869	                                        Calendário
+870	                                    </button>
+871	                                    <div class="calendar-options" id="calendarOptions{{ consulta.id }}">
+872	                                        <a href="{{ consulta.google_calendar_url }}" target="_blank" rel="noopener">
+873	                                            <i class="bi bi-google" style="color: #4285f4;"></i>
+874	                                            Google Calendar
+875	                                        </a>
+876	                                        <a href="{{ consulta.outlook_calendar_url }}" target="_blank" rel="noopener">
+877	                                            <i class="bi bi-microsoft" style="color: #0078d4;"></i>
+878	                                            Outlook
+879	                                        </a>
+880	                                        <a href="{% url 'download_consulta_ics' consulta.id %}">
+881	                                            <i class="bi bi-calendar-week" style="color: #5856d6;"></i>
+882	                                            Apple Calendar (.ics)
+Traceback Switch to copy-and-paste view
+/opt/venv/lib/python3.11/site-packages/django/template/base.py, line 890, in _resolve_lookup
+                        raise TypeError
+                             ^^^^^^^^^^^^^^^ …
+Local vars
+During handling of the above exception (), another exception occurred:
+/opt/venv/lib/python3.11/site-packages/django/core/handlers/exception.py, line 55, in inner
+                response = get_response(request)
+                               ^^^^^^^^^^^^^^^^^^^^^ …
+Local vars
+/opt/venv/lib/python3.11/site-packages/django/core/handlers/base.py, line 197, in _get_response
+                response = wrapped_callback(request, *callback_args, **callback_kwargs)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ …
+Local vars
+/app/pessoas/decorators.py, line 120, in wrapper
+        return view_func(request, *args, **kwargs)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ …
+Local vars
+/app/pessoas/views.py, line 313, in painel_paciente
+    return render(request, 'pessoas/painel_paciente.html', {
+                 …
+Local vars
+/opt/venv/lib/python3.11/site-packages/django/shortcuts.py, line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ …
+Local vars
+/opt/venv/lib/python3.11/site-packages/django/template/loader.py, line 62, in render_to_string
