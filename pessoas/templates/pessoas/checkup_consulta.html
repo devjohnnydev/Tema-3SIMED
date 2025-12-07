@@ -4,6 +4,152 @@
 
 {% block title %}Check-up{% endblock %}
 
+{% block extra_css %}
+
+<style>  
+.container-checkup {
+    max-width: 900px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: #fff;
+    border: 1px solid #e4e9f1;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    font-family: 'Inter', sans-serif;
+}
+
+.search-box {
+    margin-bottom: 40px;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+.treatment-selection {
+    padding: 0px!important;
+    margin-top: 30px;
+}
+
+#treatment-select {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+}
+
+.treatment-details {
+    width: 100%;
+    padding: 40px;
+    border: 1px solid #eee;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    margin-top: 20px;
+}
+
+.value-box {
+    text-align: right;
+    margin-top: 20px;
+}
+
+/* Estilo para o valor real */
+.real-value {
+    display: inline-block;
+    padding: 5px 15px;
+    background-color: #e0e0e0;
+    border-radius: 15px;
+    font-weight: bold;
+    color: #333;
+    font-size: 16px;
+}
+
+
+/* Estilos para a lista de seleção que aparece ao focar no input */
+.search-box {
+    position: relative; /* Para posicionar a lista de seleção */
+}
+
+.selection-list {
+    position: absolute;
+    top: 100%; /* Abaixo do input */
+    left: 0;
+    right: 0;
+    z-index: 10;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-top: none;
+    border-radius: 0 0 5px 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-height: 200px;
+    overflow-y: auto;
+    display: none; /* Oculto por padrão */
+}
+
+.selection-list-item {
+    padding: 10px 15px;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+    transition: background-color 0.2s;
+}
+
+.selection-list-item:last-child {
+    border-bottom: none;
+}
+
+.selection-list-item:hover {
+    background-color: #f0f0f0;
+}
+
+
+
+/* Estilo para o botão de impressão */
+.btn-print {
+    padding: 10px 20px;
+    background-color: #28a745; /* Verde */
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 20px;
+    float: right;
+}
+
+.btn-print:hover {
+    background-color: #218838;
+}
+
+/* Estilo para impressão: esconde o que não é necessário */
+@media print {
+    .header, .treatment-selection, .search-box, .btn-print {
+        display: none;
+    }
+    .container {
+        box-shadow: none;
+        margin: 0;
+        padding: 0;
+    }
+    body {
+        background-color: #fff;
+    }
+    .treatment-details {
+        border: none;
+        background-color: #fff;
+        padding: 0;
+    }
+}
+</style>
+
+{% endblock %}
+
 {% block content %}
 
 <main class="container-checkup">
