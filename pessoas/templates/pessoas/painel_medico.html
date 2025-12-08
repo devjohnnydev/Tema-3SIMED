@@ -1,5 +1,172 @@
 {% extends 'pessoas/base.html' %}
 
+{%load static %}
+
+{% block title %}Painel do Médico{% endblock %}
+
+{% block extra_css %}
+
+<style>
+
+/* INÍCIO PAINEL DO MÉDICO */
+
+.section-painelmedico {
+    padding: 2rem 0;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 40vh;
+}
+
+.painelmedico-container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Centraliza e destaca o título */
+.titulo-painelmedico {
+    text-align: center;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    color: #1B325F;
+}
+
+/* ===== CARD DE CONSULTAS ===== */
+.card-consultas {
+    background: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    overflow: hidden;
+    width: 100%;
+}
+
+.card-consultas table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+/* Cabeçalho */
+.card-consultas thead {
+    background-color: #1B325F;
+    color: #fff;
+}
+
+.card-consultas th {
+    padding: 1rem;
+    font-weight: 600;
+    text-align: left;
+    font-size: 0.95rem;
+}
+
+/* Corpo */
+.card-consultas td {
+    padding: 0.9rem 1rem;
+    border-top: 1px solid #e9ecef;
+    font-size: 0.95rem;
+    vertical-align: middle;
+}
+
+/* Linhas alternadas e hover */
+.card-consultas tbody tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+.card-consultas tbody tr:hover {
+    background-color: #f1f6fb;
+    transition: background-color 0.2s ease;
+}
+
+/* Status */
+.card-consultas td span {
+    display: inline-block;
+    background-color: #357abd;
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 500;
+    padding: 6px 12px;
+    border-radius: 8px;
+}
+
+/* Botão de ação */
+.card-consultas a {
+    background-color: #1B325F;
+    color: #fff;
+    text-decoration: none;
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+}
+
+.card-consultas a:hover {
+    background-color: #e05a3e;
+    transform: translateY(-2px);
+}
+
+/* Linha sem consulta */
+.card-consultas td[colspan] {
+    text-align: center;
+    color: #6c757d;
+    font-style: italic;
+    background-color: #f1f3f5;
+}
+
+/* ===== RESPONSIVIDADE ===== */
+@media (max-width: 992px) {
+    .painelmedico-container {
+        width: 95%;
+    }
+}
+
+@media (max-width: 768px) {
+    .card-consultas table,
+    .card-consultas thead,
+    .card-consultas tbody,
+    .card-consultas th,
+    .card-consultas td,
+    .card-consultas tr {
+        display: block;
+        width: 100%;
+    }
+
+    .card-consultas thead {
+        display: none;
+    }
+
+    .card-consultas tr {
+        margin-bottom: 15px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        padding: 10px;
+    }
+
+    .card-consultas td {
+        text-align: right;
+        padding: 10px;
+        position: relative;
+    }
+
+    .card-consultas td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 10px;
+        font-weight: 600;
+        text-transform: uppercase;
+        color: #1B325F;
+        font-size: 0.8rem;
+    }
+}
+
+/* FIM PAINEL DO MÉDICO */
+
+</style>
+
+{% endblock %}
+
 {% block content %}
     <section class="section-painelmedico">
     <h2 class="titulo-painelmedico">Painel do Médico</h2>

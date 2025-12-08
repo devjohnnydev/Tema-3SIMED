@@ -3,6 +3,265 @@
 
 {% block title %}Nos Encontre{% endblock %}
 
+{% block extra_css %}
+
+<style>
+    
+/* Seção: Unidade Próxima */
+.unidade-proxima {
+    background: #ffffff;
+    padding: 0 20px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    min-height: 85vh;
+    margin-top: -60px;
+    overflow: hidden;
+}
+
+.content-wrapper {
+    max-width: 1400px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 100px;
+    position: relative;
+}
+
+.image-container {
+    position: relative;
+}
+
+.blue-circle {
+    position: absolute;
+    width: 800px;
+    height: 800px;
+    border-radius: 50%;
+    background-color: #1a3a52;
+    z-index: 1;
+    transform: translate(-140px, 135px);
+}
+
+.hospital-image {
+    width: 800px;
+    height: 800px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+    position: relative;
+    z-index: 2;
+    transform: translate(-140px, 135px);
+}
+
+.text-content {
+    width: 55%;
+    padding-right: 40px;
+}
+
+.text-content h1 {
+    font-size: 45px;
+    font-weight: 700;
+    color: #1a3a52;
+    margin-bottom: 30px;
+    line-height: 1.1;
+    letter-spacing: -0.5px;
+    transform: translate(-180px, 110px);
+}
+
+.text-content .highlight {
+    color: #1a3a52;
+    font-weight: 700;
+    display: block;
+    transform: translate(60px, 10px);
+}
+
+.text-content p {
+    font-size: 17px;
+    color: #1a3a52;
+    line-height: 1.8;
+    text-align: justify;
+    font-weight: 400;
+    transform: translate(-120px, 95px);
+}
+
+
+/* Inicio seção Nos Encontre */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: #333;
+    line-height: 1.6;
+    background-color: #f4f7f6;
+    overflow-x: hidden;
+}
+
+.unidade-proxima {
+    background: #ffffff;
+    padding: 0 20px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    min-height: 85vh;
+    margin-top: -60px;
+    overflow: hidden;
+}
+
+.content-wrapper {
+    max-width: 1400px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 100px;
+    position: relative;
+}
+
+.image-container { position: relative; }
+
+.blue-circle { position: absolute; width: 800px; height: 800px; border-radius: 50%; background-color: #1a3a52; z-index: 1;
+transform: translate(-140px, 135px); }
+.hospital-image { width: 800px; height: 800px; border-radius: 50%; object-fit: cover; display: block; position: relative; z-index: 2; transform: translate(-140px, 135px); }
+.text-content { width: 55%; padding-right: 40px; }
+.text-content h1 { font-size: 45px; font-weight: 700; color: #1a3a52; margin-bottom: 30px; line-height: 1.1; letter-spacing: -0.5px; transform: translate(-180px, 110px); }
+.text-content .highlight { color: #1a3a52; font-weight: 700; display: block; transform: translate(60px, 10px); }
+.text-content p { font-size: 17px; color: #1a3a52; line-height: 1.8; text-align: justify; font-weight: 400; transform: translate(-120px, 95px); }
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: #333;
+    line-height: 1.6;
+    background-color: #f4f7f6;
+    overflow-x: hidden;
+}
+
+.unidade-proxima {
+    background: #ffffff;
+    padding: 0 20px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    min-height: 85vh;
+    margin-top: -60px;
+    overflow: hidden;
+}
+
+.content-wrapper {
+    max-width: 1400px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 100px;
+    position: relative;
+}
+
+
+.nos-encontre {
+    position: relative;
+    padding: 120px 40px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    /* OPACIDADE IMAGEM Google Maps Cinza */
+    background-image: 
+        linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.6)),
+        url("{% static 'images/ImagemMapsCinza.jpg' %}"); /* Caminho relativo da imagem */
+
+    background-size: cover;
+    background-position: center center;
+
+    background-attachment: fixed; 
+}
+
+.content-wrapper-bottom {
+    position: relative;
+    display: flex;
+    gap: 80px;
+    max-width: 1400px;
+    width: 100%;
+    align-items: flex-start;
+}
+
+
+.text-section { flex: 1; min-width: 300px; }
+.text-section h2 { font-size: 52px; font-weight: 700; margin-bottom: 8px; color: #ffffff; letter-spacing: -0.5px; }
+.subtitle { font-size: 13px; color: #a8b4ba; margin-bottom: 35px; font-weight: 500; }
+.info-block { margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid rgba(255, 255, 255, 0.15); }
+.info-block:last-of-type { border-bottom: none; }
+.info-block p { font-size: 14px; color: #ecf0f1; margin-bottom: 4px; line-height: 1.6; }
+.info-block strong { color: #ffffff; font-weight: 600; }
+.footer-text { font-size: 13px; color: #a8b4ba; margin-top: 35px; line-height: 1.8; text-align: justify; }
+.map-section { flex: 1; min-width: 250px; max-width: 450px; }
+.map-container { position: relative; width: 100%; padding-top: 75%; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); border-radius: 8px; overflow: hidden; }
+.map-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+
+.site-footer {
+    position: relative;
+    z-index: 10;
+    background-color: #1a3a52;
+    color: #fff;
+    padding: 40px 20px;
+    text-align: center;
+    margin-top: -80px;
+    border-top-left-radius: 40px;
+    border-top-right-radius: 40px;
+    box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.footer-content { max-width: 1200px; margin: 0 auto; }
+.footer-logo { height: 50px; margin-bottom: 15px; }
+
+/* Responsividade */
+@media (max-width: 992px) {
+
+    .nos-encontre {
+        background-attachment: scroll;
+    }
+}
+@media (max-width: 992px) {
+    .content-wrapper, .content-wrapper-bottom { flex-direction: column; text-align: center; }
+    .text-content { width: 100%; padding: 0; }
+    .text-content h1 { font-size: 38px; }
+    .content-wrapper-bottom { gap: 50px; }
+    .text-section, .map-section { width: 100%; max-width: 600px; }
+    
+
+    .nos-encontre {
+        background-attachment: scroll;
+    }
+}
+
+@media (max-width: 768px) {
+    .unidade-proxima { padding: 40px 20px; margin-top: 0; }
+    .nos-encontre { padding: 80px 20px; }
+    .text-section h2 { font-size: 40px; }
+    .site-footer { margin-top: -60px; border-top-left-radius: 30px; border-top-right-radius: 30px; }
+}
+
+</style>
+
+{% endblock %}
+
 {% block content %}
 
 <section class="unidade-proxima">

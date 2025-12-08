@@ -169,7 +169,7 @@ def login_view(request):
         if form.is_valid():
             user = form.cleaned_data['user']
             login(request, user)
-            messages.success(request, f'Bem-vindo(a) de volta, {user.first_name or user.username}!')
+            messages.success(request, f'Bem-vindo(a) de volta, {user.username or user.username}!')
 
             # Redirecionamento baseado no tipo de usuário
             if user.is_staff:
@@ -282,7 +282,7 @@ def painel_paciente(request):
             nova_consulta.paciente = request.user
             nova_consulta.data_hora = form.cleaned_data.get('data_hora')
             nova_consulta.save()
-            medico_nome = f"{nova_consulta.medico.first_name} {nova_consulta.medico.last_name}"
+            medico_nome = f"{nova_consulta.medico.username} {nova_consulta.medico.last_name}"
             data_formatada = nova_consulta.data_hora.strftime("%d/%m/%Y às %H:%M")
             messages.success(request, f'Sua consulta com Dr(a). {medico_nome} foi agendada para {data_formatada}. Você pode baixar o comprovante em PDF.')
             return redirect('painel_paciente')
@@ -296,18 +296,18 @@ def painel_paciente(request):
             prof = Profissional.objects.get(usuario=medico)
             medicos_info.append({
                 'id': medico.id,
-                'nome': f"Dr(a). {medico.first_name} {medico.last_name}",
+                'nome': f"Dr(a). {medico.username} {medico.last_name}",
                 'foto': prof.foto.url if prof.foto else '',
                 'especialidade': prof.especialidade.nome if prof.especialidade else 'Clínica Geral',
-                'inicial': medico.first_name[:1].upper() if medico.first_name else 'M'
+                'inicial': medico.username[:1].upper() if medico.username else 'M'
             })
         except Profissional.DoesNotExist:
             medicos_info.append({
                 'id': medico.id,
-                'nome': f"Dr(a). {medico.first_name} {medico.last_name}",
+                'nome': f"Dr(a). {medico.username} {medico.last_name}",
                 'foto': '',
                 'especialidade': 'Clínica Geral',
-                'inicial': medico.first_name[:1].upper() if medico.first_name else 'M'
+                'inicial': medico.username[:1].upper() if medico.username else 'M'
             })
 
     return render(request, 'pessoas/painel_paciente.html', {
@@ -454,7 +454,7 @@ def cancelar_consulta_admin(request, consulta_id):
 @admin_required
 def remover_medico(request, medico_id):
     medico = get_object_or_404(User, pk=medico_id, perfil__tipo_usuario='medico')
-    nome = f"{medico.first_name} {medico.last_name}"
+    nome = f"{medico.username} {medico.last_name}"
     medico.delete()
     messages.success(request, f'Médico {nome} removido com sucesso.')
     return redirect('dashboard_medicos')
@@ -462,7 +462,7 @@ def remover_medico(request, medico_id):
 @admin_required
 def remover_paciente(request, paciente_id):
     paciente = get_object_or_404(User, pk=paciente_id, perfil__tipo_usuario='paciente')
-    nome = f"{paciente.first_name} {paciente.last_name}"
+    nome = f"{paciente.username} {paciente.last_name}"
     paciente.delete()
     messages.success(request, f'Paciente {nome} removido com sucesso.')
     return redirect('dashboard_pacientes')
@@ -477,7 +477,7 @@ def gerenciar_cargos(request, user_id):
         if tipo_usuario in ['admin', 'medico', 'paciente', 'atendente']:
             perfil.tipo_usuario = tipo_usuario
             perfil.save()
-            messages.success(request, f'Cargo de {usuario.first_name} atualizado para {perfil.get_tipo_usuario_display()}.')
+            messages.success(request, f'Cargo de {usuario.username} atualizado para {perfil.get_tipo_usuario_display()}.')
             return redirect('dashboard_pacientes')
     
     cargos = Perfil.TIPOS_USUARIO
@@ -539,7 +539,7 @@ def download_consulta_pdf(request, consulta_id):
     y_pos -= 0.7*cm
     
     p.setFont("Helvetica", 11)
-    p.drawString(2*cm, y_pos, f"Nome: {consulta.paciente.first_name} {consulta.paciente.last_name}")
+    p.drawString(2*cm, y_pos, f"Nome: {consulta.paciente.username} {consulta.paciente.last_name}")
     y_pos -= 0.5*cm
     p.drawString(2*cm, y_pos, f"Email: {consulta.paciente.email}")
     y_pos -= 1*cm
@@ -549,7 +549,7 @@ def download_consulta_pdf(request, consulta_id):
     y_pos -= 0.7*cm
     
     p.setFont("Helvetica", 11)
-    medico_nome = f"{consulta.medico.first_name} {consulta.medico.last_name}"
+    medico_nome = f"{consulta.medico.username} {consulta.medico.last_name}"
     if consulta.profissional:
         medico_nome = consulta.profissional.nome
         if consulta.profissional.especialidade:
@@ -905,7 +905,7 @@ UID:consulta-{consulta.id}@simed.com.br
 DTSTAMP:{timezone.now().strftime('%Y%m%dT%H%M%SZ')}
 DTSTART:{start_dt.strftime('%Y%m%dT%H%M%S')}
 DTEND:{end_dt.strftime('%Y%m%dT%H%M%S')}
-SUMMARY:Consulta SIMED - Dr(a). {consulta.medico.first_name} {consulta.medico.last_name}
+SUMMARY:Consulta SIMED - Dr(a). {consulta.medico.username} {consulta.medico.last_name}
 DESCRIPTION:Consulta médica na SIMED - Serviço Integrado de Medicina
 LOCATION:SIMED - Clínica Médica
 STATUS:CONFIRMED

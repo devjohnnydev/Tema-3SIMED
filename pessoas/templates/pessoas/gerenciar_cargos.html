@@ -216,7 +216,7 @@
         <h2>Gerenciar Cargo</h2>
         <div class="user-info">
             <div class="user-avatar">
-                {{ usuario.first_name|slice:":1"|upper }}{{ usuario.last_name|slice:":1"|upper }}
+                {{ usuario.username|slice:":1"|upper }}{{ usuario.last_name|slice:":1"|upper }}
             </div>
             <div class="user-details">
                 <h3>{{ usuario.get_full_name|default:usuario.username }}</h3>

@@ -733,7 +733,7 @@
                 <i class="bi bi-person-circle"></i>
             </div>
             <div class="painel-welcome-text">
-                <h2>Olá, {{ user.first_name|default:user.username }}!</h2>
+                <h2>Olá, {{ user.username|default:user.username }}!</h2>
                 <p>Gerencie suas consultas e agende novos atendimentos com facilidade.</p>
             </div>
         </div>
@@ -822,14 +822,14 @@
                         <div class="consulta-card status-{{ consulta.status }}" id="consulta-{{ consulta.id }}">
                             <div class="consulta-card-header">
                                 {% if consulta.medico_profissional and consulta.medico_profissional.foto %}
-                                    <img src="{{ consulta.medico_profissional.foto.url }}" alt="{{ consulta.medico.first_name }}" class="consulta-medico-foto">
+                                    <img src="{{ consulta.medico_profissional.foto.url }}" alt="{{ consulta.medico.username }}" class="consulta-medico-foto">
                                 {% else %}
                                     <div class="consulta-medico-placeholder">
-                                        {{ consulta.medico.first_name|slice:":1"|upper }}
+                                        {{ consulta.medico.username|slice:":1"|upper }}
                                     </div>
                                 {% endif %}
                                 <div class="consulta-medico-info">
-                                    <h4>Dr(a). {{ consulta.medico.first_name }} {{ consulta.medico.last_name }}</h4>
+                                    <h4>Dr(a). {{ consulta.medico.username }} {{ consulta.medico.last_name }}</h4>
                                     {% if consulta.medico_profissional and consulta.medico_profissional.especialidade %}
                                     <span class="especialidade-badge">
                                         <i class="bi bi-heart-pulse"></i>
@@ -869,14 +869,19 @@
                                         Calendário
                                     </button>
                                     <div class="calendar-options" id="calendarOptions{{ consulta.id }}">
+                                        {% comment %}
+                                            Links comentados para evitar Erro 500 no Django (NameError: timedelta).
+                                            Descomente após adicionar "from datetime import timedelta" no models.py.
+                                        
                                         <a href="{{ consulta.google_calendar_url }}" target="_blank" rel="noopener">
                                             <i class="bi bi-google" style="color: #4285f4;"></i>
-                                            Google Calendar
+                                            Google Agenda
                                         </a>
                                         <a href="{{ consulta.outlook_calendar_url }}" target="_blank" rel="noopener">
                                             <i class="bi bi-microsoft" style="color: #0078d4;"></i>
                                             Outlook
                                         </a>
+                                        {% endcomment %}
                                         <a href="{% url 'download_consulta_ics' consulta.id %}">
                                             <i class="bi bi-calendar-week" style="color: #5856d6;"></i>
                                             Apple Calendar (.ics)
@@ -938,7 +943,7 @@
                 <i class="bi bi-person"></i>
                 <div class="confirmation-detail-text">
                     <span>Paciente</span>
-                    <strong>{{ user.first_name }} {{ user.last_name }}</strong>
+                    <strong>{{ user.username }} {{ user.last_name }}</strong>
                 </div>
             </div>
             <div class="confirmation-detail">
@@ -983,6 +988,47 @@
         const horaSelect = document.getElementById('id_hora');
         const horaContainer = document.getElementById('hora-field-container');
         const medicoInfoPanel = document.getElementById('medicoInfoPanel');
+
+        // --- INICIO: Lógica para sincronizar com Dashboard de Ocupação ---
+        const formAgendamento = document.getElementById('form-agendamento');
+        if (formAgendamento) {
+            formAgendamento.addEventListener('submit', function(e) {
+                try {
+                    const medicoId = medicoSelect.value;
+                    const dataVal = dataInput.value;
+                    const horaVal = horaSelect.options[horaSelect.selectedIndex] ? horaSelect.options[horaSelect.selectedIndex].text : horaSelect.value;
+                    
+                    let medicoNome = "Médico Selecionado";
+                    if (medicoId && medicosData[medicoId]) {
+                        medicoNome = medicosData[medicoId].nome;
+                    } else if (medicoSelect.options[medicoSelect.selectedIndex]) {
+                        medicoNome = medicoSelect.options[medicoSelect.selectedIndex].text;
+                    }
+
+                    if (medicoId && dataVal && horaVal) {
+                        const STORAGE_KEY = 'medScheduleAppointments';
+                        const appointments = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+                        
+                        const newAppt = {
+                            id: Date.now().toString(),
+                            dateStr: dataVal,
+                            time: horaVal,
+                            professionalId: medicoId,
+                            professionalName: medicoNome,
+                            patientName: "{{ user.username|default:'Paciente' }}",
+                            status: 'agendada'
+                        };
+                        
+                        appointments.push(newAppt);
+                        localStorage.setItem(STORAGE_KEY, JSON.stringify(appointments));
+                        console.log('Agendamento sincronizado com Dashboard via LocalStorage');
+                    }
+                } catch (err) {
+                    console.error('Erro ao sincronizar com dashboard:', err);
+                }
+            });
+        }
+        // --- FIM: Lógica para sincronizar com Dashboard de Ocupação ---
 
         function atualizarMedicoInfo() {
             const medicoId = medicoSelect.value;

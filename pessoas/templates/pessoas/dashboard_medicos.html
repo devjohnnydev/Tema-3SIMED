@@ -48,10 +48,10 @@
                 <td>
                     <div style="display: flex; align-items: center; gap: 12px;">
                         <div style="width: 45px; height: 45px; background: linear-gradient(135deg, #6f42c1 0%, #5a32a3 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">
-                            {{ medico.first_name|slice:":1"|upper|default:"M" }}
+                            {{ medico.username|slice:":1"|upper|default:"M" }}
                         </div>
                         <div>
-                            <strong>Dr(a). {{ medico.first_name }} {{ medico.last_name }}</strong>
+                            <strong>Dr(a). {{ medico.username }} {{ medico.last_name }}</strong>
                             <div style="font-size: 0.85rem; color: #8c9ba8;">@{{ medico.username }}</div>
                         </div>
                     </div>
@@ -95,4 +95,32 @@
     </div>
     {% endif %}
 </div>
+
+<!-- Script to Sync Doctors to LocalStorage for use in Agenda.html -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Build array of doctors from Django Template Context
+        const doctorsList = [
+            {% for medico in medicos %}
+            {
+                id: "{{ medico.id }}",
+                name: "Dr(a). {{ medico.username }} {{ medico.last_name }}",
+                // Using 'endereco' as specialty since that matches the table logic above
+                specialty: "{{ medico.perfil.endereco|default:'Clínico Geral' }}", 
+                // Generate a consistent avatar URL based on name
+                avatarUrl: "https://ui-avatars.com/api/?name={{ medico.username }}+{{ medico.last_name }}&background=random&color=fff&size=128"
+            },
+            {% endfor %}
+        ];
+
+        // Save to LocalStorage so agenda.html can access it
+        if (doctorsList.length > 0) {
+            localStorage.setItem('medScheduleProfessionals', JSON.stringify(doctorsList));
+            console.log('✅ Lista de médicos sincronizada com a Agenda:', doctorsList.length, 'profissionais.');
+        } else {
+            // Optional: clear if none exist
+            // localStorage.removeItem('medScheduleProfessionals');
+        }
+    });
+</script>
 {% endblock %}

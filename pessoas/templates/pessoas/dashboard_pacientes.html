@@ -48,10 +48,10 @@
                 <td>
                     <div style="display: flex; align-items: center; gap: 12px;">
                         <div style="width: 45px; height: 45px; background: linear-gradient(135deg, #1B325F 0%, #2c4a7a 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">
-                            {{ paciente.first_name|slice:":1"|upper|default:"P" }}
+                            {{ paciente.username|slice:":1"|upper|default:"P" }}
                         </div>
                         <div>
-                            <strong>{{ paciente.first_name }} {{ paciente.last_name }}</strong>
+                            <strong>{{ paciente.username }} {{ paciente.last_name }}</strong>
                             <div style="font-size: 0.85rem; color: #8c9ba8;">@{{ paciente.username }}</div>
                         </div>
                     </div>

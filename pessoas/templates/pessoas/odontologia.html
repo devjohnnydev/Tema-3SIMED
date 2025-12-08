@@ -260,6 +260,106 @@
   .convenio-texto h3{
     color: #ffffffff
   }
+
+/* ===== Convenios ===== */
+.convenios {
+    margin: 1%;
+    padding: 70px 0;
+    background-color: #fff;
+    text-align: left;
+    margin: 0px 7%;
+}
+
+.titulo-secao {
+  color: #1e3a70;
+  font-weight: 700;
+  margin-bottom: 15px;
+  font-size: 28px;
+}
+
+.texto-intro {
+  color: #3c3c3c;
+  max-width: 700px;
+  font-size: 15px;
+    }
+
+/* === Carrossel de Convênios === */
+.convenios-slider {
+  margin-top: 50px;
+}
+
+.convenio-item {
+  background-color: var(--bg-color);
+  color: #fff;
+  border-radius: 20px;
+  display: flex !important;
+  justify-content: space-between;
+  align-items: center;
+  padding: 40px;
+  min-height: 250px;
+  position: relative;
+}
+
+.convenio-texto {
+  max-width: 60%;
+}
+
+.convenio-texto h3 {
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.convenio-texto p {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.convenio-logo img {
+  width: 200px;
+  height: auto;
+  filter: brightness(0) invert(1);
+}
+
+/* Botões dentro da caixa */
+.slick-prev,
+.slick-next {
+  background: rgba(0,0,0,0.3);
+  color: #fff;
+  border: none;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.slick-prev:hover,
+.slick-next:hover {
+  background: rgba(0,0,0,0.6);
+}
+
+.slick-prev {
+  left: 25px;
+}
+
+.slick-next {
+  right: 25px;
+}
+
+.slick-dots li button:before {
+  color: #1e3a70;
+  font-size: 12px;
+}
+
+.slick-dots li.slick-active button:before {
+  color: #f26c4f;
+}
+
 </style>
 
 <section class="area">

@@ -623,11 +623,11 @@
                 </h1>
                 <div class="user-info">
                     <div class="user-details">
-                        <h4>{{ user.first_name|default:user.username }}</h4>
+                        <h4>{{ user.username|default:user.username }}</h4>
                         <span>Administrador</span>
                     </div>
                     <div class="user-avatar">
-                        {{ user.first_name|slice:":1"|upper|default:"A" }}
+                        {{ user.username|slice:":1"|upper|default:"A" }}
                     </div>
                 </div>
             </div>

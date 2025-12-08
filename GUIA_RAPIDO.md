@@ -54,17 +54,17 @@ Ou use o script automatizado:
 ### 3. Configurar banco de dados
 Certifique-se de que o MySQL está rodando e execute:
 ```bash
-python3.11 manage.py migrate
+python manage.py migrate
 ```
 
 ### 4. Criar superusuário
 ```bash
-python3.11 manage.py createsuperuser
+python manage.py createsuperuser
 ```
 
 ### 5. Iniciar servidor
 ```bash
-python3.11 manage.py runserver 0.0.0.0:8000
+python manage.py runserver 0.0.0.0:8000
 ```
 
 ### 6. Configurar no Admin

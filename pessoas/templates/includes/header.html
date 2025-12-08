@@ -1,31 +1,31 @@
 {% load static %}
 
 <header>
-    <div class="navbar">
-        <div class="logo">
+    <div class="header-navbar">
+        <div class="header-logo">
             <img src="{% static 'images/logo.png' %}" alt="Logo">
         </div>
 
-        <div class="ancoras">
-            <div class="dropdown inicio">
+        <div class="header-ancoras">
+            <div class="header-dropdown inicio">
                 <a href="{% url 'home' %}" class="dropbtn">Início
                     <i class="fa fa-caret-down"></i>
                 </a>
-                <div class="dropdown-content">
-                    <div class="row">
-                        <div class="column">
-                            <a href="{% url 'consulta_rapida' %}">Consulta Online</a>
+                <div class="header-dropdown-content">
+                    <div class="header-row">
+                        <div class="header-column">
+                            <a href="{% url 'agenda' %}">Consulta Online</a>
                             <a href="{% url 'painel_paciente' %}">Consulta</a>
                         </div>
-                        <div class="column">
+                        <div class="header-column">
                             <a href="{% url 'oftalmologia' %}">Oftalmologia</a>
                             <a href="{% url 'odontologia' %}">Odontologia</a>
                         </div>
-                        <div class="column">
+                        <div class="header-column">
                             <a href="{% url 'cirurgia' %}">Cirurgia</a>
                             <a href="{% url 'tomografia' %}">Tomografia</a>
                         </div>
-                        <div class="column">
+                        <div class="header-column">
                             <a href="{% url 'exames' %}">Exames</a>
                             <a href="{% url 'checkup_consulta' %}">Check-up</a>
                         </div>
@@ -33,14 +33,14 @@
                 </div>
             </div>
 
-            <div class="dropdown sobre">
+            <div class="header-dropdown sobre">
                 <a href="{% url 'sobre' %}" class="dropbtn">Sobre
                     <i class="fa fa-caret-down"></i>
                 </a>
-                <div class="dropdown-content">
-                    <div class="row">
-                        <div class="column">
-                            <div class="card">
+                <div class="header-dropdown-content">
+                    <div class="header-row">
+                        <div class="header-column">
+                            <div class="header-card">
                                 <div class="container">
                                     <a href="{% url 'sobre' %}" class="sobre-links">
                                         <h2>Nosso propósito</h2>
@@ -49,8 +49,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="column">
-                            <div class="card">
+                        <div class="header-column">
+                            <div class="header-card">
                                 <div class="container">
                                     <a href="{% url 'profissionais' %}" class="sobre-links">
                                         <h2>Profissionais</h2>
@@ -59,8 +59,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="column">
-                            <div class="card">
+                        <div class="header-column">
+                            <div class="header-card">
                                 <div class="container">
                                     <a href="{% url 'sobre' %}#certificados" class="sobre-links">
                                         <h2>Certificações</h2>
@@ -73,13 +73,13 @@
                 </div>
             </div>
 
-            <div class="dropdown produtos">
+            <div class="header-dropdown produtos">
                 <a href="{% url 'lista_medicamentos' %}" class="dropbtn">Produtos
                     <i class="fa fa-caret-down"></i>
                 </a>
             </div>
 
-            <div class="dropdown encontre">
+            <div class="header-dropdown encontre">
                 <a href="{% url 'encontre' %}" class="dropbtn">Nos Encontre
                     <i class="fa fa-caret-down"></i>
                 </a>

@@ -25,11 +25,15 @@
         }
         
         .login-panel {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 40px;
             background: white;
             padding: 40px;
             border-radius: 20px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.15);
-            max-width: 400px;
+            max-width: 1200px;
             width: 100%;
             animation: slideUp 0.6s ease;
         }
@@ -267,68 +271,72 @@
     <div class="container">
         <div class="content">
             <div class="login-panel">
-                <h2 class="card-title">
-                    <i class="fas fa-user-circle"></i> Login
-                </h2>
-                
-                {% if messages %}
-                {% for message in messages %}
-                <div class="alert alert-{{ message.tags }}">
-                    <i class="fas {% if message.tags == 'success' %}fa-check-circle{% else %}fa-exclamation-circle{% endif %}"></i>
-                    {{ message }}
-                </div>
-                {% endfor %}
-                {% endif %}
-                
-                <div class="google-btn">
-                    <a href="{% provider_login_url 'google' %}">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
-                            <path d="M15.545 6.558a9.42 9.42 0 0 1 .139 1.626c0 2.434-.87 4.492-2.384 5.885h.002C11.978 15.292 10.158 16 8 16A8 8 0 1 1 8 0a7.689 7.689 0 0 1 5.352 2.082l-2.284 2.284A4.347 4.347 0 0 0 8 3.166c-2.087 0-3.86 1.408-4.492 3.304a4.792 4.792 0 0 0 0 3.063h.003c.635 1.893 2.405 3.301 4.492 3.301 1.078 0 2.004-.276 2.722-.764h-.003a3.702 3.702 0 0 0 1.599-2.431H8v-3.08h7.545z"/>
-                        </svg>
-                        Entrar com Google
-                    </a>
-                </div>
-                
-                <div class="divisor">
-                    <span>ou</span>
-                </div>
-                
-                <form method="post">
-                    {% csrf_token %}
-                    
-                    {% if form.non_field_errors %}
-                    <ul class="errorlist">
-                        {% for error in form.non_field_errors %}
-                        <li>{{ error }}</li>
-                        {% endfor %}
-                    </ul>
+                <div class="card-login-content">
+                    <h2 class="card-title">
+                        <i class="fas fa-user-circle"></i> Login
+                    </h2>
+
+                    {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                        <i class="fas {% if message.tags == 'success' %}fa-check-circle{% else %}fa-exclamation-circle{% endif %}"></i>
+                        {{ message }}
+                    </div>
+                    {% endfor %}
                     {% endif %}
-                    
-                    <div class="input-group">
-                        <i class="fa-solid fa-user"></i>
-                        {{ form.username }}
+
+                    <div class="google-btn">
+                        <a href="{% provider_login_url 'google' %}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M15.545 6.558a9.42 9.42 0 0 1 .139 1.626c0 2.434-.87 4.492-2.384 5.885h.002C11.978 15.292 10.158 16 8 16A8 8 0 1 1 8 0a7.689 7.689 0 0 1 5.352 2.082l-2.284 2.284A4.347 4.347 0 0 0 8 3.166c-2.087 0-3.86 1.408-4.492 3.304a4.792 4.792 0 0 0 0 3.063h.003c.635 1.893 2.405 3.301 4.492 3.301 1.078 0 2.004-.276 2.722-.764h-.003a3.702 3.702 0 0 0 1.599-2.431H8v-3.08h7.545z"/>
+                            </svg>
+                            Entrar com Google
+                        </a>
                     </div>
 
-                    <div class="input-group">
-                        <i class="fa-solid fa-lock"></i>
-                        {{ form.password }}
+                    <div class="divisor">
+                        <span>ou</span>
                     </div>
 
-                    <div class="redirecionamentos cima">
-                        <a href="#">Esqueceu sua senha?</a>
-                    </div>
-                    
-                    <button type="submit" class="btn-login">
-                        <i class="fas fa-sign-in-alt"></i> Entrar
-                    </button>
+                    <div class="form-login">
+                        <form method="post">
+                            {% csrf_token %}
 
-                    <div class="redirecionamentos baixo">
-                        <a href="{% url 'cadastro' %}">Não possui uma conta? <strong>Cadastre-se</strong></a>
+                            {% if form.non_field_errors %}
+                            <ul class="errorlist">
+                                {% for error in form.non_field_errors %}
+                                <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+
+                            <div class="input-group">
+                                <i class="fa-solid fa-user"></i>
+                                {{ form.username }}
+                            </div>
+
+                            <div class="input-group">
+                                <i class="fa-solid fa-lock"></i>
+                                {{ form.password }}
+                            </div>
+
+                            <div class="redirecionamentos cima">
+                                <a href="#">Esqueceu sua senha?</a>
+                            </div>
+
+                            <button type="submit" class="btn-login">
+                                <i class="fas fa-sign-in-alt"></i> Entrar
+                            </button>
+
+                            <div class="redirecionamentos baixo">
+                                <a href="{% url 'cadastro' %}">Não possui uma conta? <strong>Cadastre-se</strong></a>
+                            </div>
+                        </form>
                     </div>
-                </form>
-            </div>
-            <div class="image-content">
-                <img src="{% static 'images/enfermeira.png' %}" alt="Enfermeira">
+                </div>
+                <div class="image-content">
+                    <img src="{% static 'images/enfermeira.png' %}" alt="Enfermeira">
+                </div>
             </div>
         </div>
     </div>
