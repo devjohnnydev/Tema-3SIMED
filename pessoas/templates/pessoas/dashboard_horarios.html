@@ -1,3 +1,4 @@
+
 {% extends 'pessoas/dashboard_base.html' %}
 {% load static %}
 
@@ -8,6 +9,7 @@
 
 {% block extra_css %}
 <style>
+    /* Estilos Principais do Grid */
     .horarios-container {
         display: grid;
         gap: 25px;
@@ -18,6 +20,12 @@
         border-radius: 16px;
         box-shadow: 0 4px 20px rgba(0,0,0,0.05);
         overflow: hidden;
+        transition: transform 0.2s;
+    }
+
+    .profissional-horarios:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.08);
     }
     
     .profissional-horarios-header {
@@ -74,6 +82,11 @@
         text-align: center;
         border-radius: 10px;
         min-height: 120px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
     }
     
     .dia-card.ativo {
@@ -124,17 +137,263 @@
         background: rgba(255,255,255,0.3);
         color: white;
     }
-    
-    .empty-horarios {
-        text-align: center;
-        padding: 60px;
-        color: #8c9ba8;
+
+    /* --- MODAL STYLES --- */
+    .modal-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .modal-overlay.open {
+        display: flex;
+        opacity: 1;
+    }
+
+    .config-modal {
+        background: white;
+        width: 90%;
+        max-width: 900px;
+        border-radius: 20px;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        overflow: hidden;
+        transform: translateY(20px);
+        transition: transform 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        max-height: 90vh;
+    }
+
+    .modal-overlay.open .config-modal {
+        transform: translateY(0);
+    }
+
+    .modal-header {
+        padding: 20px 30px;
+        background: #f8fafc;
+        border-bottom: 1px solid #e2e8f0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .modal-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #1B325F;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .modal-body {
+        padding: 30px;
+        overflow-y: auto;
+    }
+
+    .config-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0 8px;
+    }
+
+    .config-table th {
+        text-align: left;
+        color: #64748b;
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        padding-bottom: 10px;
+    }
+
+    .config-row {
+        transition: all 0.2s;
+    }
+
+    .config-row td {
+        background: #fff;
+        padding: 15px;
+        border: 1px solid #e2e8f0;
+    }
+
+    .config-row td:first-child {
+        border-top-left-radius: 12px;
+        border-bottom-left-radius: 12px;
+        border-right: none;
+    }
+    .config-row td:last-child {
+        border-top-right-radius: 12px;
+        border-bottom-right-radius: 12px;
+        border-left: none;
+    }
+    .config-row td:nth-child(2) {
+        border-left: none;
+        border-right: none;
+    }
+
+    .day-info {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 600;
+        color: #1e293b;
+    }
+
+    .day-icon-circle {
+        width: 36px;
+        height: 36px;
+        background: #e0f2fe;
+        color: #0284c7;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .time-inputs {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .time-input {
+        padding: 8px 12px;
+        border: 2px solid #e2e8f0;
+        border-radius: 8px;
+        color: #334155;
+        font-family: inherit;
+        outline: none;
+        transition: border-color 0.2s;
+    }
+
+    .time-input:focus {
+        border-color: #0284c7;
+    }
+
+    .time-input:disabled {
+        background: #f1f5f9;
+        color: #94a3b8;
+        cursor: not-allowed;
+    }
+
+    /* Toggle Switch */
+    .switch-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+    }
+
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 48px;
+        height: 26px;
+    }
+
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #cbd5e1;
+        transition: .3s;
+        border-radius: 34px;
+    }
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 20px;
+        width: 20px;
+        left: 3px;
+        bottom: 3px;
+        background-color: white;
+        transition: .3s;
+        border-radius: 50%;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    input:checked + .slider {
+        background-color: #F26C4F; /* Cor para Folga */
+    }
+
+    input:checked + .slider:before {
+        transform: translateX(22px);
+    }
+
+    .folga-text {
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: #64748b;
+    }
+
+    input:checked ~ .folga-text {
+        color: #F26C4F;
+        font-weight: 700;
+    }
+
+    .row-disabled td {
+        background: #f8fafc;
     }
     
-    .empty-horarios i {
-        font-size: 4rem;
-        color: #d0dae4;
-        margin-bottom: 20px;
+    .row-disabled .day-info,
+    .row-disabled .time-inputs {
+        opacity: 0.5;
+    }
+
+    .modal-footer {
+        padding: 20px 30px;
+        background: #f8fafc;
+        border-top: 1px solid #e2e8f0;
+        display: flex;
+        justify-content: flex-end;
+        gap: 15px;
+    }
+
+    .btn-close-modal {
+        padding: 10px 20px;
+        border: 1px solid #cbd5e1;
+        background: white;
+        color: #475569;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    .btn-save-modal {
+        padding: 10px 25px;
+        background: linear-gradient(135deg, #1B325F 0%, #2c4a7a 100%);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .btn-save-modal:hover {
+        opacity: 0.95;
     }
     
     @media (max-width: 900px) {
@@ -147,6 +406,10 @@
         .horarios-grid {
             grid-template-columns: 1fr;
         }
+        .config-table th { display: none; }
+        .config-table td { display: block; width: 100%; border: none; padding: 10px 0; }
+        .config-row td:first-child, .config-row td:last-child { border-radius: 0; }
+        .config-row { border: 1px solid #e2e8f0; border-radius: 12px; margin-bottom: 10px; padding: 15px; display: block; background: white;}
     }
 </style>
 {% endblock %}
@@ -154,7 +417,20 @@
 {% block content %}
 <div class="horarios-container">
     {% for prof in profissionais %}
-    <div class="profissional-horarios">
+    <div class="profissional-horarios" id="prof-container-{{ prof.id }}">
+        
+        <!-- Dados iniciais via JSON (Django) para o JS consumir e evitar erros de template -->
+        <script type="application/json" id="schedule-data-{{ prof.id }}">
+            [
+                {% for dia_lista in prof.horarios_por_dia %}
+                    {
+                        "start": "{{ dia_lista.0.hora_inicio|time:'H:i' }}",
+                        "end": "{{ dia_lista.0.hora_fim|time:'H:i' }}"
+                    }{% if not forloop.last %},{% endif %}
+                {% endfor %}
+            ]
+        </script>
+
         <div class="profissional-horarios-header">
             {% if prof.foto %}
                 <img src="{{ prof.foto.url }}" alt="{{ prof.nome }}" class="profissional-avatar">
@@ -167,73 +443,74 @@
                 <h3>{{ prof.nome }}</h3>
                 <span>{{ prof.especialidade.nome|default:"Sem especialidade" }}</span>
             </div>
-            <a href="{% url 'configurar_horarios' prof.id %}" class="btn-config">
+            
+            <button type="button" 
+                    class="btn-config" 
+                    onclick="openConfigModal('{{ prof.id }}', '{{ prof.nome }}')">
                 <i class="bi bi-gear"></i>
                 Configurar
-            </a>
+            </button>
         </div>
+
         <div class="horarios-grid">
-            {% with dias="Segunda,Terça,Quarta,Quinta,Sexta,Sábado,Domingo" %}
-            {% for dia in dias|make_list %}
-            {% endfor %}
-            {% endwith %}
+            <!-- Renderização manual para garantir os nomes corretos e evitar erro do filtro make_list -->
             
-            <div class="dia-card {% if prof.horarios_por_dia.0 %}ativo{% endif %}">
+            <!-- Segunda (0) -->
+            <div class="dia-card" id="card-{{ prof.id }}-0">
                 <div class="dia-nome">Segunda</div>
-                {% for h in prof.horarios_por_dia.0 %}
-                    <span class="horario-item">{{ h.hora_inicio|time:"H:i" }} - {{ h.hora_fim|time:"H:i" }}</span>
-                {% empty %}
-                    <span class="sem-horario">Folga</span>
-                {% endfor %}
+                <div id="content-{{ prof.id }}-0">
+                    <span class="sem-horario">Carregando...</span>
+                </div>
             </div>
-            <div class="dia-card {% if prof.horarios_por_dia.1 %}ativo{% endif %}">
+
+            <!-- Terça (1) -->
+            <div class="dia-card" id="card-{{ prof.id }}-1">
                 <div class="dia-nome">Terça</div>
-                {% for h in prof.horarios_por_dia.1 %}
-                    <span class="horario-item">{{ h.hora_inicio|time:"H:i" }} - {{ h.hora_fim|time:"H:i" }}</span>
-                {% empty %}
-                    <span class="sem-horario">Folga</span>
-                {% endfor %}
+                <div id="content-{{ prof.id }}-1">
+                    <span class="sem-horario">Carregando...</span>
+                </div>
             </div>
-            <div class="dia-card {% if prof.horarios_por_dia.2 %}ativo{% endif %}">
+
+            <!-- Quarta (2) -->
+            <div class="dia-card" id="card-{{ prof.id }}-2">
                 <div class="dia-nome">Quarta</div>
-                {% for h in prof.horarios_por_dia.2 %}
-                    <span class="horario-item">{{ h.hora_inicio|time:"H:i" }} - {{ h.hora_fim|time:"H:i" }}</span>
-                {% empty %}
-                    <span class="sem-horario">Folga</span>
-                {% endfor %}
+                <div id="content-{{ prof.id }}-2">
+                    <span class="sem-horario">Carregando...</span>
+                </div>
             </div>
-            <div class="dia-card {% if prof.horarios_por_dia.3 %}ativo{% endif %}">
+
+            <!-- Quinta (3) -->
+            <div class="dia-card" id="card-{{ prof.id }}-3">
                 <div class="dia-nome">Quinta</div>
-                {% for h in prof.horarios_por_dia.3 %}
-                    <span class="horario-item">{{ h.hora_inicio|time:"H:i" }} - {{ h.hora_fim|time:"H:i" }}</span>
-                {% empty %}
-                    <span class="sem-horario">Folga</span>
-                {% endfor %}
+                <div id="content-{{ prof.id }}-3">
+                    <span class="sem-horario">Carregando...</span>
+                </div>
             </div>
-            <div class="dia-card {% if prof.horarios_por_dia.4 %}ativo{% endif %}">
+
+            <!-- Sexta (4) -->
+            <div class="dia-card" id="card-{{ prof.id }}-4">
                 <div class="dia-nome">Sexta</div>
-                {% for h in prof.horarios_por_dia.4 %}
-                    <span class="horario-item">{{ h.hora_inicio|time:"H:i" }} - {{ h.hora_fim|time:"H:i" }}</span>
-                {% empty %}
-                    <span class="sem-horario">Folga</span>
-                {% endfor %}
+                <div id="content-{{ prof.id }}-4">
+                    <span class="sem-horario">Carregando...</span>
+                </div>
             </div>
-            <div class="dia-card {% if prof.horarios_por_dia.5 %}ativo{% endif %}">
+
+            <!-- Sábado (5) -->
+            <div class="dia-card" id="card-{{ prof.id }}-5">
                 <div class="dia-nome">Sábado</div>
-                {% for h in prof.horarios_por_dia.5 %}
-                    <span class="horario-item">{{ h.hora_inicio|time:"H:i" }} - {{ h.hora_fim|time:"H:i" }}</span>
-                {% empty %}
-                    <span class="sem-horario">Folga</span>
-                {% endfor %}
+                <div id="content-{{ prof.id }}-5">
+                    <span class="sem-horario">Carregando...</span>
+                </div>
             </div>
-            <div class="dia-card {% if prof.horarios_por_dia.6 %}ativo{% endif %}">
+
+            <!-- Domingo (6) -->
+            <div class="dia-card" id="card-{{ prof.id }}-6">
                 <div class="dia-nome">Domingo</div>
-                {% for h in prof.horarios_por_dia.6 %}
-                    <span class="horario-item">{{ h.hora_inicio|time:"H:i" }} - {{ h.hora_fim|time:"H:i" }}</span>
-                {% empty %}
-                    <span class="sem-horario">Folga</span>
-                {% endfor %}
+                <div id="content-{{ prof.id }}-6">
+                    <span class="sem-horario">Carregando...</span>
+                </div>
             </div>
+
         </div>
     </div>
     {% empty %}
@@ -250,4 +527,259 @@
     </div>
     {% endfor %}
 </div>
+
+<!-- MODAL CONFIGURAÇÃO -->
+<div class="modal-overlay" id="configModal">
+    <div class="config-modal">
+        <div class="modal-header">
+            <div class="modal-title">
+                <i class="bi bi-calendar-range"></i>
+                <span id="modalProfName">Configurar Horários</span>
+            </div>
+            <button class="btn-close-modal" onclick="closeConfigModal()">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+        
+        <!-- Formulário interceptado via JS -->
+        <form id="configForm">
+            <input type="hidden" name="profissional_id" id="modalProfId">
+            
+            <div class="modal-body">
+                <table class="config-table">
+                    <thead>
+                        <tr>
+                            <th width="30%">Dia da Semana</th>
+                            <th width="40%">Horário (Início - Fim)</th>
+                            <th width="30%">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="modalTableBody">
+                        <!-- JS vai preencher aqui -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="modal-footer">
+                <button type="button" class="btn-close-modal" onclick="closeConfigModal()">Cancelar</button>
+                <button type="submit" class="btn-save-modal">
+                    <i class="bi bi-check-lg"></i>
+                    Salvar Alterações
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    const daysOfWeek = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'];
+    
+    // --- FUNÇÕES DE LOAD E SAVE (LocalStorage + JSON) ---
+
+    // Chave para localStorage
+    const getStorageKey = (profId) => `medSchedule_config_${profId}`;
+
+    // Carregar configurações ao iniciar a página
+    document.addEventListener('DOMContentLoaded', () => {
+        const profContainers = document.querySelectorAll('[id^="prof-container-"]');
+        profContainers.forEach(container => {
+            const profId = container.id.replace('prof-container-', '');
+            initializeSchedule(profId);
+        });
+    });
+
+    function initializeSchedule(profId) {
+        // Tenta carregar do localStorage primeiro
+        const savedData = localStorage.getItem(getStorageKey(profId));
+        
+        if (savedData) {
+            const schedule = JSON.parse(savedData);
+            updateDashboardUI(profId, schedule);
+        } else {
+            // Se não tiver salvo, carrega do JSON do Django
+            try {
+                const jsonElement = document.getElementById(`schedule-data-${profId}`);
+                if (jsonElement) {
+                    const rawData = JSON.parse(jsonElement.textContent);
+                    // Converte para formato UI
+                    const schedule = rawData.map(d => {
+                         if (d && d.start && d.end) {
+                             return { isFolga: false, start: d.start, end: d.end };
+                         }
+                         return { isFolga: true, start: '08:00', end: '18:00' };
+                    });
+                    
+                    // Preenche até 7 dias se necessário
+                    while(schedule.length < 7) {
+                        schedule.push({ isFolga: true, start: '08:00', end: '18:00' });
+                    }
+                    
+                    updateDashboardUI(profId, schedule);
+                }
+            } catch (e) {
+                console.error("Erro ao carregar JSON inicial:", e);
+            }
+        }
+    }
+
+    function saveSchedule(profId, scheduleData) {
+        localStorage.setItem(getStorageKey(profId), JSON.stringify(scheduleData));
+        updateDashboardUI(profId, scheduleData);
+        alert('Horários salvos com sucesso!');
+    }
+
+    function updateDashboardUI(profId, scheduleData) {
+        scheduleData.forEach((dayData, index) => {
+            const card = document.getElementById(`card-${profId}-${index}`);
+            const contentDiv = document.getElementById(`content-${profId}-${index}`);
+            
+            if (!card || !contentDiv) return;
+
+            // Limpa conteúdo
+            contentDiv.innerHTML = '';
+            
+            if (dayData.isFolga) {
+                contentDiv.innerHTML = '<span class="sem-horario">Folga</span>';
+                card.classList.remove('ativo');
+            } else {
+                contentDiv.innerHTML = `<span class="horario-item">${dayData.start} - ${dayData.end}</span>`;
+                card.classList.add('ativo');
+            }
+        });
+    }
+
+    // --- FUNÇÕES DO MODAL ---
+
+    function openConfigModal(profId, profName) {
+        document.getElementById('modalProfName').textContent = `Configurar Agenda: ${profName}`;
+        document.getElementById('modalProfId').value = profId;
+        
+        // Carrega dados atuais (já processados na UI ou Storage)
+        let scheduleData;
+        const savedData = localStorage.getItem(getStorageKey(profId));
+        
+        if (savedData) {
+            scheduleData = JSON.parse(savedData);
+        } else {
+            // Fallback para JSON inicial se nunca salvou
+             try {
+                const jsonElement = document.getElementById(`schedule-data-${profId}`);
+                const rawData = JSON.parse(jsonElement.textContent);
+                scheduleData = rawData.map(d => {
+                     if (d && d.start && d.end) {
+                         return { isFolga: false, start: d.start, end: d.end };
+                     }
+                     return { isFolga: true, start: '08:00', end: '18:00' };
+                });
+                while(scheduleData.length < 7) {
+                    scheduleData.push({ isFolga: true, start: '08:00', end: '18:00' });
+                }
+            } catch (e) {
+                scheduleData = Array(7).fill({ isFolga: true, start: '08:00', end: '18:00' });
+            }
+        }
+        
+        const tbody = document.getElementById('modalTableBody');
+        tbody.innerHTML = '';
+        
+        daysOfWeek.forEach((day, index) => {
+            const dayData = scheduleData[index] || { isFolga: true, start: '08:00', end: '18:00' };
+            
+            const tr = document.createElement('tr');
+            tr.className = `config-row ${dayData.isFolga ? 'row-disabled' : ''}`;
+            tr.id = `row-${index}`;
+            
+            tr.innerHTML = `
+                <td>
+                    <div class="day-info">
+                        <div class="day-icon-circle">
+                            ${day.substring(0, 3)}
+                        </div>
+                        ${day}
+                    </div>
+                </td>
+                <td>
+                    <div class="time-inputs">
+                        <input type="time" class="time-input" name="inicio_${index}" id="inicio_${index}" 
+                               value="${dayData.start}" ${dayData.isFolga ? 'disabled' : ''}>
+                        <span>até</span>
+                        <input type="time" class="time-input" name="fim_${index}" id="fim_${index}" 
+                               value="${dayData.end}" ${dayData.isFolga ? 'disabled' : ''}>
+                    </div>
+                </td>
+                <td>
+                    <label class="switch-wrapper">
+                        <span class="switch">
+                            <input type="checkbox" name="folga_${index}" id="folga_${index}" 
+                                   ${dayData.isFolga ? 'checked' : ''} 
+                                   onchange="toggleDayRow(${index})">
+                            <span class="slider"></span>
+                        </span>
+                        <span class="folga-text">Folga</span>
+                    </label>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+        
+        const modal = document.getElementById('configModal');
+        modal.style.display = 'flex';
+        setTimeout(() => modal.classList.add('open'), 10);
+    }
+    
+    function closeConfigModal() {
+        const modal = document.getElementById('configModal');
+        modal.classList.remove('open');
+        setTimeout(() => {
+            modal.style.display = 'none';
+        }, 300);
+    }
+    
+    function toggleDayRow(index) {
+        const checkbox = document.getElementById(`folga_${index}`);
+        const row = document.getElementById(`row-${index}`);
+        const startInput = document.getElementById(`inicio_${index}`);
+        const endInput = document.getElementById(`fim_${index}`);
+        
+        if (checkbox.checked) {
+            row.classList.add('row-disabled');
+            startInput.disabled = true;
+            endInput.disabled = true;
+        } else {
+            row.classList.remove('row-disabled');
+            startInput.disabled = false;
+            endInput.disabled = false;
+        }
+    }
+
+    // --- SUBMIT DO FORMULÁRIO (Interceptado) ---
+    document.getElementById('configForm').addEventListener('submit', function(e) {
+        e.preventDefault(); // Impede POST para servidor
+        
+        const profId = document.getElementById('modalProfId').value;
+        const newSchedule = [];
+        
+        for (let i = 0; i < 7; i++) {
+            const isFolga = document.getElementById(`folga_${i}`).checked;
+            const start = document.getElementById(`inicio_${i}`).value || '08:00';
+            const end = document.getElementById(`fim_${i}`).value || '18:00';
+            
+            newSchedule.push({
+                isFolga: isFolga,
+                start: start,
+                end: end
+            });
+        }
+        
+        saveSchedule(profId, newSchedule);
+        closeConfigModal();
+    });
+
+    // Fechar modal ao clicar fora
+    document.getElementById('configModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeConfigModal();
+        }
+    });
+</script>
 {% endblock %}

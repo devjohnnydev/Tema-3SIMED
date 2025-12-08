@@ -95,4 +95,32 @@
     </div>
     {% endif %}
 </div>
+
+<!-- Script to Sync Doctors to LocalStorage for use in Agenda.html -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Build array of doctors from Django Template Context
+        const doctorsList = [
+            {% for medico in medicos %}
+            {
+                id: "{{ medico.id }}",
+                name: "Dr(a). {{ medico.username }} {{ medico.last_name }}",
+                // Using 'endereco' as specialty since that matches the table logic above
+                specialty: "{{ medico.perfil.endereco|default:'Clínico Geral' }}", 
+                // Generate a consistent avatar URL based on name
+                avatarUrl: "https://ui-avatars.com/api/?name={{ medico.username }}+{{ medico.last_name }}&background=random&color=fff&size=128"
+            },
+            {% endfor %}
+        ];
+
+        // Save to LocalStorage so agenda.html can access it
+        if (doctorsList.length > 0) {
+            localStorage.setItem('medScheduleProfessionals', JSON.stringify(doctorsList));
+            console.log('✅ Lista de médicos sincronizada com a Agenda:', doctorsList.length, 'profissionais.');
+        } else {
+            // Optional: clear if none exist
+            // localStorage.removeItem('medScheduleProfessionals');
+        }
+    });
+</script>
 {% endblock %}

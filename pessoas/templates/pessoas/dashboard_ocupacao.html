@@ -14,7 +14,8 @@
                 <i class="bi bi-calendar-check"></i>
             </div>
         </div>
-        <div class="stat-value">{{ consultas|length }}</div>
+        <!-- Will be updated by JS -->
+        <div class="stat-value" id="total-consultas">0</div>
         <div class="stat-label">aguardando atendimento</div>
     </div>
 </div>
@@ -27,61 +28,117 @@
         </div>
     </div>
     
-    {% if consultas %}
-    <table class="data-table">
-        <thead>
-            <tr>
-                <th>Paciente</th>
-                <th>Médico</th>
-                <th>Data</th>
-                <th>Horário</th>
-                <th>Status</th>
-                <th>Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for consulta in consultas %}
-            <tr>
-                <td>
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <div style="width: 40px; height: 40px; background: #E9F2F9; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
-                            <i class="bi bi-person" style="color: #1B325F;"></i>
-                        </div>
-                        <strong>{{ consulta.paciente.username }} {{ consulta.paciente.last_name }}</strong>
-                    </div>
-                </td>
-                <td>Dr(a). {{ consulta.medico.username }} {{ consulta.medico.last_name }}</td>
-                <td>{{ consulta.data_hora|date:"d/m/Y" }}</td>
-                <td><strong>{{ consulta.data_hora|time:"H:i" }}</strong></td>
-                <td>
-                    <span class="status-badge {{ consulta.status }}">
-                        {% if consulta.status == 'agendada' %}
-                            <i class="bi bi-clock"></i>
-                        {% elif consulta.status == 'confirmada' %}
-                            <i class="bi bi-check-circle"></i>
-                        {% endif %}
-                        {{ consulta.get_status_display }}
-                    </span>
-                </td>
-                <td>
-                    <form method="post" action="{% url 'cancelar_consulta_admin' consulta.id %}" style="display: inline;" onsubmit="return confirm('Tem certeza que deseja cancelar esta consulta?');">
-                        {% csrf_token %}
-                        <button type="submit" class="btn-action btn-cancelar">
-                            <i class="bi bi-x-lg"></i>
-                            Cancelar
-                        </button>
-                    </form>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    {% else %}
-    <div class="empty-state">
+    <!-- Table Structure (Initially Hidden if using JS override, but kept for progressive enhancement) -->
+    <div id="table-wrapper" style="display: none;">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Paciente</th>
+                    <th>Médico</th>
+                    <th>Data</th>
+                    <th>Horário</th>
+                    <th>Status</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody id="consultas-body">
+                <!-- Content injected via JS -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Empty State -->
+    <div id="empty-state" class="empty-state">
         <i class="bi bi-calendar-x"></i>
         <h4>Nenhuma consulta agendada</h4>
         <p>Não há consultas pendentes no momento.</p>
     </div>
-    {% endif %}
 </div>
+
+<!-- Script to hydrate dashboard from LocalStorage -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const STORAGE_KEY = 'medScheduleAppointments';
+        const appointments = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+        
+        const totalEl = document.getElementById('total-consultas');
+        const emptyState = document.getElementById('empty-state');
+        const tableWrapper = document.getElementById('table-wrapper');
+        const tbody = document.getElementById('consultas-body');
+
+        // Update Total
+        totalEl.textContent = appointments.length;
+
+        if (appointments.length > 0) {
+            // Show table, hide empty state
+            emptyState.style.display = 'none';
+            tableWrapper.style.display = 'block';
+            
+            // Clear existing
+            tbody.innerHTML = '';
+
+            // Sort by Date then Time
+            appointments.sort((a, b) => {
+                const dateA = new Date(a.dateStr + ' ' + a.time);
+                const dateB = new Date(b.dateStr + ' ' + b.time);
+                return dateA - dateB;
+            });
+
+            appointments.forEach(app => {
+                // Format Date from YYYY-MM-DD to DD/MM/YYYY
+                const [year, month, day] = app.dateStr.split('-');
+                const formattedDate = `${day}/${month}/${year}`;
+
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <div style="width: 40px; height: 40px; background: #E9F2F9; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                                <i class="bi bi-person" style="color: #1B325F;"></i>
+                            </div>
+                            <strong>${app.patientName || 'Paciente'}</strong>
+                        </div>
+                    </td>
+                    <td>${app.professionalName || 'Médico'}</td>
+                    <td>${formattedDate}</td>
+                    <td><strong>${app.time}</strong></td>
+                    <td>
+                        <span class="status-badge agendada">
+                            <i class="bi bi-clock"></i>
+                            Agendada
+                        </span>
+                    </td>
+                    <td>
+                        <button class="btn-action btn-cancelar" onclick="cancelarConsulta('${app.id}')">
+                            <i class="bi bi-x-lg"></i>
+                            Cancelar
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        } else {
+            // Show empty state
+            emptyState.style.display = 'flex';
+            tableWrapper.style.display = 'none';
+        }
+    });
+
+    // Cancel Function accessible globally
+    window.cancelarConsulta = function(id) {
+        if (confirm('Tem certeza que deseja cancelar esta consulta?')) {
+            const STORAGE_KEY = 'medScheduleAppointments';
+            let appointments = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+            
+            // Filter out the deleted one
+            appointments = appointments.filter(app => app.id !== id);
+            
+            // Save back
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(appointments));
+            
+            // Reload page to refresh list
+            window.location.reload();
+        }
+    };
+</script>
 {% endblock %}
